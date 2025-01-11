@@ -1,0 +1,24 @@
+const path = require('path');
+const logger = require('../../../src/utility/logger.js')
+const fs = require("fs")
+const filePath = path.join("log.txt");
+
+test("It should log something to a log file", async () => {
+  let before = 0;
+  let after = 0;
+
+  try {
+    fs.stat(filePath, (err, stats) => {
+      if (err) throw err;
+      before = stats.size;
+      logger.log("TEST", "Testing logger utility")
+      return;
+    })
+
+  } catch (err) {
+    throw err;
+  } finally {
+    after = fs.statSync(filePath).size;
+    expect(before).toBeLessThan(after)
+  }
+})

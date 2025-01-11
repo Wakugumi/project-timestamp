@@ -1,0 +1,5 @@
+
+
+exports.createStopmotion = async (folderPath) => {
+
+}
