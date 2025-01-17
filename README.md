@@ -23,6 +23,12 @@ However, if the response status returned was `500` as number, the response paylo
 
 `ready` : Camera device are ready to be use
 
+### `/checkup`
+
+This checks the camera functionality by testing captures and reading the downloaded file
+
+`ok` : Required functions are good to go
+
 ### `/capture`
 
 `succcess` : Capture action has successfully run and any further processing are resolved.

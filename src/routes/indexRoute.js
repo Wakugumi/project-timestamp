@@ -1,11 +1,10 @@
-const route = require('express').Router()
-const device = require("../services/DeviceService.js")
+const route = require("express").Router();
+const device = require("../services/DeviceService.js");
 const sessionRoute = require("./sessionRoute");
 
-
-route.get('/', (req, res, next) => {
-  res.send("Hello")
-})
+route.get("/", (req, res, next) => {
+  res.send("Hello");
+});
 
 route.get("/boot", async (req, res, next) => {
   try {
@@ -14,14 +13,18 @@ route.get("/boot", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-})
+});
 
-route.get('/status', async (req, res, next) => {
+route.get("/status", async (req, res, next) => {
   try {
-    await device.check();
-    res.status(200).send("ready")
+    const status = await device.check();
+    if (status) {
+      res.status(200).send("ready");
+    } else {
+      res.status(200).send("not ready");
+    }
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
@@ -30,11 +33,28 @@ route.get("/capture", async (req, res, next) => {
     await device.capture();
     res.status(200).send("success");
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
+route.get("/checkup", async (req, res, next) => {
+  try {
+    await device.checkup();
+    res.status(200).send("ok");
+  } catch (error) {
+    next(error);
+  }
+});
 
-route.use('/session', sessionRoute);
+route.get("/stream", async (req, res, next) => {
+  try {
+    await device.startStream();
+    res.status(200).send("ready");
+  } catch (error) {
+    next(error);
+  }
+});
+
+route.use("/session", sessionRoute);
 
 module.exports = route;

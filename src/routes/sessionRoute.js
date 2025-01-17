@@ -1,16 +1,12 @@
-const route = require('express').Router();
-const File = require('../services/FileService.js');
-
-route.get('/reset', async (req, res, next) => {
+const route = require("express").Router();
+const File = require("../services/FileService.js");
+route.get("/reset", async (req, res, next) => {
   try {
     await File.resetSession();
     res.status(200).send("success");
-  }
-
-  catch (error) {
+  } catch (error) {
     next(error);
   }
-})
+});
 
-
-module.exports = route
+module.exports = route;
