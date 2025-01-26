@@ -5,6 +5,12 @@ const { existsSync, unlinkSync, readFile, statSync } = require("node:fs");
 const { unlink } = require("node:fs/promises");
 
 class CameraBackend {
+  /**
+   * @type {ChildProcess}
+   * Act as instance for liveview child process
+   */
+  static LIVEVIEW_PROCESS = null;
+
   static PROCESS_CAPTURE = false;
   static PROCESS_LIVEVIEW = false;
   static DEVICE_READY = false;
@@ -121,8 +127,12 @@ class CameraBackend {
     CameraBackend.FILE_INDEX = 1;
   }
 
+  /**
+   * Start a live view stream.
+   * Returns when the process successfully spawned
+   */
   static async _start_liveview() {
-    if (this._check_status()) {
+    if (!this._check_status()) {
       throw new Error("Camera is busy");
     }
     if (!this.DEVICE_READY) {
@@ -132,35 +142,54 @@ class CameraBackend {
     }
 
     this.PROCESS_LIVEVIEW = true;
-    let gphoto = spawn("bash", ["-c", this.COMMANDS.capture_movie]);
-    gphoto.on("error", (error) => {
+
+    this.LIVEVIEW_PROCESS = spawn("bash", ["-c", this.COMMANDS.capture_movie]);
+    this.LIVEVIEW_PROCESS.on("error", (error) => {
+      console.error(error);
       throw new Error(error.toString());
     });
 
-    let ffmpeg = spawn("bash", [this.COMMANDS.stream]);
+    let ffmpeg = spawn("bash", ["-c", this.COMMANDS.stream]);
     ffmpeg.on("error", (error) => {
+      console.error(error);
       throw new Error(error.toString());
     });
 
-    gphoto.stdout.pipe(ffmpeg.stdin);
-
-    gphoto.stderr.on("data", (data) => {
-      throw new Error(data.toString());
-    });
+    await once(this.LIVEVIEW_PROCESS, "spawn");
+    this.LIVEVIEW_PROCESS.stdout.pipe(ffmpeg.stdin);
+    this.PROCESS_LIVEVIEW = true;
 
     ffmpeg.stderr.on("data", (data) => {
-      throw new Error(data.toString());
+      console.error(data);
+    });
+
+    this.LIVEVIEW_PROCESS.stderr.on("data", (data) => {
+      console.error(data);
     });
 
     ffmpeg.on("close", (code) => {
       if (code === 0) {
         resolve();
       } else {
+        this.PROCESS_LIVEVIEW = false;
+        console.error("FFMPEG Error: ", code);
         throw new Error(`FFmpeg error : ${code}`);
       }
     });
 
-    await once(ffmpeg, "close");
+    return;
+  }
+
+  static _stop_liveview() {
+    return new Promise((resolve, rejects) => {
+      if (this.LIVEVIEW_PROCESS) {
+        this.LIVEVIEW_PROCESS.kill("SIGTERM");
+        this.PROCESS_LIVEVIEW = false;
+        resolve();
+      } else {
+        rejects("No liveview process is running");
+      }
+    });
     return;
   }
 
@@ -180,7 +209,7 @@ class CameraBackend {
     this.PROCESS_CAPTURE = true;
     const capture = spawn("bash", ["-c", CameraBackend.COMMANDS.test_capture]);
 
-    capture.stderr.on("data", (data) => {
+    capture.stderr.on("error", (data) => {
       safe = false;
       this.PROCESS_CAPTURE = false;
       throw new Error(`Error running test capture command: ${data}`);
@@ -194,13 +223,16 @@ class CameraBackend {
     await once(capture, "close");
     this.PROCESS_CAPTURE = false;
 
-    let exist = statSync(this.TEST_FILE_PATH);
-    if (exist.size === 0) {
-      safe = false;
-      throw new Error("Capture checkup result unresolved");
+    try {
+      let exist = statSync(this.TEST_FILE_PATH);
+      if (exist.size === 0) {
+        safe = false;
+        throw new Error("Capture checkup result unresolved");
+      }
+      unlinkSync(CameraBackend.TEST_FILE_PATH);
+    } catch (error) {
+      throw new Error(`Error reading test caputure image: ${error}`);
     }
-
-    unlinkSync(CameraBackend.TEST_FILE_PATH);
 
     if (safe) return;
     else throw new Error("Failed checkup");

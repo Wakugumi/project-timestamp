@@ -1,7 +1,8 @@
 const route = require("express").Router();
 const device = require("../services/DeviceService.js");
 const sessionRoute = require("./sessionRoute");
-
+const streamRoute = require("./streamRoute");
+const storageRoute = require("./storageRoute");
 route.get("/", (req, res, next) => {
   res.send("Hello");
 });
@@ -46,15 +47,9 @@ route.get("/checkup", async (req, res, next) => {
   }
 });
 
-route.get("/stream", async (req, res, next) => {
-  try {
-    await device.startStream();
-    res.status(200).send("ready");
-  } catch (error) {
-    next(error);
-  }
-});
+route.use("/stream", streamRoute);
 
 route.use("/session", sessionRoute);
 
+route.use("/storage", storageRoute);
 module.exports = route;

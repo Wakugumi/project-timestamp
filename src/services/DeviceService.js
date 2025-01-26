@@ -59,3 +59,12 @@ exports.startStream = async () => {
     throw error;
   }
 };
+
+exports.stopStream = async () => {
+  try {
+    await CameraBackend._stop_liveview();
+    return;
+  } catch (error) {
+    throw error;
+  }
+};

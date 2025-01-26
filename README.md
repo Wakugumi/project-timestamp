@@ -33,6 +33,14 @@ This checks the camera functionality by testing captures and reading the downloa
 
 `succcess` : Capture action has successfully run and any further processing are resolved.
 
+### `/stream/start`
+
+`ready` : Stream has started
+
+### `/stream/stop`
+
+`ok` : Stream has stopped
+
 ### `/session/reset`
 
 `success` : Session has been reset.

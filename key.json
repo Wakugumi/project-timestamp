@@ -1,0 +1,14 @@
+{
+  "type": "service_account",
+  "project_id": "timestamp-photobooth-2024",
+  "private_key_id": "865eb6d49d562bf281b4afb2d0ee149d5e743fbb",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDsKYOAKuP95Hdi\nSGFtdGog5Old0mHZ72lBKue02wsMf9KlYD+Bq2yjJWYcB97LqxW30DlWT2RujkAH\nAiCwhRSkNK87UHdT/YGyVEXsZHCOHdpx3EjLgFoOdQsq8EuhAXnI8dtowEmSvPuS\n3XVHwtMqkKCUXvOYwZSIyPbfQCoJLzDXYrw6q7SoSafuoksr/7dazgUrqFpsY7B5\niU6v+unA9nPGLopr5pho3R4EPG+XX8EDrXJILSh+lpDKAAOEy2jxUNB7OYHOeh5Y\n1DPAaRLKT6/kWyYiHKWb89koSaMLC/zmp1e2+2FOjN5n5y117NZ55iYnxZ3/Uxsm\nXTuLUJC/AgMBAAECggEAX+6lKmVB5BrwnA4G9a16hw419hTGBv+H5B8HrKHmJRev\ne9pTMdtu7/77MZvI1zcSRW7iO7tYcsh6Hd6xZMNKlUGJhTC0qHusOcKd/N74EeLy\nn5n6QCBNdN36wWCHeEnfLM+Cb1TdDiySjSBEyffMS9ggQuUnUwAf1Ei+cAXijYPE\nJ0WT0gJMK5wnN7AOufmrXLWVbgrubzGAjPYLsqUNPjr+gvIBwAPixWwC7Xo8kve0\npKVQTl/CS2zY2Bsn2iYTJV3K97ZtDF9GLk4yLEifgdI32A39qD7xJt4U7ThuKWj/\noX5vFJHgnoG0OuWdxSY+ULUFV6f3VWr2uRXetyvaEQKBgQDw6bOD9las1J1YJWjx\n9nQIPCbN62keuiEH0O0jABxuSOQRjpDXO8B9Z8hDueT+SxPrr/a60JQrLQ5XtkS4\nbgPITvbI+Nbz1ngRdkUQt7FtlRDqt4x+U6gJ8pNjsJpaM4CaAaSkBFz0zylcweam\n6RQB5CYCT1WgL5nuzl3HpISh2wKBgQD686Ymooy0w4i+S72klHPrXuEzGbPBr5th\nJhgxX4J5+c9fGiqgfoEfvfQYzM09SFTqJvEJ8Bslj2QkByJvowqBMeRTMV2Q7EEH\nz83ZN1kLSc6cdTLqcZ2nx54BAQJHCSIZYmJ9+PYIy0uOJMNXbIR7qlDwWrQy1y69\nBveDAg/77QKBgQCbzJdyvQm6xdln2vGuoVLSzIvP2fFmlLqtwljJrNW2IN+V1xwm\nhZbrwwVJf1vvdIBSiL7IfAGGlqHS6aYxm7xIe4Cv4fWpRcbqjBEISbOuCZwiH0f1\nnoZqwHy/GMQJl4sQjgV6qPOwwpSeTyuqP8vXmUNXdRUL/hzPypftd6DqxwKBgQDd\nG3YGTmwpDKtb94IFE2O7OyKykm/GNMJza0wfnGZqsEcdJQHv3OZKIGSEwVYIK8Xd\ndSglOG/CvT9fWwXlVML5qArjnfgxq2d0yYw2WcTT5Fjtk3mkBS0CWigF/GyUSCDK\nOtxK3+NvRiew+wU97vgfuaWM0G466Utd81h7DoMk1QKBgBsTLBOlGz/c+4Ko4AKw\nK18WyOH62b4qKfi6GUW8KM1YSGAjFFAeozq8r+1T1pMzKC9rHXaRaYdkh/rtet+8\nc2cYc0nj4M1RknM2sEcecc1WaZwNl+6u0DFMym38vvC+bEAP1G2hPzlOm7aZ3lSt\n7O87+VEED/UaPWAvurFvVY3F\n-----END PRIVATE KEY-----\n",
+  "client_email": "timestamp-photobooth-2024@appspot.gserviceaccount.com",
+  "client_id": "113376634661623282722",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/timestamp-photobooth-2024%40appspot.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
