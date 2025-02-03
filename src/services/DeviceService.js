@@ -2,10 +2,11 @@ const { fstat, renameSync } = require("fs");
 const Logger = require("../utility/logger");
 const CameraBackend = require("./backends/camera");
 const File = require("./FileService");
+const { spawn } = require("child_process");
 
 exports.bootup = async () => {
   try {
-    await cameraBackend._start();
+    await CameraBackend._start();
   } catch (error) {
     throw error;
   }
@@ -51,15 +52,6 @@ exports.checkup = async () => {
   }
 };
 
-exports.startStream = async () => {
-  try {
-    await CameraBackend._start_liveview();
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
-
 exports.stopStream = async () => {
   try {
     await CameraBackend._stop_liveview();
@@ -67,4 +59,21 @@ exports.stopStream = async () => {
   } catch (error) {
     throw error;
   }
+};
+
+exports.stream = (res) => {
+  const gphoto = spawn("bash", ["-c", CameraBackend.COMMANDS.capture_movie]);
+  gphoto.stderr.on("data", (data) => console.error(`GPhoto2 Error: ${data}`));
+
+  const ffmpeg = spawn("bash", ["-c", CameraBackend.COMMANDS.stream]);
+
+  gphoto.stdout.pipe(ffmpeg.stdin);
+  ffmpeg.stdout.pipe(res);
+
+  ffmpeg.stderr.on("data", (data) => console.error(`FFmpeg Error: ${data}`));
+
+  gphoto.on("close", (code) => console.log(`gphoto2 exited with code ${code}`));
+  ffmpeg.on("close", (code) => console.log(`FFmpeg exited with code ${code}`));
+
+  return { gphoto, ffmpeg };
 };

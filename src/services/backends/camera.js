@@ -3,13 +3,13 @@ const { spawn } = require("node:child_process");
 const { once } = require("events");
 const { existsSync, unlinkSync, readFile, statSync } = require("node:fs");
 const { unlink } = require("node:fs/promises");
+const { setTimeout } = require("node:timers/promises");
 
 class CameraBackend {
   /**
    * @type {ChildProcess}
    * Act as instance for liveview child process
    */
-  static LIVEVIEW_PROCESS = null;
 
   static PROCESS_CAPTURE = false;
   static PROCESS_LIVEVIEW = false;
@@ -18,6 +18,16 @@ class CameraBackend {
   static FOLDER_PATH = "";
   static TEST_FILE_PATH = process.cwd() + "/test-captures/" + "capture.jpg";
 
+  /**
+   * @type {spawn}
+   */
+  static gphoto_process = null;
+
+  /**
+   * @type {spawn}
+   */
+  static ffmpeg_process = null;
+
   static COMMANDS = {
     status: "gphoto2 --auto-detect",
     get capture() {
@@ -25,11 +35,11 @@ class CameraBackend {
     },
 
     get capture_movie() {
-      return "gphoto2 --stdout --capture-movie";
+      return "gphoto2 --capture-movie --stdout";
     },
 
     get stream() {
-      return "ffmpeg  -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 -s:v 1920x1080 -r 25 /dev/video2";
+      return "ffmpeg -i - -f mjpeg -s 1280x720 -q:v 3 -maxrate 4M -bufsize 2M -preset ultrafast -fflags nobuffer -vsync 0 -rtbufsize 2M -";
     },
 
     get test_capture() {
@@ -128,69 +138,34 @@ class CameraBackend {
   }
 
   /**
-   * Start a live view stream.
-   * Returns when the process successfully spawned
+   * Starts video stream.
    */
-  static async _start_liveview() {
-    if (!this._check_status()) {
-      throw new Error("Camera is busy");
-    }
-    if (!this.DEVICE_READY) {
-      throw new Error(
-        "Device status is not determined yet, please run status check first",
-      );
-    }
+  static _start_stream(sendFrame) {
+    if (this.gphoto_process || this.ffmpeg_process)
+      throw new Error("Stream already open");
+    if (!this._check_status()) throw new Error("Device is busy");
+    console.log("Starting stream");
 
+    this.gphoto_process = spawn("bash", ["-c", this.COMMANDS.capture_movie]);
+    this.ffmpeg_process = spawn("bash", ["-c", this.COMMANDS.stream]);
+    this.gphoto_process.stdout.pipe(this.ffmpeg_process.stdin);
     this.PROCESS_LIVEVIEW = true;
-
-    this.LIVEVIEW_PROCESS = spawn("bash", ["-c", this.COMMANDS.capture_movie]);
-    this.LIVEVIEW_PROCESS.on("error", (error) => {
-      console.error(error);
-      throw new Error(error.toString());
-    });
-
-    let ffmpeg = spawn("bash", ["-c", this.COMMANDS.stream]);
-    ffmpeg.on("error", (error) => {
-      console.error(error);
-      throw new Error(error.toString());
-    });
-
-    await once(this.LIVEVIEW_PROCESS, "spawn");
-    this.LIVEVIEW_PROCESS.stdout.pipe(ffmpeg.stdin);
-    this.PROCESS_LIVEVIEW = true;
-
-    ffmpeg.stderr.on("data", (data) => {
-      console.error(data);
-    });
-
-    this.LIVEVIEW_PROCESS.stderr.on("data", (data) => {
-      console.error(data);
-    });
-
-    ffmpeg.on("close", (code) => {
-      if (code === 0) {
-        resolve();
-      } else {
-        this.PROCESS_LIVEVIEW = false;
-        console.error("FFMPEG Error: ", code);
-        throw new Error(`FFmpeg error : ${code}`);
-      }
-    });
-
-    return;
+    this.ffmpeg_process.stdout.on("data", sendFrame);
   }
 
-  static _stop_liveview() {
-    return new Promise((resolve, rejects) => {
-      if (this.LIVEVIEW_PROCESS) {
-        this.LIVEVIEW_PROCESS.kill("SIGTERM");
-        this.PROCESS_LIVEVIEW = false;
-        resolve();
-      } else {
-        rejects("No liveview process is running");
-      }
-    });
-    return;
+  /**
+   * Stops video stream.
+   */
+  static async _stop_stream() {
+    if (this.gphoto_process) {
+      console.log("Stopping stream");
+      this.gphoto_process.kill();
+      this.ffmpeg_process.kill();
+      await setTimeout(3000); // This is necessary to let the camera finish its processes
+      this.gphoto_process = null;
+      this.ffmpeg_process = null;
+      this.PROCESS_LIVEVIEW = false;
+    }
   }
 
   /**

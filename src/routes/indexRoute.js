@@ -3,6 +3,8 @@ const device = require("../services/DeviceService.js");
 const sessionRoute = require("./sessionRoute");
 const streamRoute = require("./streamRoute");
 const storageRoute = require("./storageRoute");
+const testRoute = require("./testRoute");
+
 route.get("/", (req, res, next) => {
   res.send("Hello");
 });
@@ -52,4 +54,7 @@ route.use("/stream", streamRoute);
 route.use("/session", sessionRoute);
 
 route.use("/storage", storageRoute);
+
+route.use("/test", testRoute);
+
 module.exports = route;
