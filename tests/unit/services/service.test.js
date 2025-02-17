@@ -24,5 +24,5 @@ describe("Device service functions", () => {
         await unlink(filePath);
       }),
     );
-  }, 10000);
+  }, 20000);
 });

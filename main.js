@@ -4,6 +4,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const route = require("./src/routes/indexRoute");
 const bodyParser = require("body-parser");
+const { URL } = require("url");
 
 dotenv.config();
 
@@ -16,8 +17,8 @@ require("./src/handlers/sessionHandler.js");
 
 const createWindow = () => {
   window = new BrowserWindow({
-    width: 600,
-    height: 600,
+    width: 1280,
+    height: 720,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
@@ -26,9 +27,21 @@ const createWindow = () => {
     },
   });
 
+  window.maximize();
+
   if (isDev) window.loadURL("http://localhost:5173");
   else window.loadFile("dist/index.html");
 
+  window.webContents.on("will-navigate", (event, url) => {
+    const parsedUrl = new URL(url);
+    const isFinish = parsedUrl.searchParams.has("transaction_status");
+
+    if (isFinish) {
+      event.preventDefault();
+      const queryParams = Object.fromEntries(parsedUrl.searchParams.entries());
+      window.webContents.send("payment", queryParams);
+    }
+  });
   // Handles close call from window system
   window.on("closed", () => {
     window = null;
@@ -58,7 +71,20 @@ const startBackend = () => {
 
 app.on("ready", () => {
   startBackend();
-  createWindow();
+
+  (async () => {
+    const contextMenu = await import("electron-context-menu");
+    contextMenu.default({
+      showCopyLink: true,
+      showCopyImageAddress: true,
+    });
+  })()
+    .then(() => {
+      createWindow();
+    })
+    .catch((reason) => {
+      console.error(reason);
+    });
 });
 
 app.on("activate", () => {

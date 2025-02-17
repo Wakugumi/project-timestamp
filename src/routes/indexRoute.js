@@ -1,8 +1,6 @@
 const route = require("express").Router();
 const device = require("../services/DeviceService.js");
 const sessionRoute = require("./sessionRoute");
-const streamRoute = require("./streamRoute");
-const storageRoute = require("./storageRoute");
 const testRoute = require("./testRoute");
 
 route.get("/", (req, res, next) => {
@@ -49,11 +47,7 @@ route.get("/checkup", async (req, res, next) => {
   }
 });
 
-route.use("/stream", streamRoute);
-
 route.use("/session", sessionRoute);
-
-route.use("/storage", storageRoute);
 
 route.use("/test", testRoute);
 
