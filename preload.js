@@ -6,4 +6,11 @@ contextBridge.exposeInMainWorld("electron", {
   on: (channel, callback) => {
     ipcRenderer.on(channel, (event, ...args) => callback(...args));
   },
+  onVideo: (callback) => {
+    ipcRenderer.on("video", (event, data) => {
+      callback(data);
+    });
+  },
+  onStream: (callback) =>
+    ipcRenderer.on("stream", (_, frame) => callback(frame)),
 });

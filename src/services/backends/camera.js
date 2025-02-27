@@ -1,7 +1,14 @@
 const Logger = require("../../utility/logger");
 const { spawn } = require("node:child_process");
 const { once } = require("events");
-const { existsSync, unlinkSync, readFile, statSync } = require("node:fs");
+const {
+  existsSync,
+  unlinkSync,
+  readFile,
+  statSync,
+  readdirSync,
+  exists,
+} = require("node:fs");
 const { unlink } = require("node:fs/promises");
 const { setTimeout } = require("node:timers/promises");
 
@@ -22,11 +29,6 @@ class CameraBackend {
    * @type {spawn}
    */
   static gphoto_process = null;
-
-  /**
-   * @type {spawn}
-   */
-  static ffmpeg_process = null;
 
   static COMMANDS = {
     status: "gphoto2 --auto-detect",
@@ -92,8 +94,17 @@ class CameraBackend {
    * Async function to trigger camera capture function and await for file download
    * @returns {Promise<void>}
    * */
-  static async _capture(folderPath) {
+  static async _capture(folderPath, i = 1) {
     if (!this._check_status()) {
+      console.warn(
+        "[Camera] Device is busy while attempting to capture, retrying",
+        i,
+      );
+      if (i < 3) {
+        await setTimeout(() => {}, 1000);
+        i++;
+        return this._capture(folderPath);
+      }
       throw new Error("Device is busy");
     }
 
@@ -107,6 +118,10 @@ class CameraBackend {
     }
 
     console.log("FILE INDEX: ", this.FILE_INDEX);
+
+    // checks for existing
+    const checkPath = `${folderPath}capture-${CameraBackend.FILE_INDEX}.jpg`;
+    if (await exists(checkPath)) await unlink(checkPath);
 
     // Set parameters
     this.FOLDER_PATH = folderPath;
@@ -141,17 +156,19 @@ class CameraBackend {
    * Starts video stream.
    */
   static _start_stream(sendFrame) {
-    if (this.gphoto_process || this.ffmpeg_process)
-      throw new Error("Stream already open");
+    if (this.gphoto_process) throw new Error("Stream already open");
     if (!this._check_status()) throw new Error("Device is busy");
+
     console.log("Starting stream");
 
-    this.gphoto_process = spawn("bash", ["-c", this.COMMANDS.capture_movie]);
-    this.ffmpeg_process = spawn("bash", ["-c", this.COMMANDS.stream]);
-    this.gphoto_process.stdout.pipe(this.ffmpeg_process.stdin);
+    this.gphoto_process = spawn("bash", ["-c", this.COMMANDS.capture_movie], {
+      stdio: ["ignore", "pipe", "ignore"],
+    });
     this.PROCESS_LIVEVIEW = true;
-    this.ffmpeg_process.stdout.on("data", sendFrame);
+    this.gphoto_process.stdout.on("data", sendFrame);
   }
+
+  static _stream_status() {}
 
   /**
    * Stops video stream.
@@ -160,10 +177,8 @@ class CameraBackend {
     if (this.gphoto_process) {
       console.log("Stopping stream");
       this.gphoto_process.kill();
-      this.ffmpeg_process.kill();
       await setTimeout(3000); // This is necessary to let the camera finish its processes
       this.gphoto_process = null;
-      this.ffmpeg_process = null;
       this.PROCESS_LIVEVIEW = false;
     }
   }
