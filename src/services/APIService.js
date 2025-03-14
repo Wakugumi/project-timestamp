@@ -1,5 +1,5 @@
 const axios = require("axios");
-const state = require("../helpers/stateManager.js");
+const state = require("../helpers/StateManager.js");
 
 const api = axios.create({
   baseURL: "https://timestamp.fun/api",
@@ -38,7 +38,7 @@ exports.upload = async (ImageCount) => {
       ImageCount: ImageCount,
     })
     .then((response) => {
-      return response.data;
+      return response.data.data;
     })
     .catch((error) => {
       throw error;

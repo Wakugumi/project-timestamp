@@ -1,3 +1,7 @@
+/**
+ * Exposes function call to global object 'window' in renderer process
+ */
+
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("electron", {

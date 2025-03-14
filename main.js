@@ -1,17 +1,11 @@
 const { app, BrowserWindow, MessageChannelMain } = require("electron");
 const path = require("path");
-const express = require("express");
 const dotenv = require("dotenv");
-const route = require("./src/routes/indexRoute");
-const bodyParser = require("body-parser");
 const { URL } = require("url");
 const { WebSocketServer } = require("ws");
 
 const CameraBackend = require("./src/services/backends/camera.js");
-const { ipcMain } = require("electron/main");
-const { writeFileSync } = require("node:original-fs");
-
-const { port1, port2 } = new MessageChannelMain();
+const { default: logger } = require("./src/utility/logger.js");
 dotenv.config();
 
 const isDev = process.env.NODE_ENV === "development";
@@ -21,8 +15,9 @@ const isDev = process.env.NODE_ENV === "development";
  */
 let window = null;
 
-require("./src/handlers/cameraHandler.js");
-require("./src/handlers/sessionHandler.js");
+require("./src/handlers/CameraHandler.js");
+require("./src/handlers/SessionHandler.js");
+require("./src/handlers/MediaHandler.js");
 
 app
   .whenReady()
@@ -71,28 +66,10 @@ app
       })();
     });
 
-    const wss = new WebSocketServer({ port: 8080 });
-
-    wss.on("connection", async (ws) => {
-      let buffer = Buffer.alloc(0);
-      try {
-        CameraBackend._start_stream((chunk) => {
-          buffer = Buffer.concat([buffer, chunk]);
-          if (buffer.includes(Buffer.from([0xff, 0xd9]))) {
-            window.webContents.send("stream", buffer);
-            buffer = Buffer.alloc(0);
-          }
-        });
-      } catch (error) {
-        console.error(error);
-      }
-      wss.on("error", (err) => {
-        console.error(err);
-      });
-      ws.on("close", async () => {
-        await CameraBackend._stop_stream();
-      });
-    });
+    /** Handles incoming connection
+     * This opens streaming process from camera and process while sending with Electron IPC.
+     */
+    require("./src/services/LiveviewService.js").start(window);
 
     // Handles close call from window system
     window.on("closed", () => {
@@ -100,7 +77,7 @@ app
     });
   })
   .catch((error) => {
-    console.error(error);
+    logger.error(error);
   });
 
 app.on("activate", () => {

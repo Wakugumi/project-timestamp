@@ -1,4 +1,3 @@
-const Logger = require("../../utility/logger");
 const { spawn } = require("node:child_process");
 const { once } = require("events");
 const {
@@ -7,10 +6,10 @@ const {
   readFile,
   statSync,
   readdirSync,
-  exists,
 } = require("node:fs");
-const { unlink } = require("node:fs/promises");
-const { setTimeout } = require("node:timers/promises");
+const { setTimeout } = require("node:timers");
+const logger = require("../../utility/logger");
+const { Semaphore } = require("../../helpers/Semaphore");
 
 class CameraBackend {
   /**
@@ -24,6 +23,8 @@ class CameraBackend {
   static FILE_INDEX = 1;
   static FOLDER_PATH = "";
   static TEST_FILE_PATH = process.cwd() + "/test-captures/" + "capture.jpg";
+
+  static SEMAPHORE = new Semaphore(1);
 
   /**
    * @type {spawn}
@@ -49,6 +50,22 @@ class CameraBackend {
     },
   };
 
+  _execute(command) {
+    this.SEMAPHORE.acquire();
+
+    let process = spawn(command);
+
+    process.on("error", (error) => {
+      console.error(error);
+      this.SEMAPHORE.release();
+      return;
+    });
+    process.on("close", () => {
+      this.SEMAPHORE.release();
+    });
+    return process;
+  }
+
   /**
    * Check all current running program that are not multiprocess
    * @returns {boolean} - true if either one of the status is running
@@ -63,6 +80,8 @@ class CameraBackend {
    * @returns {Promise<boolean>} - true if the camera is readed by GPhoto2
    */
   static async _status() {
+    await this.SEMAPHORE.acquire();
+
     let process = spawn("bash", ["-c", this.COMMANDS.status]);
     let output = "";
     let result = null;
@@ -72,6 +91,7 @@ class CameraBackend {
     });
     process.stderr.on("data", (data) => {
       CameraBackend.DEVICE_READY = false;
+      this.SEMAPHORE.release();
       throw new Error(data);
     });
 
@@ -84,6 +104,7 @@ class CameraBackend {
 
     // await for event close to finish
     await once(process, "close");
+    this.SEMAPHORE.release();
     if (result) {
       CameraBackend.DEVICE_READY = true;
     }
@@ -96,14 +117,10 @@ class CameraBackend {
    * */
   static async _capture(folderPath, i = 1) {
     if (!this._check_status()) {
-      console.warn(
-        "[Camera] Device is busy while attempting to capture, retrying",
-        i,
-      );
+      logger.warn(`Capturing failed, attempting to retry: attempt ${i}`);
       if (i < 3) {
-        await setTimeout(() => {}, 1000);
-        i++;
-        return this._capture(folderPath);
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // a second wait
+        return this._capture(folderPath, i + 1);
       }
       throw new Error("Device is busy");
     }
@@ -117,31 +134,44 @@ class CameraBackend {
       );
     }
 
-    console.log("FILE INDEX: ", this.FILE_INDEX);
-
     // checks for existing
-    const checkPath = `${folderPath}capture-${CameraBackend.FILE_INDEX}.jpg`;
-    if (await exists(checkPath)) await unlink(checkPath);
+    try {
+      const checkPath = `${folderPath}capture-${CameraBackend.FILE_INDEX}.jpg`;
+      if (existsSync(checkPath)) unlinkSync(checkPath);
+    } catch (error) {
+      throw error;
+    }
 
     // Set parameters
     this.FOLDER_PATH = folderPath;
     this.PROCESS_CAPTURE = true;
 
+    await this.SEMAPHORE.acquire();
+
     let process = spawn("bash", ["-c", this.COMMANDS.capture]);
 
     process.on("error", (error) => {
       this.PROCESS_CAPTURE = false;
+      this.SEMAPHORE.release();
       throw new Error(error);
     });
     process.stderr.on("data", (data) => {
       this.PROCESS_CAPTURE = false;
+      this.SEMAPHORE.release();
       throw new Error(data.toString());
+    });
+    process.stderr.on("error", (err) => {
+      this.PROCESS_CAPTURE = false;
+      this.SEMAPHORE.release();
+      throw err;
     });
 
     await once(process, "close");
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    this.SEMAPHORE.release();
     CameraBackend.FILE_INDEX += 1;
     this.PROCESS_CAPTURE = false;
-    return;
+    return Promise.resolve(folderPath + `capture-${this.FILE_INDEX - 1}.jpg`);
   }
 
   /**
@@ -155,31 +185,45 @@ class CameraBackend {
   /**
    * Starts video stream.
    */
-  static _start_stream(sendFrame) {
+  static async _start_stream(sendFrame) {
+    if (!this.DEVICE_READY) throw new Error("Device has not yet setup");
     if (this.gphoto_process) throw new Error("Stream already open");
     if (!this._check_status()) throw new Error("Device is busy");
 
-    console.log("Starting stream");
+    logger.trace("Starting stream");
 
     this.gphoto_process = spawn("bash", ["-c", this.COMMANDS.capture_movie], {
       stdio: ["ignore", "pipe", "ignore"],
     });
+    this.gphoto_process.stdout.removeAllListeners("data");
     this.PROCESS_LIVEVIEW = true;
-    this.gphoto_process.stdout.on("data", sendFrame);
-  }
 
-  static _stream_status() {}
+    if (this.gphoto_process.stdout.listenerCount("data") === 0)
+      this.gphoto_process.stdout.on("data", sendFrame);
+
+    this.gphoto_process.stderr.on("data", (err) => {
+      this.process.PROCESS_LIVEVIEW = false;
+      this.gphoto_process = null;
+      throw err;
+    });
+  }
 
   /**
    * Stops video stream.
    */
   static async _stop_stream() {
     if (this.gphoto_process) {
-      console.log("Stopping stream");
-      this.gphoto_process.kill();
-      await setTimeout(3000); // This is necessary to let the camera finish its processes
-      this.gphoto_process = null;
-      this.PROCESS_LIVEVIEW = false;
+      logger.trace("Stopping stream");
+      try {
+        this.gphoto_process.stdout.removeAllListeners("data");
+        this.gphoto_process.kill("SIGINT");
+
+        await new Promise((resolve) => setTimeout(resolve), 3000);
+        this.gphoto_process = null;
+        this.PROCESS_LIVEVIEW = false;
+      } catch (error) {
+        throw error;
+      }
     }
   }
 
@@ -196,17 +240,20 @@ class CameraBackend {
     }
     let safe = true;
 
+    await this.SEMAPHORE.acquire();
     this.PROCESS_CAPTURE = true;
     const capture = spawn("bash", ["-c", CameraBackend.COMMANDS.test_capture]);
 
     capture.stderr.on("error", (data) => {
       safe = false;
       this.PROCESS_CAPTURE = false;
+      this.SEMAPHORE.release();
       throw new Error(`Error running test capture command: ${data}`);
     });
 
     capture.on("error", (error) => {
       this.PROCESS_CAPTURE = false;
+      this.SEMAPHORE.release();
       throw new Error(`Camera checking error: ${error}`);
     });
 
@@ -217,13 +264,16 @@ class CameraBackend {
       let exist = statSync(this.TEST_FILE_PATH);
       if (exist.size === 0) {
         safe = false;
+        this.SEMAPHORE.release();
         throw new Error("Capture checkup result unresolved");
       }
       unlinkSync(CameraBackend.TEST_FILE_PATH);
     } catch (error) {
+      this.SEMAPHORE.release();
       throw new Error(`Error reading test caputure image: ${error}`);
     }
 
+    this.SEMAPHORE.release();
     if (safe) return;
     else throw new Error("Failed checkup");
   }

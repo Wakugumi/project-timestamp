@@ -1,11 +1,12 @@
 const { ipcMain } = require("electron");
 
 /**
- * Device service class
+ * Camera service class
  */
-const device = require("../services/DeviceService");
+const device = require("../services/CameraService.js");
 /** IPC IPCResponse interface */
 const { IPCResponse } = require("../interface/ipcResponseInterface");
+const logger = require("../utility/logger.js");
 
 ipcMain.handle("camera/boot", async (event, data) => {
   try {
@@ -29,8 +30,8 @@ ipcMain.handle("camera/status", async (event, data) => {
 
 ipcMain.handle("camera/capture", async (event, data) => {
   try {
-    await device.capture();
-    return IPCResponse.ok("Capture success");
+    const result = await device.capture();
+    return IPCResponse.ok("Capture success, filepath : " + result);
   } catch (error) {
     return IPCResponse.error(error);
   }

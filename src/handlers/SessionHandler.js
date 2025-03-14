@@ -2,6 +2,8 @@ const { ipcMain } = require("electron");
 const { IPCResponse } = require("../interface/ipcResponseInterface");
 const File = require("../services/FileService");
 const { startUpload } = require("../services/UploadService");
+const state = require("../helpers/StateManager.js");
+const api = require("../services/APIService.js");
 
 ipcMain.handle("session/reset", async (event, data) => {
   try {
@@ -23,15 +25,11 @@ ipcMain.handle("session/get", async (event, data) => {
   }
 });
 
-ipcMain.on("session/upload", async (event, data) => {
-  startUpload(data.count)
-    .then((result) => {
-      event.sender.send("upload-progress", result);
-    })
-    .catch((error) => {
-      event.sender.send("upload-progress", {
-        status: "error",
-        message: err.message,
-      });
-    });
+ipcMain.handle("session/process", async (event, data) => {
+  /** @type {import('./APIService.js').UploadResponse} */
+  const url = await api.upload(data.count);
+
+  startUpload(data.count, data.urls, url);
+  const respond = `https://timestamp.fun/views/${url.id}`;
+  return IPCResponse.ok("fetches result url", respond);
 });

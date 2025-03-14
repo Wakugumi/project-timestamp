@@ -1,5 +1,5 @@
 const { fstatSync, statSync, readdirSync } = require("node:fs");
-const Device = require("../../../src/services/DeviceService");
+const Device = require("../../../src/services/CameraService");
 const { unlink } = require("node:fs/promises");
 const path = require("path");
 

@@ -1,46 +1,55 @@
-const { spawn } = require("node:child_process");
 const api = require("./APIService.js");
-const state = require("../helpers/stateManager.js");
+const state = require("../helpers/StateManager.js");
 const { Worker } = require("node:worker_threads");
 const File = require("./FileService.js");
 const path = require("node:path");
+const { logger } = require("../utility/logger.js");
 
-exports.startUpload = async (count) => {
-  /** @type {import('./APIService.js').UploadResponse} */
-  const url = await api.upload(count);
-  state.set("upload", url);
-  const filePaths = File.getCaptures();
+exports.startUpload = async (count, src = [], url) => {
+  try {
+    (await File.getExports()).forEach((x) => src.push(x));
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
+  const filePaths = src;
+
   let results = [];
   let completed = 0;
 
+  console.log("Will iterate through uploads");
   filePaths.forEach((file, index) => {
     const uploadUrl = url.images[index].url;
     const worker = new Worker(
       path.join(__dirname, "../workers/uploadWorker.js"),
       {
-        workerData: { file, uploadUrl },
+        workerData: { filePath: file, uploadUrl: uploadUrl },
       },
     );
 
     worker.on("message", (message) => {
-      console.log(`[UploadService] File ${index + 1} completed: ${file}`);
       results[index] = { file, ...message };
       completed++;
 
-      if (completed === filePaths.length) resolve(results);
+      logger.info(message.message);
+      logger.info(message.response);
+
+      if (completed === filePaths.length)
+        return new Promise((resolve) => resolve(results));
     });
 
     worker.on("error", (err) => {
-      console.error("[UploadService] Error in worker:", err);
+      logger.error(`Uploading error in worker`, err);
 
       results[index] = { file, status: "error", message: err.message };
       completed++;
-      if (completed === filePaths.length) resolve(results);
+      if (completed === filePaths.length)
+        return new Promise((resolve) => resolve(results));
     });
 
     worker.on("exit", (code) => {
-      if (code !== 0)
-        console.warn(`[UploadService] Worker exited with code ${code}`);
+      if (code !== 0) logger.warn("Upload worker exited with code", code);
     });
   });
 };

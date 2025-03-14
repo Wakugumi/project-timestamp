@@ -2,11 +2,12 @@ const fs = require("fs/promises");
 const Logger = require("../utility/logger");
 const path = require("path");
 const CameraBackend = require("./backends/camera");
-const { readdirSync, statSync } = require("original-fs");
+const { readdirSync, statSync } = require("fs");
 
 const FOLDERPATH = {
   captures: process.cwd() + "/captures/",
   frames: process.cwd() + "/frames/",
+  exports: process.cwd() + "/exports/",
 };
 
 /**
@@ -15,6 +16,22 @@ const FOLDERPATH = {
  */
 exports.getCaptureFolder = () => {
   return FOLDERPATH.captures;
+};
+
+exports.getExportDir = () => {
+  return FOLDERPATH.exports;
+};
+
+exports.getExports = async () => {
+  try {
+    let files = [];
+    readdirSync(path.resolve(FOLDERPATH.exports)).forEach((file) => {
+      files.push(path.join(path.resolve(FOLDERPATH.exports), file));
+    });
+    return files;
+  } catch (error) {
+    throw error;
+  }
 };
 
 /**

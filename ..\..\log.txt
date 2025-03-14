@@ -1,2 +1,0 @@
-[Fri Jan 10 2025 03:25:37 GMT+0700 (Western Indonesia Time)] [undefined - Testing logger utility] undefined
-[Fri Jan 10 2025 03:26:17 GMT+0700 (Western Indonesia Time)] [undefined - Testing logger utility] undefined

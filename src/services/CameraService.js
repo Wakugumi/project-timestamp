@@ -4,6 +4,9 @@ const CameraBackend = require("./backends/camera");
 const File = require("./FileService");
 const { spawn } = require("child_process");
 
+/** Bootsup the camera, essentially checking for its availability and active status
+ * @returns {Promise<void>} Resolves when bootup succeeded, else thrown error
+ */
 exports.bootup = async () => {
   try {
     await CameraBackend._start();
@@ -25,6 +28,10 @@ exports.check = async () => {
   }
 };
 
+/**
+ * Run capture process. This triggers camera capture and download the file immediately
+ * @returns {Promise<string | void>} Resolves if the capture is successfuly saved as file by returning its file path
+ */
 exports.capture = async (testPath = null) => {
   const path = File.getCaptureFolder();
   try {
@@ -36,13 +43,17 @@ exports.capture = async (testPath = null) => {
       return;
     }
 
-    await CameraBackend._capture(path);
-    return;
+    const resultPath = await CameraBackend._capture(path);
+    return resultPath;
   } catch (error) {
     throw error;
   }
 };
 
+/**
+ * Run a diagnostic test to ensure the camera main functions works
+ * @returns {Promise<void>} Resolve when camera's malfunction is absent during diagnostic test, otherwise throw error
+ */
 exports.checkup = async () => {
   try {
     await CameraBackend._checkup();
@@ -50,30 +61,4 @@ exports.checkup = async () => {
   } catch (error) {
     throw error;
   }
-};
-
-exports.stopStream = async () => {
-  try {
-    await CameraBackend._stop_liveview();
-    return;
-  } catch (error) {
-    throw error;
-  }
-};
-
-exports.stream = (res) => {
-  const gphoto = spawn("bash", ["-c", CameraBackend.COMMANDS.capture_movie]);
-  gphoto.stderr.on("data", (data) => console.error(`GPhoto2 Error: ${data}`));
-
-  const ffmpeg = spawn("bash", ["-c", CameraBackend.COMMANDS.stream]);
-
-  gphoto.stdout.pipe(ffmpeg.stdin);
-  ffmpeg.stdout.pipe(res);
-
-  ffmpeg.stderr.on("data", (data) => console.error(`FFmpeg Error: ${data}`));
-
-  gphoto.on("close", (code) => console.log(`gphoto2 exited with code ${code}`));
-  ffmpeg.on("close", (code) => console.log(`FFmpeg exited with code ${code}`));
-
-  return { gphoto, ffmpeg };
 };

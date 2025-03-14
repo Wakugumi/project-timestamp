@@ -1,0 +1,14 @@
+2025-03-04 06:04:32 [ERROR]: Cannot read properties of undefined (reading 'trace') 
+2025-03-04 06:05:19 [ERROR]: Cannot read properties of undefined (reading 'trace') 
+2025-03-11 19:31:04 [ERROR]: Cannot read properties of undefined (reading 'Canvas') 
+2025-03-11 19:32:40 [ERROR]: Cannot read properties of undefined (reading 'Canvas') 
+2025-03-11 19:35:29 [ERROR]: e.hasAttribute is not a function 
+2025-03-11 19:36:05 [ERROR]: e.hasAttribute is not a function 
+2025-03-11 19:50:10 [ERROR]: document is not defined 
+2025-03-11 20:02:05 [ERROR]: document is not defined 
+2025-03-11 20:16:38 [ERROR]: e.hasAttribute is not a function 
+2025-03-11 20:17:59 [ERROR]: document is not defined 
+2025-03-11 20:23:57 [ERROR]: e.hasAttribute is not a function 
+2025-03-11 20:29:28 [ERROR]: Cannot read properties of undefined (reading 'StaticCanvas') 
+2025-03-11 20:36:32 [ERROR]: document is not defined 
+2025-03-11 20:44:17 [ERROR]: document is not defined 

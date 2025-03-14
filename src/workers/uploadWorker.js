@@ -1,23 +1,35 @@
 const { parentPort, workerData } = require("worker_threads");
 const fs = require("fs");
 const axios = require("axios");
-const FormData = require("form-data");
 
 async function uploadFile(filePath, uploadUrl) {
   try {
-    const formData = new FormData();
-    formData.append("file", fs.createReadStream(filePath));
+    parentPort.postMessage({
+      status: "start",
+      message: "Upload Worker starts",
+      response: null,
+    });
 
-    const response = await axios.put(uploadUrl, formData, {
+    const data = fs.readFileSync(filePath);
+
+    const response = await axios.put(uploadUrl, data, {
       headers: {
-        ...formData.getHeaders(),
         "Content-Disposition": "attachment",
+        "Content-Type": "image/png",
       },
     });
 
-    parentPort.postMessage({ status: "success", data: response.data });
+    parentPort.postMessage({
+      status: "resolve",
+      meesage: "Upload process resolves",
+      response: `${response.status} - ${response.data}`,
+    });
   } catch (error) {
-    parentPort.postMessage({ status: "error", message: error.message });
+    parentPort.postMessage({
+      status: "error",
+      message: error.message,
+      response: null,
+    });
   }
 }
 
