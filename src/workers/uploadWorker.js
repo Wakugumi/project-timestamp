@@ -2,7 +2,7 @@ const { parentPort, workerData } = require("worker_threads");
 const fs = require("fs");
 const axios = require("axios");
 
-async function uploadFile(filePath, uploadUrl) {
+async function uploadFile(filePath, uploadUrl, type) {
   try {
     parentPort.postMessage({
       status: "start",
@@ -12,12 +12,21 @@ async function uploadFile(filePath, uploadUrl) {
 
     const data = fs.readFileSync(filePath);
 
-    const response = await axios.put(uploadUrl, data, {
-      headers: {
-        "Content-Disposition": "attachment",
-        "Content-Type": "image/png",
-      },
-    });
+    let response = null;
+    if (type === "image")
+      response = await axios.put(uploadUrl, data, {
+        headers: {
+          "Content-Disposition": "attachment",
+          "Content-Type": "image/png",
+        },
+      });
+    else if (type === "video")
+      response = await axios.put(uploadUrl, data, {
+        headers: {
+          "Content-Disposition": "attachment",
+          "Content-Type": "video/mp4",
+        },
+      });
 
     parentPort.postMessage({
       status: "resolve",
@@ -33,4 +42,4 @@ async function uploadFile(filePath, uploadUrl) {
   }
 }
 
-uploadFile(workerData.filePath, workerData.uploadUrl);
+uploadFile(workerData.filePath, workerData.uploadUrl, workerData.type);

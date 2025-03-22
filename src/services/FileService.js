@@ -1,13 +1,14 @@
 const fs = require("fs/promises");
-const Logger = require("../utility/logger");
+const { logger } = require("../utility/logger");
 const path = require("path");
 const CameraBackend = require("./backends/camera");
-const { readdirSync, statSync } = require("fs");
+const { readdirSync } = require("fs");
 
 const FOLDERPATH = {
   captures: process.cwd() + "/captures/",
   frames: process.cwd() + "/frames/",
   exports: process.cwd() + "/exports/",
+  motions: process.cwd() + "/motions/",
 };
 
 /**
@@ -16,6 +17,14 @@ const FOLDERPATH = {
  */
 exports.getCaptureFolder = () => {
   return FOLDERPATH.captures;
+};
+
+/**
+ * Returns path for saving motions
+ * @returns {string}
+ */
+exports.getMotionsDir = () => {
+  return FOLDERPATH.motions;
 };
 
 exports.getExportDir = () => {
@@ -55,20 +64,25 @@ exports.getCaptures = (filePaths = []) => {
  */
 exports.resetSession = async () => {
   try {
-    const files = await fs.readdir(FOLDERPATH.captures);
-    if (!files.length) {
-      Logger.warn("FILESYSTEM", "Session's directory are already empty");
+    const captures = await fs.readdir(FOLDERPATH.captures);
+    const exports = await fs.readdir(FOLDERPATH.exports);
+    if (!captures.length || !exports.length) {
+      logger.warn("FILESYSTEM", "Session's directory are already empty");
       return;
     }
     await Promise.all(
-      files.map(async (file) => {
+      captures.map(async (file) => {
         const filePath = path.join(FOLDERPATH.captures, file);
+        await fs.unlink(filePath);
+      }),
+      exports.map(async (file) => {
+        const filePath = path.join(FOLDERPATH.exports, file);
         await fs.unlink(filePath);
       }),
     );
     CameraBackend._reset_file_index();
   } catch (error) {
-    Logger.error(
+    logger.error(
       "FILESYSTEM",
       `Error resetting session folders: ${error.toString()}`,
     );

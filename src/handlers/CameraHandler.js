@@ -5,7 +5,7 @@ const { ipcMain } = require("electron");
  */
 const device = require("../services/CameraService.js");
 /** IPC IPCResponse interface */
-const { IPCResponse } = require("../interface/ipcResponseInterface");
+const { IPCResponse } = require("../interfaces/ipcResponseInterface");
 const logger = require("../utility/logger.js");
 
 ipcMain.handle("camera/boot", async (event, data) => {

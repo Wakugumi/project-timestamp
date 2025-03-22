@@ -1,4 +1,3 @@
-const { logger } = require("../utility/logger.js");
 class StateManager {
   constructor() {
     if (!StateManager.instance) {

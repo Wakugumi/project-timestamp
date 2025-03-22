@@ -1,19 +1,5 @@
-const { fstat, renameSync } = require("fs");
-const Logger = require("../utility/logger");
 const CameraBackend = require("./backends/camera");
 const File = require("./FileService");
-const { spawn } = require("child_process");
-
-/** Bootsup the camera, essentially checking for its availability and active status
- * @returns {Promise<void>} Resolves when bootup succeeded, else thrown error
- */
-exports.bootup = async () => {
-  try {
-    await CameraBackend._start();
-  } catch (error) {
-    throw error;
-  }
-};
 
 /**
  * Checks camera status

@@ -12,3 +12,9 @@
 2025-03-11 20:29:28 [ERROR]: Cannot read properties of undefined (reading 'StaticCanvas') 
 2025-03-11 20:36:32 [ERROR]: document is not defined 
 2025-03-11 20:44:17 [ERROR]: document is not defined 
+2025-03-21 14:16:59 [ERROR]: ipcMain is not defined 
+2025-03-21 14:18:03 [ERROR]: ipcMain is not defined 
+2025-03-21 14:21:32 [ERROR]: ipcMain is not defined 
+2025-03-21 14:23:30 [ERROR]: ipcMain is not defined 
+2025-03-21 14:44:22 [ERROR]: ipcMain is not defined 
+2025-03-21 14:44:50 [ERROR]: ipcMain is not defined 

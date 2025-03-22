@@ -1,8 +1,6 @@
 const { WebSocketServer } = require("ws");
 const CameraBackend = require("./backends/camera");
-const { ipcMain } = require("electron/main");
-const { ipcRenderer, BrowserWindow } = require("electron");
-const logger = require("../utility/logger");
+const { logger } = require("../utility/logger");
 
 exports.start = (window) => {
   const wss = new WebSocketServer({ port: 8080 });
@@ -29,7 +27,7 @@ exports.start = (window) => {
     }
 
     wss.on("error", (err) => {
-      console.error(error);
+      console.error(err);
       logger.error(err);
     });
 

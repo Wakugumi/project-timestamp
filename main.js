@@ -1,11 +1,9 @@
 const { app, BrowserWindow, MessageChannelMain } = require("electron");
 const path = require("path");
 const dotenv = require("dotenv");
-const { URL } = require("url");
-const { WebSocketServer } = require("ws");
 
-const CameraBackend = require("./src/services/backends/camera.js");
-const { default: logger } = require("./src/utility/logger.js");
+const { logger } = require("./src/utility/logger.js");
+const PaymentCallback = require("./src/handlers/PaymentCallback.js");
 dotenv.config();
 
 const isDev = process.env.NODE_ENV === "development";
@@ -14,6 +12,11 @@ const isDev = process.env.NODE_ENV === "development";
  * @type {BrowserWindow}
  */
 let window = null;
+
+/**
+ * @type {BrowserWindow}
+ */
+let debugWindow = null;
 
 require("./src/handlers/CameraHandler.js");
 require("./src/handlers/SessionHandler.js");
@@ -41,16 +44,9 @@ app
     else window.loadFile("dist/index.html");
 
     window.webContents.on("will-navigate", (event, url) => {
-      const parsedUrl = new URL(url);
-      const isFinish = parsedUrl.searchParams.has("transaction_status");
-
-      if (isFinish) {
-        event.preventDefault();
-        const queryParams = Object.fromEntries(
-          parsedUrl.searchParams.entries(),
-        );
+      PaymentCallback(event, url, (queryParams) => {
         window.webContents.send("payment", queryParams);
-      }
+      });
     });
 
     const { port1, port2 } = new MessageChannelMain();

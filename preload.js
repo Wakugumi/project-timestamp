@@ -17,4 +17,8 @@ contextBridge.exposeInMainWorld("electron", {
   },
   onStream: (callback) =>
     ipcRenderer.on("stream", (_, frame) => callback(frame)),
+
+  sendReduxState: (state) => ipcRenderer.send("redux-state-update", state),
+  onStateUpdate: (callback) =>
+    ipcRenderer.on("state-update", (_, state) => callback(state)),
 });

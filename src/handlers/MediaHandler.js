@@ -1,5 +1,5 @@
 const { ipcMain } = require("electron");
-const { IPCResponse } = require("../interface/ipcResponseInterface");
+const { IPCResponse } = require("../interfaces/ipcResponseInterface");
 const Media = require("../services/MediaService.js");
 
 ipcMain.on("media/save", async (event, dataUrl) => {
@@ -17,5 +17,14 @@ ipcMain.on("media/print", async (event, dataUrl) => {
     return IPCResponse.ok();
   } catch (error) {
     return IPCResponse.failed(error);
+  }
+});
+
+ipcMain.handle("media/motion", async (event, dataUrl) => {
+  try {
+    Media.saveMotion(dataUrl);
+    return IPCResponse.ok();
+  } catch (error) {
+    return IPCResponse.error(error);
   }
 });

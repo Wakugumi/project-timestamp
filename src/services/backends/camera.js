@@ -8,7 +8,7 @@ const {
   readdirSync,
 } = require("node:fs");
 const { setTimeout } = require("node:timers");
-const logger = require("../../utility/logger");
+const { logger } = require("../../utility/logger");
 const { Semaphore } = require("../../helpers/Semaphore");
 
 class CameraBackend {
@@ -167,7 +167,6 @@ class CameraBackend {
     });
 
     await once(process, "close");
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     this.SEMAPHORE.release();
     CameraBackend.FILE_INDEX += 1;
     this.PROCESS_CAPTURE = false;
@@ -192,6 +191,8 @@ class CameraBackend {
 
     logger.trace("Starting stream");
 
+    this.SEMAPHORE.acquire();
+
     this.gphoto_process = spawn("bash", ["-c", this.COMMANDS.capture_movie], {
       stdio: ["ignore", "pipe", "ignore"],
     });
@@ -200,12 +201,6 @@ class CameraBackend {
 
     if (this.gphoto_process.stdout.listenerCount("data") === 0)
       this.gphoto_process.stdout.on("data", sendFrame);
-
-    this.gphoto_process.stderr.on("data", (err) => {
-      this.process.PROCESS_LIVEVIEW = false;
-      this.gphoto_process = null;
-      throw err;
-    });
   }
 
   /**
@@ -217,8 +212,9 @@ class CameraBackend {
       try {
         this.gphoto_process.stdout.removeAllListeners("data");
         this.gphoto_process.kill("SIGINT");
+        await new Promise((resolve) => setTimeout(resolve), 1000);
+        this.SEMAPHORE.release();
 
-        await new Promise((resolve) => setTimeout(resolve), 3000);
         this.gphoto_process = null;
         this.PROCESS_LIVEVIEW = false;
       } catch (error) {
