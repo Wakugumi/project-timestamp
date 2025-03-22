@@ -1,3 +1,6 @@
 node_modules/
+motions/
+captures/
+exports/
 key.json
 .env
