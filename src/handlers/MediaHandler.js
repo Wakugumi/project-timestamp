@@ -13,8 +13,9 @@ ipcMain.on("media/save", async (event, dataUrl) => {
 
 ipcMain.on("media/print", async (event, data) => {
   try {
-    const path = await Media.savePrint(data.url);
-    Media.print(path, data.quantity, data.split);
+    const path = await Media.savePrint(data.data);
+	  console.log("printing", path);
+    await Media.print(path, data.quantity, data.split);
     return IPCResponse.ok();
   } catch (error) {
     return IPCResponse.failed(error);

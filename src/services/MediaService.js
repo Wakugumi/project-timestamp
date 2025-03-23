@@ -5,6 +5,7 @@ const state = require("../helpers/StateManager.js");
 const { spawn } = require("child_process");
 const { once } = require("ws");
 const { Worker } = require("worker_threads");
+const path = require("path")
 
 exports.saveCanvas = async (url) => {
   const base64data = url.replace(/^data:image\/jpeg;base64,/, "");
@@ -62,11 +63,12 @@ exports.saveMotion = async (url) => {
   });
 };
 
-exports.print = (filePath, count, split) => {
-  const files = "";
+exports.print = async (filePath, count, split) => {
+  let files = "";
   for (let i = 0; i < count; i++) {
     files += filePath + " ";
   }
+	console.log("Media service prints", files);
   const worker = new Worker(
     path.join(__dirname, "../workers/printerWorker.js"),
     {
@@ -77,7 +79,6 @@ exports.print = (filePath, count, split) => {
     },
   );
 
-  worker.on("exit", (code) => {});
 };
 
 exports.renderMotion = async () => {

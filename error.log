@@ -18,3 +18,4 @@
 2025-03-21 14:23:30 [ERROR]: ipcMain is not defined 
 2025-03-21 14:44:22 [ERROR]: ipcMain is not defined 
 2025-03-21 14:44:50 [ERROR]: ipcMain is not defined 
+2025-03-23 15:31:24 [ERROR]: window.setFullscreen is not a function 

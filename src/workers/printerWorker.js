@@ -3,7 +3,7 @@ const fs = require("fs");
 const { spawn } = require("node:child_process");
 
 async function print(filePath, split) {
-  let COMMAND = `lp -d PRINTER ${filePath} -o ${split ? "PageSize=w288h432-div2" : "PageSize=w288h432"} -o StpLaminate=Glossy`;
+  let COMMAND = `lp -d PRINTER ${filePath} -o ${split ? "PageSize=w288h432-div2" : "PageSize=w288h432"} -o StpLaminate=Matte`;
   try {
     parentPort.postMessage({
       status: "start",
@@ -13,6 +13,7 @@ async function print(filePath, split) {
 
     const process = spawn("bash", ["-c", COMMAND]);
 
+	  console.log("spawning printing process", process);
     process.on("error", (err) => {
       parentPort.postMessage({
         status: "error",

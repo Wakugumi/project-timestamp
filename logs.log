@@ -1763,3 +1763,297 @@
 {"level":"info","message":"200 - ","timestamp":"2025-03-22 21:37:26"}
 {"level":"info","timestamp":"2025-03-22 21:37:28"}
 {"level":"info","message":"200 - ","timestamp":"2025-03-22 21:37:28"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:26:10"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:26:10","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:26:25"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:29:38"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:29:38","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:29:40"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:29:46"}
+{"level":"error","timestamp":"2025-03-23 15:31:24"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:32:03"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:32:03","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:32:05"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:32:08"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:32:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:32:50","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:32:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:32:53"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:33:07"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:33:07","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc743036ee0427f55566d&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"15000.00","order_id":"67dfc743036ee0427f55566d","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"7b4d4fef-0805-4fe6-a4e9-7e8dcb8aa7fd","transaction_status":"settlement","transaction_time":"2025-03-23 15:33:08"},"timestamp":"2025-03-23 15:33:49","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:33:52"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:33:54"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:33:59"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:34:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:34:50","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:34:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:34:54"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:35:09"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:35:09","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc7bd036ee0427f555670&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc7bd036ee0427f555670","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ee37103f-2c4b-4059-9547-41a7024fa45c","transaction_status":"settlement","transaction_time":"2025-03-23 15:35:09"},"timestamp":"2025-03-23 15:35:22","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:35:25"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:35:32"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:35:37"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:35:44"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:35:52"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:35:59"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:36:07"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:36:14"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:36:17"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc7bd036ee0427f555670&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc7bd036ee0427f555670","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ee37103f-2c4b-4059-9547-41a7024fa45c","transaction_status":"settlement","transaction_time":"2025-03-23 15:35:09"},"timestamp":"2025-03-23 15:36:23","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:36:24"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:36:32"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc7bd036ee0427f555670&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc7bd036ee0427f555670","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ee37103f-2c4b-4059-9547-41a7024fa45c","transaction_status":"settlement","transaction_time":"2025-03-23 15:35:09"},"timestamp":"2025-03-23 15:36:32","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:36:33"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:36:33"}
+{"level":"info","timestamp":"2025-03-23 15:36:34"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:36:34"}
+{"level":"info","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:36:36"}
+{"level":"info","timestamp":"2025-03-23 15:36:38"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:36:38"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:42:37"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:42:37","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:42:38"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:42:40"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:42:44"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:42:44","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc984036ee0427f55567a&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc984036ee0427f55567a","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ec7ccee0-b5ef-4753-a550-601152cf50f2","transaction_status":"settlement","transaction_time":"2025-03-23 15:42:45"},"timestamp":"2025-03-23 15:43:01","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:43:04"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:43:05"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:10"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:18"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:25"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:33"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:40"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:43:48"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:43:51"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc984036ee0427f55567a&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc984036ee0427f55567a","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ec7ccee0-b5ef-4753-a550-601152cf50f2","transaction_status":"settlement","transaction_time":"2025-03-23 15:42:45"},"timestamp":"2025-03-23 15:43:56","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:43:57"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:44:00"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfc984036ee0427f55567a&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfc984036ee0427f55567a","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ec7ccee0-b5ef-4753-a550-601152cf50f2","transaction_status":"settlement","transaction_time":"2025-03-23 15:42:45"},"timestamp":"2025-03-23 15:44:00","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:44:01"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:44:01"}
+{"level":"info","timestamp":"2025-03-23 15:44:02"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:44:02"}
+{"level":"info","timestamp":"2025-03-23 15:44:03"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:44:03"}
+{"level":"info","timestamp":"2025-03-23 15:44:03"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:44:03"}
+{"level":"info","timestamp":"2025-03-23 15:44:04"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:44:04"}
+{"level":"info","timestamp":"2025-03-23 15:44:06"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:44:06"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:49:08"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:49:08","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:49:09"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:49:13"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:49:17"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:49:17","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcb0d036ee0427f555684&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfcb0d036ee0427f555684","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"dec89264-be4c-45da-9f59-29bc916fb7b9","transaction_status":"settlement","transaction_time":"2025-03-23 15:49:18"},"timestamp":"2025-03-23 15:49:32","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:49:35"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:49:35"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:49:41"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:49:48"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:49:55"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:50:03"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:50:10"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:50:17"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:50:21"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcb0d036ee0427f555684&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfcb0d036ee0427f555684","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"dec89264-be4c-45da-9f59-29bc916fb7b9","transaction_status":"settlement","transaction_time":"2025-03-23 15:49:18"},"timestamp":"2025-03-23 15:50:25","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:50:25"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:50:27"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcb0d036ee0427f555684&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"30000.00","order_id":"67dfcb0d036ee0427f555684","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"dec89264-be4c-45da-9f59-29bc916fb7b9","transaction_status":"settlement","transaction_time":"2025-03-23 15:49:18"},"timestamp":"2025-03-23 15:50:27","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:50:28"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:50:28"}
+{"level":"info","timestamp":"2025-03-23 15:50:30"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:50:30"}
+{"level":"info","timestamp":"2025-03-23 15:50:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:50:31"}
+{"level":"info","timestamp":"2025-03-23 15:50:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:50:31"}
+{"level":"info","timestamp":"2025-03-23 15:50:32"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:50:32"}
+{"level":"info","timestamp":"2025-03-23 15:50:33"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:50:33"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 15:57:32"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:57:32","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:57:34"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:57:36"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:57:42"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 15:57:42","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcd07036ee0427f55568d&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfcd07036ee0427f55568d","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"b04f9970-a8db-4920-811c-3882aa7363cc","transaction_status":"settlement","transaction_time":"2025-03-23 15:57:43"},"timestamp":"2025-03-23 15:57:56","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:57:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:58:00"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:05"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:12"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:20"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:27"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:34"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:42"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:49"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 15:58:57"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:59:00"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcd07036ee0427f55568d&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfcd07036ee0427f55568d","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"b04f9970-a8db-4920-811c-3882aa7363cc","transaction_status":"settlement","transaction_time":"2025-03-23 15:57:43"},"timestamp":"2025-03-23 15:59:06","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:59:07"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 15:59:12"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfcd07036ee0427f55568d&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfcd07036ee0427f55568d","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"b04f9970-a8db-4920-811c-3882aa7363cc","transaction_status":"settlement","transaction_time":"2025-03-23 15:57:43"},"timestamp":"2025-03-23 15:59:12","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/timestamp/Program/project-timestamp/exports/video.mp4'","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 15:59:13"}
+{"level":"info","message":null,"timestamp":"2025-03-23 15:59:13"}
+{"level":"info","timestamp":"2025-03-23 15:59:14"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:59:14"}
+{"level":"info","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 15:59:16"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:16:56"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:16:56","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:16:57"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:17:16"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:17:16","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:17:17"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:18:23"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:18:23","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:18:25"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:19:12"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:19:12","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:19:14"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:37:26"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:37:26","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:37:27"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:37:29"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:37:36"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:37:36","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd660036ee0427f555699&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfd660036ee0427f555699","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"7148e289-7972-479d-af54-3edc65f4d951","transaction_status":"settlement","transaction_time":"2025-03-23 16:37:37"},"timestamp":"2025-03-23 16:37:49","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:37:52"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:37:54"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:37:59"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:07"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:14"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:21"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:29"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:36"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:44"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:38:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:38:55"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd660036ee0427f555699&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfd660036ee0427f555699","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"7148e289-7972-479d-af54-3edc65f4d951","transaction_status":"settlement","transaction_time":"2025-03-23 16:37:37"},"timestamp":"2025-03-23 16:39:20","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:39:21"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:39:25"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd660036ee0427f555699&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"40000.00","order_id":"67dfd660036ee0427f555699","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"7148e289-7972-479d-af54-3edc65f4d951","transaction_status":"settlement","transaction_time":"2025-03-23 16:37:37"},"timestamp":"2025-03-23 16:39:25","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:39:27"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:39:27"}
+{"level":"info","timestamp":"2025-03-23 16:39:30"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:30"}
+{"level":"info","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:31"}
+{"level":"info","timestamp":"2025-03-23 16:39:32"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:39:32"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-03-23 16:41:21"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:41:21","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:41:35"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:41:42"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:41:55"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-03-23 16:41:55","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd763036ee0427f5556a3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"60000.00","order_id":"67dfd763036ee0427f5556a3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ae03042e-3950-439a-8de6-cba7b4e1849d","transaction_status":"settlement","transaction_time":"2025-03-23 16:41:56"},"timestamp":"2025-03-23 16:42:22","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:42:25"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:42:27"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:42:32"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:42:39"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:42:47"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:42:54"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:43:02"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:43:09"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:43:16"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-03-23 16:43:24"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:43:27"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd763036ee0427f5556a3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"60000.00","order_id":"67dfd763036ee0427f5556a3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ae03042e-3950-439a-8de6-cba7b4e1849d","transaction_status":"settlement","transaction_time":"2025-03-23 16:41:56"},"timestamp":"2025-03-23 16:43:38","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd763036ee0427f5556a3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"60000.00","order_id":"67dfd763036ee0427f5556a3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ae03042e-3950-439a-8de6-cba7b4e1849d","transaction_status":"settlement","transaction_time":"2025-03-23 16:41:56"},"timestamp":"2025-03-23 16:43:43","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd763036ee0427f5556a3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"60000.00","order_id":"67dfd763036ee0427f5556a3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ae03042e-3950-439a-8de6-cba7b4e1849d","transaction_status":"settlement","transaction_time":"2025-03-23 16:41:56"},"timestamp":"2025-03-23 16:43:47","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:43:48"}
+{"level":"info","message":"nextPhase","timestamp":"2025-03-23 16:43:58"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=67dfd763036ee0427f5556a3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"60000.00","order_id":"67dfd763036ee0427f5556a3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"ae03042e-3950-439a-8de6-cba7b4e1849d","transaction_status":"settlement","transaction_time":"2025-03-23 16:41:56"},"timestamp":"2025-03-23 16:43:58","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-03-23 16:44:00"}
+{"level":"info","message":null,"timestamp":"2025-03-23 16:44:00"}
+{"level":"info","timestamp":"2025-03-23 16:44:02"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:02"}
+{"level":"info","timestamp":"2025-03-23 16:44:03"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:03"}
+{"level":"info","timestamp":"2025-03-23 16:44:03"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:03"}
+{"level":"info","timestamp":"2025-03-23 16:44:04"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:04"}
+{"level":"info","timestamp":"2025-03-23 16:44:04"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:04"}
+{"level":"info","timestamp":"2025-03-23 16:44:06"}
+{"level":"info","message":"200 - ","timestamp":"2025-03-23 16:44:06"}

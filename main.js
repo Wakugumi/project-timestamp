@@ -39,8 +39,9 @@ app
     });
 
     window.maximize();
+	  window.setFullScreen(true);
 
-    if (isDev) window.loadURL("http://localhost:5173");
+    if (!isDev) window.loadURL("http://localhost:5173");
     else window.loadFile("dist/index.html");
 
     window.webContents.on("will-navigate", (event, url) => {
