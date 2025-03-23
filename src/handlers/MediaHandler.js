@@ -11,9 +11,10 @@ ipcMain.on("media/save", async (event, dataUrl) => {
   }
 });
 
-ipcMain.on("media/print", async (event, dataUrl) => {
+ipcMain.on("media/print", async (event, data) => {
   try {
-    await Media.savePrint(dataUrl);
+    const path = await Media.savePrint(data.url);
+    Media.print(path, data.quantity, data.split);
     return IPCResponse.ok();
   } catch (error) {
     return IPCResponse.failed(error);

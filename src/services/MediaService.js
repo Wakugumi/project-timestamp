@@ -4,6 +4,7 @@ const File = require("./FileService.js");
 const state = require("../helpers/StateManager.js");
 const { spawn } = require("child_process");
 const { once } = require("ws");
+const { Worker } = require("worker_threads");
 
 exports.saveCanvas = async (url) => {
   const base64data = url.replace(/^data:image\/jpeg;base64,/, "");
@@ -31,6 +32,8 @@ exports.savePrint = async (url) => {
       throw err;
     }
   });
+
+  return savePath;
 };
 
 /**
@@ -59,7 +62,23 @@ exports.saveMotion = async (url) => {
   });
 };
 
-exports.print = async () => {};
+exports.print = (filePath, count, split) => {
+  const files = "";
+  for (let i = 0; i < count; i++) {
+    files += filePath + " ";
+  }
+  const worker = new Worker(
+    path.join(__dirname, "../workers/printerWorker.js"),
+    {
+      workerData: {
+        filePath: files,
+        split: split,
+      },
+    },
+  );
+
+  worker.on("exit", (code) => {});
+};
 
 exports.renderMotion = async () => {
   const path = File.getExportDir();
