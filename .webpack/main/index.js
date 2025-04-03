@@ -42826,12 +42826,7 @@ electron_1.app.whenReady().then(() => __awaiter(void 0, void 0, void 0, function
     wss.on("connection", (ws) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("Connection establsihed");
         let buffer = Buffer.alloc(0);
-        let last = Date.now();
         camera.start_liveview((chunk) => {
-            const now = Date.now();
-            if (now - last < 200)
-                return;
-            last = now;
             buffer = Buffer.concat([buffer, chunk]);
             mainWindow.webContents.send("liveview", buffer);
             buffer = Buffer.alloc(0);
