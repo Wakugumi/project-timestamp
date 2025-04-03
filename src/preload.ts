@@ -3,6 +3,7 @@
  */
 
 import { contextBridge, ipcRenderer } from "electron";
+import { store } from "./utilities/store-utility";
 
 contextBridge.exposeInMainWorld("electron", {
   invoke: (channel: string, data: any) => ipcRenderer.invoke(channel, data),
@@ -15,9 +16,12 @@ contextBridge.exposeInMainWorld("electron", {
       callback(data);
     });
   },
-  onStream: (callback: (frame: Uint8Array) => void) =>
-    ipcRenderer.on("stream", (_, frame) => callback(frame)),
+  onStream: (callback: (frame: any) => void) =>
+    ipcRenderer.on("liveview", (_, frame) => callback(frame)),
 
   onStateUpdate: (callback: (state: any) => void) =>
     ipcRenderer.on("state-update", (_, state) => callback(state)),
+  testError: () => {
+    throw new Error("This is a test error");
+  },
 });

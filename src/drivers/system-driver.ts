@@ -7,7 +7,7 @@ export default class SystemDriver {
   public static execute(
     command: string,
     args: string[],
-    handleOutput?: (stdout: string, stderr: string) => void,
+    handleOutput?: (stdout: any, stderr: any) => void,
   ) {
     return this.queue.add(
       () =>

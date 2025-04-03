@@ -20,6 +20,14 @@ export default class FileService {
     return this.FOLDERPATH.motions;
   }
 
+  public static get printPath() {
+    return this.FOLDERPATH.exports + "print.jpg";
+  }
+
+  public static get canvasPath() {
+    return this.FOLDERPATH.exports + "canvas.jpg";
+  }
+
   /**
    * Get all absolute path of files in export folder
    */

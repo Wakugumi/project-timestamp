@@ -44,10 +44,9 @@ export class CameraDriver {
 
   /**
    * Start video stream from camera
-   * @param {(chunk:string) => void} callback - return the chunk from stdout
    */
-  public async start_liveview(callback: (chunk: string) => void) {
-    await system
+  public async start_liveview(callback: (chunk: Uint8Array) => void) {
+    system
       .execute(
         "bash",
         ["-c", this.COMMANDS.capture_movie],
