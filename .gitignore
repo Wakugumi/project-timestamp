@@ -2,5 +2,7 @@ node_modules/
 motions/
 captures/
 exports/
+motions/*
+captures/*
+exports/*
 key.json
-.env

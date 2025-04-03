@@ -66,7 +66,8 @@ exports.resetSession = async () => {
   try {
     const captures = await fs.readdir(FOLDERPATH.captures);
     const exports = await fs.readdir(FOLDERPATH.exports);
-    if (!captures.length || !exports.length) {
+    const motions = await fs.readdir(FOLDERPATH.motions);
+    if (!captures.length || !exports.length || !motions.length) {
       logger.warn("FILESYSTEM", "Session's directory are already empty");
       return;
     }
@@ -77,6 +78,10 @@ exports.resetSession = async () => {
       }),
       exports.map(async (file) => {
         const filePath = path.join(FOLDERPATH.exports, file);
+        await fs.unlink(filePath);
+      }),
+      motions.map(async (file) => {
+        const filePath = path.join(FOLDERPATH.motions, file);
         await fs.unlink(filePath);
       }),
     );

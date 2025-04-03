@@ -47,21 +47,29 @@ ipcMain.handle("session/get", async (event, data) => {
 });
 
 ipcMain.handle("session/process", async (event, data) => {
+  console.log("session/prcess", data);
   try {
     await Media.renderMotion();
 
     /** @type {import('./APIService.js').UploadResponse} */
     let url = await api.upload(data.count);
+    console.log("session/process url", url);
     let imageUrl = url.images;
+    console.log("session/process imageurl", imageUrl);
     let videoUrl = url.video.url;
+
+    console.log("session/process videourl", videoUrl);
     let videoSrc = File.getExportDir() + "video.mp4";
     let imageSrc = data.urls;
     imageSrc.push(File.getExportDir() + "canvas.jpg");
+    console.log("session/process imageSrc", imageSrc);
 
     startUpload(data.urls, videoSrc, imageUrl, videoUrl);
     const respond = `https://timestamp.fun/views/${url.id}`;
+    console.log(respond);
     return IPCResponse.ok("fetches result url", respond);
   } catch (error) {
+    console.error(error);
     return IPCResponse.error(error);
   }
 });

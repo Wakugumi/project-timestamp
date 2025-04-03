@@ -13,7 +13,6 @@ async function print(filePath, split) {
 
     const process = spawn("bash", ["-c", COMMAND]);
 
-	  console.log("spawning printing process", process);
     process.on("error", (err) => {
       parentPort.postMessage({
         status: "error",
