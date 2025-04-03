@@ -3,7 +3,6 @@
  */
 
 import { contextBridge, ipcRenderer } from "electron";
-import { store } from "./utilities/store-utility";
 
 contextBridge.exposeInMainWorld("electron", {
   invoke: (channel: string, data: any) => ipcRenderer.invoke(channel, data),

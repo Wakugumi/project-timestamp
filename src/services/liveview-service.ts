@@ -13,23 +13,18 @@ export default function LiveviewService(window: BrowserWindow) {
     console.log("Connection establsihed");
     let buffer = Buffer.alloc(0);
 
-    try {
-      camera.start_liveview((chunk) => {
-        let chunkes = Buffer.from(chunk);
-        buffer = Buffer.concat([buffer, chunkes]);
-        window.webContents.send("liveview", buffer);
-      });
-    } catch (error) {
-      throw error;
-    }
-
-    wss.on("error", (err) => {
-      console.error(err);
-      throw err;
+    camera.start_liveview((chunk) => {
+      let chunkes = Buffer.from(chunk);
+      buffer = Buffer.concat([buffer, chunkes]);
+      window.webContents.send("liveview", buffer);
     });
-
     ws.on("close", async () => {
       await camera.stop_liveview();
     });
+  });
+
+  wss.on("error", (err) => {
+    console.error(err);
+    throw err;
   });
 }

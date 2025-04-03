@@ -51,7 +51,8 @@ export class CameraDriver {
         "bash",
         ["-c", this.COMMANDS.capture_movie],
         (stdout, stderr) => {
-          callback(stdout);
+          const buffer = Buffer.from(stdout);
+          callback(buffer);
         },
       )
       .catch((error) => {

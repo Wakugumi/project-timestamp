@@ -6,7 +6,7 @@ import { app } from "electron";
 import ISession from "../interfaces/ISession";
 
 const defaultState: ISession = {
-  phase: 1,
+  phase: 0,
   payment: null,
   frame: null,
   canvas: null,

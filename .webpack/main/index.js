@@ -12977,6 +12977,990 @@ module.exports = desc && typeof desc.get === 'function'
 
 /***/ }),
 
+/***/ "./node_modules/electron-context-menu/index.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/electron-context-menu/index.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ contextMenu)
+/* harmony export */ });
+/* harmony import */ var node_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node:process */ "node:process");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var cli_truncate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! cli-truncate */ "./node_modules/electron-context-menu/node_modules/cli-truncate/index.js");
+/* harmony import */ var electron_dl__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! electron-dl */ "./node_modules/electron-dl/index.js");
+/* harmony import */ var electron_is_dev__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! electron-is-dev */ "./node_modules/electron-is-dev/index.js");
+
+
+
+
+
+
+const webContents = win => win.webContents ?? (win.id && win);
+
+const decorateMenuItem = menuItem => (options = {}) => {
+	if (options.transform && !options.click) {
+		menuItem.transform = options.transform;
+	}
+
+	return menuItem;
+};
+
+const removeUnusedMenuItems = menuTemplate => {
+	let notDeletedPreviousElement;
+
+	return menuTemplate
+		.filter(menuItem => menuItem !== undefined && menuItem !== false && menuItem.visible !== false && menuItem.visible !== '')
+		.filter((menuItem, index, array) => {
+			const toDelete = menuItem.type === 'separator' && (!notDeletedPreviousElement || index === array.length - 1 || array[index + 1].type === 'separator');
+			notDeletedPreviousElement = toDelete ? notDeletedPreviousElement : menuItem;
+			return !toDelete;
+		});
+};
+
+const create = (win, options) => {
+	const handleContextMenu = (event, properties) => {
+		if (typeof options.shouldShowMenu === 'function' && options.shouldShowMenu(event, properties) === false) {
+			return;
+		}
+
+		const {editFlags} = properties;
+		const hasText = properties.selectionText.length > 0;
+		const isLink = Boolean(properties.linkURL);
+		const can = type => editFlags[`can${type}`] && hasText;
+
+		const defaultActions = {
+			separator: () => ({type: 'separator'}),
+			learnSpelling: decorateMenuItem({
+				id: 'learnSpelling',
+				label: '&Learn Spelling',
+				visible: Boolean(properties.isEditable && hasText && properties.misspelledWord),
+				click() {
+					const target = webContents(win);
+					target.session.addWordToSpellCheckerDictionary(properties.misspelledWord);
+				},
+			}),
+			lookUpSelection: decorateMenuItem({
+				id: 'lookUpSelection',
+				label: 'Look Up “{selection}”',
+				visible: node_process__WEBPACK_IMPORTED_MODULE_0__.platform === 'darwin' && hasText && !isLink,
+				click() {
+					if (node_process__WEBPACK_IMPORTED_MODULE_0__.platform === 'darwin') {
+						webContents(win).showDefinitionForSelection();
+					}
+				},
+			}),
+			searchWithGoogle: decorateMenuItem({
+				id: 'searchWithGoogle',
+				label: '&Search with Google',
+				visible: hasText,
+				click() {
+					const url = new URL('https://www.google.com/search');
+					url.searchParams.set('q', properties.selectionText);
+					electron__WEBPACK_IMPORTED_MODULE_1__.shell.openExternal(url.toString());
+				},
+			}),
+			cut: decorateMenuItem({
+				id: 'cut',
+				label: 'Cu&t',
+				enabled: can('Cut'),
+				visible: properties.isEditable,
+				click(menuItem) {
+					const target = webContents(win);
+
+					if (!menuItem.transform && target) {
+						target.cut();
+					} else {
+						properties.selectionText = menuItem.transform ? menuItem.transform(properties.selectionText) : properties.selectionText;
+						electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.writeText(properties.selectionText);
+					}
+				},
+			}),
+			copy: decorateMenuItem({
+				id: 'copy',
+				label: '&Copy',
+				enabled: can('Copy'),
+				visible: properties.isEditable || hasText,
+				click(menuItem) {
+					const target = webContents(win);
+
+					if (!menuItem.transform && target) {
+						target.copy();
+					} else {
+						properties.selectionText = menuItem.transform ? menuItem.transform(properties.selectionText) : properties.selectionText;
+						electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.writeText(properties.selectionText);
+					}
+				},
+			}),
+			paste: decorateMenuItem({
+				id: 'paste',
+				label: '&Paste',
+				enabled: editFlags.canPaste,
+				visible: properties.isEditable,
+				click(menuItem) {
+					const target = webContents(win);
+
+					if (menuItem.transform) {
+						let clipboardContent = electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.readText(properties.selectionText);
+						clipboardContent = menuItem.transform ? menuItem.transform(clipboardContent) : clipboardContent;
+						target.insertText(clipboardContent);
+					} else {
+						target.paste();
+					}
+				},
+			}),
+			selectAll: decorateMenuItem({
+				id: 'selectAll',
+				label: 'Select &All',
+				click() {
+					webContents(win).selectAll();
+				},
+			}),
+			saveImage: decorateMenuItem({
+				id: 'saveImage',
+				label: 'Save I&mage',
+				visible: properties.mediaType === 'image',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+					(0,electron_dl__WEBPACK_IMPORTED_MODULE_3__.download)(win, properties.srcURL);
+				},
+			}),
+			saveImageAs: decorateMenuItem({
+				id: 'saveImageAs',
+				label: 'Sa&ve Image As…',
+				visible: properties.mediaType === 'image',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+					(0,electron_dl__WEBPACK_IMPORTED_MODULE_3__.download)(win, properties.srcURL, {saveAs: true});
+				},
+			}),
+			saveVideo: decorateMenuItem({
+				id: 'saveVideo',
+				label: 'Save Vide&o',
+				visible: properties.mediaType === 'video',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+					(0,electron_dl__WEBPACK_IMPORTED_MODULE_3__.download)(win, properties.srcURL);
+				},
+			}),
+			saveVideoAs: decorateMenuItem({
+				id: 'saveVideoAs',
+				label: 'Save Video& As…',
+				visible: properties.mediaType === 'video',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+					(0,electron_dl__WEBPACK_IMPORTED_MODULE_3__.download)(win, properties.srcURL, {saveAs: true});
+				},
+			}),
+			copyLink: decorateMenuItem({
+				id: 'copyLink',
+				label: 'Copy Lin&k',
+				visible: properties.linkURL.length > 0 && properties.mediaType === 'none',
+				click(menuItem) {
+					properties.linkURL = menuItem.transform ? menuItem.transform(properties.linkURL) : properties.linkURL;
+
+					electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.write({
+						bookmark: properties.linkText,
+						text: properties.linkURL,
+					});
+				},
+			}),
+			saveLinkAs: decorateMenuItem({
+				id: 'saveLinkAs',
+				label: 'Save Link As…',
+				visible: properties.linkURL.length > 0 && properties.mediaType === 'none',
+				click(menuItem) {
+					properties.linkURL = menuItem.transform ? menuItem.transform(properties.linkURL) : properties.linkURL;
+					(0,electron_dl__WEBPACK_IMPORTED_MODULE_3__.download)(win, properties.linkURL, {saveAs: true});
+				},
+			}),
+			copyImage: decorateMenuItem({
+				id: 'copyImage',
+				label: 'Cop&y Image',
+				visible: properties.mediaType === 'image',
+				click() {
+					webContents(win).copyImageAt(properties.x, properties.y);
+				},
+			}),
+			copyImageAddress: decorateMenuItem({
+				id: 'copyImageAddress',
+				label: 'C&opy Image Address',
+				visible: properties.mediaType === 'image',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+
+					electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.write({
+						bookmark: properties.srcURL,
+						text: properties.srcURL,
+					});
+				},
+			}),
+			copyVideoAddress: decorateMenuItem({
+				id: 'copyVideoAddress',
+				label: 'Copy Video Ad&dress',
+				visible: properties.mediaType === 'video',
+				click(menuItem) {
+					properties.srcURL = menuItem.transform ? menuItem.transform(properties.srcURL) : properties.srcURL;
+
+					electron__WEBPACK_IMPORTED_MODULE_1__.clipboard.write({
+						bookmark: properties.srcURL,
+						text: properties.srcURL,
+					});
+				},
+			}),
+			inspect: () => ({
+				id: 'inspect',
+				label: 'I&nspect Element',
+				click() {
+					webContents(win).inspectElement(properties.x, properties.y);
+
+					if (webContents(win).isDevToolsOpened()) {
+						webContents(win).devToolsWebContents.focus();
+					}
+				},
+			}),
+			services: () => ({
+				id: 'services',
+				label: 'Services',
+				role: 'services',
+				visible: node_process__WEBPACK_IMPORTED_MODULE_0__.platform === 'darwin' && (properties.isEditable || hasText),
+			}),
+		};
+
+		const shouldShowInspectElement = typeof options.showInspectElement === 'boolean' ? options.showInspectElement : electron_is_dev__WEBPACK_IMPORTED_MODULE_4__["default"];
+		const shouldShowSelectAll = options.showSelectAll || (options.showSelectAll !== false && node_process__WEBPACK_IMPORTED_MODULE_0__.platform !== 'darwin');
+
+		function word(suggestion) {
+			return {
+				id: 'dictionarySuggestions',
+				label: suggestion,
+				visible: Boolean(properties.isEditable && hasText && properties.misspelledWord),
+				click(menuItem) {
+					const target = webContents(win);
+					target.replaceMisspelling(menuItem.label);
+				},
+			};
+		}
+
+		let dictionarySuggestions = [];
+		if (hasText && properties.misspelledWord && properties.dictionarySuggestions.length > 0) {
+			dictionarySuggestions = properties.dictionarySuggestions.map(suggestion => word(suggestion));
+		} else {
+			dictionarySuggestions.push(
+				{
+					id: 'dictionarySuggestions',
+					label: 'No Guesses Found',
+					visible: Boolean(hasText && properties.misspelledWord),
+					enabled: false,
+				},
+			);
+		}
+
+		let menuTemplate = [
+			dictionarySuggestions.length > 0 && defaultActions.separator(),
+			...dictionarySuggestions,
+			defaultActions.separator(),
+			options.showLearnSpelling !== false && defaultActions.learnSpelling(),
+			defaultActions.separator(),
+			options.showLookUpSelection !== false && defaultActions.lookUpSelection(),
+			defaultActions.separator(),
+			options.showSearchWithGoogle !== false && defaultActions.searchWithGoogle(),
+			defaultActions.separator(),
+			defaultActions.cut(),
+			defaultActions.copy(),
+			defaultActions.paste(),
+			shouldShowSelectAll && defaultActions.selectAll(),
+			defaultActions.separator(),
+			options.showSaveImage && defaultActions.saveImage(),
+			options.showSaveImageAs && defaultActions.saveImageAs(),
+			options.showCopyImage !== false && defaultActions.copyImage(),
+			options.showCopyImageAddress && defaultActions.copyImageAddress(),
+			options.showSaveVideo && defaultActions.saveVideo(),
+			options.showSaveVideoAs && defaultActions.saveVideoAs(),
+			options.showCopyVideoAddress && defaultActions.copyVideoAddress(),
+			defaultActions.separator(),
+			options.showCopyLink !== false && defaultActions.copyLink(),
+			options.showSaveLinkAs && defaultActions.saveLinkAs(),
+			defaultActions.separator(),
+			shouldShowInspectElement && defaultActions.inspect(),
+			options.showServices && defaultActions.services(),
+			defaultActions.separator(),
+		];
+
+		if (options.menu) {
+			menuTemplate = options.menu(defaultActions, properties, win, dictionarySuggestions, event);
+		}
+
+		if (options.prepend) {
+			const result = options.prepend(defaultActions, properties, win, event);
+
+			if (Array.isArray(result)) {
+				menuTemplate.unshift(...result);
+			}
+		}
+
+		if (options.append) {
+			const result = options.append(defaultActions, properties, win, event);
+
+			if (Array.isArray(result)) {
+				menuTemplate.push(...result);
+			}
+		}
+
+		// Filter out leading/trailing separators
+		// TODO: https://github.com/electron/electron/issues/5869
+		menuTemplate = removeUnusedMenuItems(menuTemplate);
+
+		for (const menuItem of menuTemplate) {
+			// Apply custom labels for default menu items
+			if (options.labels && options.labels[menuItem.id]) {
+				menuItem.label = options.labels[menuItem.id];
+			}
+
+			// Replace placeholders in menu item labels
+			if (typeof menuItem.label === 'string' && menuItem.label.includes('{selection}')) {
+				const selectionString = typeof properties.selectionText === 'string' ? properties.selectionText.trim() : '';
+				menuItem.label = menuItem.label.replace('{selection}', (0,cli_truncate__WEBPACK_IMPORTED_MODULE_2__["default"])(selectionString, 25).replaceAll('&', '&&'));
+			}
+		}
+
+		if (menuTemplate.length > 0) {
+			const menu = electron__WEBPACK_IMPORTED_MODULE_1__.Menu.buildFromTemplate(menuTemplate);
+
+			if (typeof options.onShow === 'function') {
+				menu.on('menu-will-show', options.onShow);
+			}
+
+			if (typeof options.onClose === 'function') {
+				menu.on('menu-will-close', options.onClose);
+			}
+
+			menu.popup(win);
+		}
+	};
+
+	webContents(win).on('context-menu', handleContextMenu);
+
+	return () => {
+		if (win?.isDestroyed?.()) {
+			return;
+		}
+
+		webContents(win).removeListener('context-menu', handleContextMenu);
+	};
+};
+
+function contextMenu(options = {}) {
+	if (node_process__WEBPACK_IMPORTED_MODULE_0__.type === 'renderer') {
+		throw new Error('Cannot use electron-context-menu in the renderer process!');
+	}
+
+	let isDisposed = false;
+	const disposables = [];
+
+	const init = win => {
+		if (isDisposed) {
+			return;
+		}
+
+		const disposeMenu = create(win, options);
+
+		const disposable = () => {
+			disposeMenu();
+		};
+
+		webContents(win).once('destroyed', disposable);
+	};
+
+	const dispose = () => {
+		for (const dispose of disposables) {
+			dispose();
+		}
+
+		disposables.length = 0;
+		isDisposed = true;
+	};
+
+	if (options.window) {
+		const win = options.window;
+
+		// When window is a webview that has not yet finished loading webContents is not available
+		if (webContents(win) === undefined) {
+			const onDomReady = () => {
+				init(win);
+			};
+
+			const listenerFunction = win.addEventListener ?? win.addListener;
+			listenerFunction('dom-ready', onDomReady, {once: true});
+
+			disposables.push(() => {
+				win.removeEventListener('dom-ready', onDomReady, {once: true});
+			});
+
+			return dispose;
+		}
+
+		init(win);
+
+		return dispose;
+	}
+
+	for (const win of electron__WEBPACK_IMPORTED_MODULE_1__.BrowserWindow.getAllWindows()) {
+		init(win);
+	}
+
+	const onWindowCreated = (event, win) => {
+		init(win);
+	};
+
+	electron__WEBPACK_IMPORTED_MODULE_1__.app.on('browser-window-created', onWindowCreated);
+	disposables.push(() => {
+		electron__WEBPACK_IMPORTED_MODULE_1__.app.removeListener('browser-window-created', onWindowCreated);
+	});
+
+	return dispose;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-context-menu/node_modules/ansi-regex/index.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/electron-context-menu/node_modules/ansi-regex/index.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ ansiRegex)
+/* harmony export */ });
+function ansiRegex({onlyFirst = false} = {}) {
+	// Valid string terminator sequences are BEL, ESC\, and 0x9c
+	const ST = '(?:\\u0007|\\u001B\\u005C|\\u009C)';
+	const pattern = [
+		`[\\u001B\\u009B][[\\]()#;?]*(?:(?:(?:(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]+)*|[a-zA-Z\\d]+(?:;[-a-zA-Z\\d\\/#&.:=?%@~_]*)*)?${ST})`,
+		'(?:(?:\\d{1,4}(?:;\\d{0,4})*)?[\\dA-PR-TZcf-nq-uy=><~]))',
+	].join('|');
+
+	return new RegExp(pattern, onlyFirst ? undefined : 'g');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-context-menu/node_modules/cli-truncate/index.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/electron-context-menu/node_modules/cli-truncate/index.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ cliTruncate)
+/* harmony export */ });
+/* harmony import */ var slice_ansi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! slice-ansi */ "./node_modules/slice-ansi/index.js");
+/* harmony import */ var string_width__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! string-width */ "./node_modules/electron-context-menu/node_modules/string-width/index.js");
+
+
+
+function getIndexOfNearestSpace(string, wantedIndex, shouldSearchRight) {
+	if (string.charAt(wantedIndex) === ' ') {
+		return wantedIndex;
+	}
+
+	const direction = shouldSearchRight ? 1 : -1;
+
+	for (let index = 0; index <= 3; index++) {
+		const finalIndex = wantedIndex + (index * direction);
+		if (string.charAt(finalIndex) === ' ') {
+			return finalIndex;
+		}
+	}
+
+	return wantedIndex;
+}
+
+function cliTruncate(text, columns, options = {}) {
+	const {
+		position = 'end',
+		space = false,
+		preferTruncationOnSpace = false,
+	} = options;
+
+	let {truncationCharacter = '…'} = options;
+
+	if (typeof text !== 'string') {
+		throw new TypeError(`Expected \`input\` to be a string, got ${typeof text}`);
+	}
+
+	if (typeof columns !== 'number') {
+		throw new TypeError(`Expected \`columns\` to be a number, got ${typeof columns}`);
+	}
+
+	if (columns < 1) {
+		return '';
+	}
+
+	if (columns === 1) {
+		return truncationCharacter;
+	}
+
+	const length = (0,string_width__WEBPACK_IMPORTED_MODULE_1__["default"])(text);
+
+	if (length <= columns) {
+		return text;
+	}
+
+	if (position === 'start') {
+		if (preferTruncationOnSpace) {
+			const nearestSpace = getIndexOfNearestSpace(text, length - columns + 1, true);
+			return truncationCharacter + (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, nearestSpace, length).trim();
+		}
+
+		if (space === true) {
+			truncationCharacter += ' ';
+		}
+
+		return truncationCharacter + (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, length - columns + (0,string_width__WEBPACK_IMPORTED_MODULE_1__["default"])(truncationCharacter), length);
+	}
+
+	if (position === 'middle') {
+		if (space === true) {
+			truncationCharacter = ` ${truncationCharacter} `;
+		}
+
+		const half = Math.floor(columns / 2);
+
+		if (preferTruncationOnSpace) {
+			const spaceNearFirstBreakPoint = getIndexOfNearestSpace(text, half);
+			const spaceNearSecondBreakPoint = getIndexOfNearestSpace(text, length - (columns - half) + 1, true);
+			return (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, 0, spaceNearFirstBreakPoint) + truncationCharacter + (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, spaceNearSecondBreakPoint, length).trim();
+		}
+
+		return (
+			(0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, 0, half)
+				+ truncationCharacter
+				+ (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, length - (columns - half) + (0,string_width__WEBPACK_IMPORTED_MODULE_1__["default"])(truncationCharacter), length)
+		);
+	}
+
+	if (position === 'end') {
+		if (preferTruncationOnSpace) {
+			const nearestSpace = getIndexOfNearestSpace(text, columns - 1);
+			return (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, 0, nearestSpace) + truncationCharacter;
+		}
+
+		if (space === true) {
+			truncationCharacter = ` ${truncationCharacter}`;
+		}
+
+		return (0,slice_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(text, 0, columns - (0,string_width__WEBPACK_IMPORTED_MODULE_1__["default"])(truncationCharacter)) + truncationCharacter;
+	}
+
+	throw new Error(`Expected \`options.position\` to be either \`start\`, \`middle\` or \`end\`, got ${position}`);
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-context-menu/node_modules/emoji-regex/index.mjs":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/electron-context-menu/node_modules/emoji-regex/index.mjs ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (() => {
+	// https://mths.be/emoji
+	return /[#*0-9]\uFE0F?\u20E3|[\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23ED-\u23EF\u23F1\u23F2\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB\u25FC\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u265F\u2660\u2663\u2665\u2666\u2668\u267B\u267E\u267F\u2692\u2694-\u2697\u2699\u269B\u269C\u26A0\u26A7\u26AA\u26B0\u26B1\u26BD\u26BE\u26C4\u26C8\u26CF\u26D1\u26E9\u26F0-\u26F5\u26F7\u26F8\u26FA\u2702\u2708\u2709\u270F\u2712\u2714\u2716\u271D\u2721\u2733\u2734\u2744\u2747\u2757\u2763\u27A1\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B55\u3030\u303D\u3297\u3299]\uFE0F?|[\u261D\u270C\u270D](?:\uD83C[\uDFFB-\uDFFF]|\uFE0F)?|[\u270A\u270B](?:\uD83C[\uDFFB-\uDFFF])?|[\u23E9-\u23EC\u23F0\u23F3\u25FD\u2693\u26A1\u26AB\u26C5\u26CE\u26D4\u26EA\u26FD\u2705\u2728\u274C\u274E\u2753-\u2755\u2795-\u2797\u27B0\u27BF\u2B50]|\u26D3\uFE0F?(?:\u200D\uD83D\uDCA5)?|\u26F9(?:\uD83C[\uDFFB-\uDFFF]|\uFE0F)?(?:\u200D[\u2640\u2642]\uFE0F?)?|\u2764\uFE0F?(?:\u200D(?:\uD83D\uDD25|\uD83E\uDE79))?|\uD83C(?:[\uDC04\uDD70\uDD71\uDD7E\uDD7F\uDE02\uDE37\uDF21\uDF24-\uDF2C\uDF36\uDF7D\uDF96\uDF97\uDF99-\uDF9B\uDF9E\uDF9F\uDFCD\uDFCE\uDFD4-\uDFDF\uDFF5\uDFF7]\uFE0F?|[\uDF85\uDFC2\uDFC7](?:\uD83C[\uDFFB-\uDFFF])?|[\uDFC4\uDFCA](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDFCB\uDFCC](?:\uD83C[\uDFFB-\uDFFF]|\uFE0F)?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDCCF\uDD8E\uDD91-\uDD9A\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF43\uDF45-\uDF4A\uDF4C-\uDF7C\uDF7E-\uDF84\uDF86-\uDF93\uDFA0-\uDFC1\uDFC5\uDFC6\uDFC8\uDFC9\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF8-\uDFFF]|\uDDE6\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF]|\uDDE7\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF]|\uDDE8\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF7\uDDFA-\uDDFF]|\uDDE9\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF]|\uDDEA\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA]|\uDDEB\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7]|\uDDEC\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE]|\uDDED\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA]|\uDDEE\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9]|\uDDEF\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5]|\uDDF0\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF]|\uDDF1\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE]|\uDDF2\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF]|\uDDF3\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF]|\uDDF4\uD83C\uDDF2|\uDDF5\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE]|\uDDF6\uD83C\uDDE6|\uDDF7\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC]|\uDDF8\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF]|\uDDF9\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF]|\uDDFA\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF]|\uDDFB\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA]|\uDDFC\uD83C[\uDDEB\uDDF8]|\uDDFD\uD83C\uDDF0|\uDDFE\uD83C[\uDDEA\uDDF9]|\uDDFF\uD83C[\uDDE6\uDDF2\uDDFC]|\uDF44(?:\u200D\uD83D\uDFEB)?|\uDF4B(?:\u200D\uD83D\uDFE9)?|\uDFC3(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDFF3\uFE0F?(?:\u200D(?:\u26A7\uFE0F?|\uD83C\uDF08))?|\uDFF4(?:\u200D\u2620\uFE0F?|\uDB40\uDC67\uDB40\uDC62\uDB40(?:\uDC65\uDB40\uDC6E\uDB40\uDC67|\uDC73\uDB40\uDC63\uDB40\uDC74|\uDC77\uDB40\uDC6C\uDB40\uDC73)\uDB40\uDC7F)?)|\uD83D(?:[\uDC3F\uDCFD\uDD49\uDD4A\uDD6F\uDD70\uDD73\uDD76-\uDD79\uDD87\uDD8A-\uDD8D\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA\uDECB\uDECD-\uDECF\uDEE0-\uDEE5\uDEE9\uDEF0\uDEF3]\uFE0F?|[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC6B-\uDC6D\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDC8F\uDC91\uDCAA\uDD7A\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC](?:\uD83C[\uDFFB-\uDFFF])?|[\uDC6E\uDC70\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4\uDEB5](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD74\uDD90](?:\uD83C[\uDFFB-\uDFFF]|\uFE0F)?|[\uDC00-\uDC07\uDC09-\uDC14\uDC16-\uDC25\uDC27-\uDC3A\uDC3C-\uDC3E\uDC40\uDC44\uDC45\uDC51-\uDC65\uDC6A\uDC79-\uDC7B\uDC7D-\uDC80\uDC84\uDC88-\uDC8E\uDC90\uDC92-\uDCA9\uDCAB-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDDA4\uDDFB-\uDE2D\uDE2F-\uDE34\uDE37-\uDE41\uDE43\uDE44\uDE48-\uDE4A\uDE80-\uDEA2\uDEA4-\uDEB3\uDEB7-\uDEBF\uDEC1-\uDEC5\uDED0-\uDED2\uDED5-\uDED7\uDEDC-\uDEDF\uDEEB\uDEEC\uDEF4-\uDEFC\uDFE0-\uDFEB\uDFF0]|\uDC08(?:\u200D\u2B1B)?|\uDC15(?:\u200D\uD83E\uDDBA)?|\uDC26(?:\u200D(?:\u2B1B|\uD83D\uDD25))?|\uDC3B(?:\u200D\u2744\uFE0F?)?|\uDC41\uFE0F?(?:\u200D\uD83D\uDDE8\uFE0F?)?|\uDC68(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDC68\uDC69]\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?)|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?\uDC68\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D\uDC68\uD83C[\uDFFB-\uDFFE])))?))?|\uDC69(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:\uDC8B\u200D\uD83D)?[\uDC68\uDC69]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D(?:[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?|\uDC69\u200D\uD83D(?:\uDC66(?:\u200D\uD83D\uDC66)?|\uDC67(?:\u200D\uD83D[\uDC66\uDC67])?))|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFC-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFD-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFD\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D\uD83D(?:[\uDC68\uDC69]|\uDC8B\u200D\uD83D[\uDC68\uDC69])\uD83C[\uDFFB-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83D[\uDC68\uDC69]\uD83C[\uDFFB-\uDFFE])))?))?|\uDC6F(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDD75(?:\uD83C[\uDFFB-\uDFFF]|\uFE0F)?(?:\u200D[\u2640\u2642]\uFE0F?)?|\uDE2E(?:\u200D\uD83D\uDCA8)?|\uDE35(?:\u200D\uD83D\uDCAB)?|\uDE36(?:\u200D\uD83C\uDF2B\uFE0F?)?|\uDE42(?:\u200D[\u2194\u2195]\uFE0F?)?|\uDEB6(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?)|\uD83E(?:[\uDD0C\uDD0F\uDD18-\uDD1F\uDD30-\uDD34\uDD36\uDD77\uDDB5\uDDB6\uDDBB\uDDD2\uDDD3\uDDD5\uDEC3-\uDEC5\uDEF0\uDEF2-\uDEF8](?:\uD83C[\uDFFB-\uDFFF])?|[\uDD26\uDD35\uDD37-\uDD39\uDD3D\uDD3E\uDDB8\uDDB9\uDDCD\uDDCF\uDDD4\uDDD6-\uDDDD](?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDDDE\uDDDF](?:\u200D[\u2640\u2642]\uFE0F?)?|[\uDD0D\uDD0E\uDD10-\uDD17\uDD20-\uDD25\uDD27-\uDD2F\uDD3A\uDD3F-\uDD45\uDD47-\uDD76\uDD78-\uDDB4\uDDB7\uDDBA\uDDBC-\uDDCC\uDDD0\uDDE0-\uDDFF\uDE70-\uDE7C\uDE80-\uDE89\uDE8F-\uDEC2\uDEC6\uDECE-\uDEDC\uDEDF-\uDEE9]|\uDD3C(?:\u200D[\u2640\u2642]\uFE0F?|\uD83C[\uDFFB-\uDFFF])?|\uDDCE(?:\uD83C[\uDFFB-\uDFFF])?(?:\u200D(?:[\u2640\u2642]\uFE0F?(?:\u200D\u27A1\uFE0F?)?|\u27A1\uFE0F?))?|\uDDD1(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1|\uDDD1\u200D\uD83E\uDDD2(?:\u200D\uD83E\uDDD2)?|\uDDD2(?:\u200D\uD83E\uDDD2)?))|\uD83C(?:\uDFFB(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFC-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFC(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFD-\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFD(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFE(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFD\uDFFF]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?|\uDFFF(?:\u200D(?:[\u2695\u2696\u2708]\uFE0F?|\u2764\uFE0F?\u200D(?:\uD83D\uDC8B\u200D)?\uD83E\uDDD1\uD83C[\uDFFB-\uDFFE]|\uD83C[\uDF3E\uDF73\uDF7C\uDF84\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\uD83E(?:[\uDDAF\uDDBC\uDDBD](?:\u200D\u27A1\uFE0F?)?|[\uDDB0-\uDDB3]|\uDD1D\u200D\uD83E\uDDD1\uD83C[\uDFFB-\uDFFF])))?))?|\uDEF1(?:\uD83C(?:\uDFFB(?:\u200D\uD83E\uDEF2\uD83C[\uDFFC-\uDFFF])?|\uDFFC(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFD-\uDFFF])?|\uDFFD(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB\uDFFC\uDFFE\uDFFF])?|\uDFFE(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFD\uDFFF])?|\uDFFF(?:\u200D\uD83E\uDEF2\uD83C[\uDFFB-\uDFFE])?))?)/g;
+});
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-context-menu/node_modules/string-width/index.js":
+/*!*******************************************************************************!*\
+  !*** ./node_modules/electron-context-menu/node_modules/string-width/index.js ***!
+  \*******************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ stringWidth)
+/* harmony export */ });
+/* harmony import */ var strip_ansi__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! strip-ansi */ "./node_modules/electron-context-menu/node_modules/strip-ansi/index.js");
+/* harmony import */ var get_east_asian_width__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! get-east-asian-width */ "./node_modules/get-east-asian-width/index.js");
+/* harmony import */ var emoji_regex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! emoji-regex */ "./node_modules/electron-context-menu/node_modules/emoji-regex/index.mjs");
+
+
+
+
+const segmenter = new Intl.Segmenter();
+
+const defaultIgnorableCodePointRegex = /^\p{Default_Ignorable_Code_Point}$/u;
+
+function stringWidth(string, options = {}) {
+	if (typeof string !== 'string' || string.length === 0) {
+		return 0;
+	}
+
+	const {
+		ambiguousIsNarrow = true,
+		countAnsiEscapeCodes = false,
+	} = options;
+
+	if (!countAnsiEscapeCodes) {
+		string = (0,strip_ansi__WEBPACK_IMPORTED_MODULE_0__["default"])(string);
+	}
+
+	if (string.length === 0) {
+		return 0;
+	}
+
+	let width = 0;
+	const eastAsianWidthOptions = {ambiguousAsWide: !ambiguousIsNarrow};
+
+	for (const {segment: character} of segmenter.segment(string)) {
+		const codePoint = character.codePointAt(0);
+
+		// Ignore control characters
+		if (codePoint <= 0x1F || (codePoint >= 0x7F && codePoint <= 0x9F)) {
+			continue;
+		}
+
+		// Ignore zero-width characters
+		if (
+			(codePoint >= 0x20_0B && codePoint <= 0x20_0F) // Zero-width space, non-joiner, joiner, left-to-right mark, right-to-left mark
+			|| codePoint === 0xFE_FF // Zero-width no-break space
+		) {
+			continue;
+		}
+
+		// Ignore combining characters
+		if (
+			(codePoint >= 0x3_00 && codePoint <= 0x3_6F) // Combining diacritical marks
+			|| (codePoint >= 0x1A_B0 && codePoint <= 0x1A_FF) // Combining diacritical marks extended
+			|| (codePoint >= 0x1D_C0 && codePoint <= 0x1D_FF) // Combining diacritical marks supplement
+			|| (codePoint >= 0x20_D0 && codePoint <= 0x20_FF) // Combining diacritical marks for symbols
+			|| (codePoint >= 0xFE_20 && codePoint <= 0xFE_2F) // Combining half marks
+		) {
+			continue;
+		}
+
+		// Ignore surrogate pairs
+		if (codePoint >= 0xD8_00 && codePoint <= 0xDF_FF) {
+			continue;
+		}
+
+		// Ignore variation selectors
+		if (codePoint >= 0xFE_00 && codePoint <= 0xFE_0F) {
+			continue;
+		}
+
+		// This covers some of the above cases, but we still keep them for performance reasons.
+		if (defaultIgnorableCodePointRegex.test(character)) {
+			continue;
+		}
+
+		// TODO: Use `/\p{RGI_Emoji}/v` when targeting Node.js 20.
+		if ((0,emoji_regex__WEBPACK_IMPORTED_MODULE_1__["default"])().test(character)) {
+			width += 2;
+			continue;
+		}
+
+		width += (0,get_east_asian_width__WEBPACK_IMPORTED_MODULE_2__.eastAsianWidth)(codePoint, eastAsianWidthOptions);
+	}
+
+	return width;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-context-menu/node_modules/strip-ansi/index.js":
+/*!*****************************************************************************!*\
+  !*** ./node_modules/electron-context-menu/node_modules/strip-ansi/index.js ***!
+  \*****************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ stripAnsi)
+/* harmony export */ });
+/* harmony import */ var ansi_regex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ansi-regex */ "./node_modules/electron-context-menu/node_modules/ansi-regex/index.js");
+
+
+const regex = (0,ansi_regex__WEBPACK_IMPORTED_MODULE_0__["default"])();
+
+function stripAnsi(string) {
+	if (typeof string !== 'string') {
+		throw new TypeError(`Expected a \`string\`, got \`${typeof string}\``);
+	}
+
+	// Even though the regex is global, we don't need to reset the `.lastIndex`
+	// because unlike `.exec()` and `.test()`, `.replace()` does it automatically
+	// and doing it manually has a performance penalty.
+	return string.replace(regex, '');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-dl/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/electron-dl/index.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CancelError: () => (/* binding */ CancelError),
+/* harmony export */   "default": () => (/* binding */ electronDl),
+/* harmony export */   download: () => (/* binding */ download)
+/* harmony export */ });
+/* harmony import */ var node_process__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node:process */ "node:process");
+/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! node:path */ "node:path");
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! electron */ "electron");
+/* harmony import */ var unused_filename__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! unused-filename */ "./node_modules/unused-filename/index.js");
+/* harmony import */ var pupa__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! pupa */ "./node_modules/pupa/index.js");
+/* harmony import */ var ext_name__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ext-name */ "./node_modules/ext-name/index.js");
+
+
+
+
+
+
+
+class CancelError extends Error {}
+
+const getFilenameFromMime = (name, mime) => {
+	const extensions = ext_name__WEBPACK_IMPORTED_MODULE_5__.mime(mime);
+
+	if (extensions.length !== 1) {
+		return name;
+	}
+
+	return `${name}.${extensions[0].ext}`;
+};
+
+function registerListener(session, options, callback = () => {}) {
+	const downloadItems = new Set();
+	let receivedBytes = 0;
+	let completedBytes = 0;
+	let totalBytes = 0;
+	const activeDownloadItems = () => downloadItems.size;
+	const progressDownloadItems = () => receivedBytes / totalBytes;
+
+	options = {
+		showBadge: true,
+		showProgressBar: true,
+		...options,
+	};
+
+	const listener = (event, item, webContents) => {
+		downloadItems.add(item);
+		totalBytes += item.getTotalBytes();
+
+		const window_ = electron__WEBPACK_IMPORTED_MODULE_2__.BrowserWindow.fromWebContents(webContents);
+		if (!window_) {
+			throw new Error('Failed to get window from web contents.');
+		}
+
+		if (options.directory && !node_path__WEBPACK_IMPORTED_MODULE_1__.isAbsolute(options.directory)) {
+			throw new Error('The `directory` option must be an absolute path');
+		}
+
+		const directory = options.directory ?? electron__WEBPACK_IMPORTED_MODULE_2__.app.getPath('downloads');
+
+		let filePath;
+		if (options.filename) {
+			filePath = node_path__WEBPACK_IMPORTED_MODULE_1__.join(directory, options.filename);
+		} else {
+			const filename = item.getFilename();
+			const name = node_path__WEBPACK_IMPORTED_MODULE_1__.extname(filename) ? filename : getFilenameFromMime(filename, item.getMimeType());
+
+			filePath = options.overwrite ? node_path__WEBPACK_IMPORTED_MODULE_1__.join(directory, name) : (0,unused_filename__WEBPACK_IMPORTED_MODULE_3__.unusedFilenameSync)(node_path__WEBPACK_IMPORTED_MODULE_1__.join(directory, name));
+		}
+
+		const errorMessage = options.errorMessage ?? 'The download of {filename} was interrupted';
+
+		if (options.saveAs) {
+			item.setSaveDialogOptions({defaultPath: filePath, ...options.dialogOptions});
+		} else {
+			item.setSavePath(filePath);
+		}
+
+		item.on('updated', () => {
+			receivedBytes = completedBytes;
+			for (const item of downloadItems) {
+				receivedBytes += item.getReceivedBytes();
+			}
+
+			if (options.showBadge && ['darwin', 'linux'].includes(node_process__WEBPACK_IMPORTED_MODULE_0__.platform)) {
+				electron__WEBPACK_IMPORTED_MODULE_2__.app.badgeCount = activeDownloadItems();
+			}
+
+			if (!window_.isDestroyed() && options.showProgressBar) {
+				window_.setProgressBar(progressDownloadItems());
+			}
+
+			if (typeof options.onProgress === 'function') {
+				const itemTransferredBytes = item.getReceivedBytes();
+				const itemTotalBytes = item.getTotalBytes();
+
+				options.onProgress({
+					percent: itemTotalBytes ? itemTransferredBytes / itemTotalBytes : 0,
+					transferredBytes: itemTransferredBytes,
+					totalBytes: itemTotalBytes,
+				});
+			}
+
+			if (typeof options.onTotalProgress === 'function') {
+				options.onTotalProgress({
+					percent: progressDownloadItems(),
+					transferredBytes: receivedBytes,
+					totalBytes,
+				});
+			}
+		});
+
+		item.on('done', (event, state) => {
+			completedBytes += item.getTotalBytes();
+			downloadItems.delete(item);
+
+			if (options.showBadge && ['darwin', 'linux'].includes(node_process__WEBPACK_IMPORTED_MODULE_0__.platform)) {
+				electron__WEBPACK_IMPORTED_MODULE_2__.app.badgeCount = activeDownloadItems();
+			}
+
+			if (!window_.isDestroyed() && !activeDownloadItems()) {
+				window_.setProgressBar(-1);
+				receivedBytes = 0;
+				completedBytes = 0;
+				totalBytes = 0;
+			}
+
+			if (options.unregisterWhenDone) {
+				session.removeListener('will-download', listener);
+			}
+
+			// eslint-disable-next-line unicorn/prefer-switch
+			if (state === 'cancelled') {
+				if (typeof options.onCancel === 'function') {
+					options.onCancel(item);
+				}
+
+				callback(new CancelError());
+			} else if (state === 'interrupted') {
+				const message = (0,pupa__WEBPACK_IMPORTED_MODULE_4__["default"])(errorMessage, {filename: node_path__WEBPACK_IMPORTED_MODULE_1__.basename(filePath)});
+				callback(new Error(message));
+			} else if (state === 'completed') {
+				const savePath = item.getSavePath();
+
+				if (node_process__WEBPACK_IMPORTED_MODULE_0__.platform === 'darwin') {
+					electron__WEBPACK_IMPORTED_MODULE_2__.app.dock.downloadFinished(savePath);
+				}
+
+				if (options.openFolderWhenDone) {
+					electron__WEBPACK_IMPORTED_MODULE_2__.shell.showItemInFolder(savePath);
+				}
+
+				if (typeof options.onCompleted === 'function') {
+					options.onCompleted({
+						fileName: item.getFilename(), // Just for backwards compatibility. TODO: Remove in the next major version.
+						filename: item.getFilename(),
+						path: savePath,
+						fileSize: item.getReceivedBytes(),
+						mimeType: item.getMimeType(),
+						url: item.getURL(),
+					});
+				}
+
+				callback(null, item);
+			}
+		});
+
+		if (typeof options.onStarted === 'function') {
+			options.onStarted(item);
+		}
+	};
+
+	session.on('will-download', listener);
+}
+
+function electronDl(options = {}) {
+	electron__WEBPACK_IMPORTED_MODULE_2__.app.on('session-created', session => {
+		registerListener(session, options, (error, _) => {
+			if (error && !(error instanceof CancelError)) {
+				const errorTitle = options.errorTitle ?? 'Download Error';
+				electron__WEBPACK_IMPORTED_MODULE_2__.dialog.showErrorBox(errorTitle, error.message);
+			}
+		});
+	});
+}
+
+async function download(window_, url, options) {
+	return new Promise((resolve, reject) => {
+		options = {
+			...options,
+			unregisterWhenDone: true,
+		};
+
+		registerListener(window_.webContents.session, options, (error, item) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve(item);
+			}
+		});
+
+		window_.webContents.downloadURL(url);
+	});
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/electron-is-dev/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/electron-is-dev/index.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! electron */ "electron");
+
+
+if (typeof electron__WEBPACK_IMPORTED_MODULE_0__ === 'string') {
+	throw new TypeError('Not running in an Electron environment!');
+}
+
+const {env} = process; // eslint-disable-line n/prefer-global/process
+const isEnvSet = 'ELECTRON_IS_DEV' in env;
+const getFromEnv = Number.parseInt(env.ELECTRON_IS_DEV, 10) === 1;
+
+const isDev = isEnvSet ? getFromEnv : !electron__WEBPACK_IMPORTED_MODULE_0__.app.isPackaged;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (isDev);
+
+
+/***/ }),
+
 /***/ "./node_modules/electron-squirrel-startup/index.js":
 /*!*********************************************************!*\
   !*** ./node_modules/electron-squirrel-startup/index.js ***!
@@ -14101,6 +15085,132 @@ module.exports = function setToStringTag(object, value) {
 			object[toStringTag] = value; // eslint-disable-line no-param-reassign
 		}
 	}
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/escape-goat/index.js":
+/*!*******************************************!*\
+  !*** ./node_modules/escape-goat/index.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   htmlEscape: () => (/* binding */ htmlEscape),
+/* harmony export */   htmlUnescape: () => (/* binding */ htmlUnescape)
+/* harmony export */ });
+const _htmlEscape = string => string
+	.replace(/&/g, '&amp;')
+	.replace(/"/g, '&quot;')
+	.replace(/'/g, '&#39;')
+	.replace(/</g, '&lt;')
+	.replace(/>/g, '&gt;');
+
+const _htmlUnescape = htmlString => htmlString
+	.replace(/&gt;/g, '>')
+	.replace(/&lt;/g, '<')
+	.replace(/&#0?39;/g, '\'')
+	.replace(/&quot;/g, '"')
+	.replace(/&amp;/g, '&');
+
+function htmlEscape(strings, ...values) {
+	if (typeof strings === 'string') {
+		return _htmlEscape(strings);
+	}
+
+	let output = strings[0];
+	for (const [index, value] of values.entries()) {
+		output = output + _htmlEscape(String(value)) + strings[index + 1];
+	}
+
+	return output;
+}
+
+function htmlUnescape(strings, ...values) {
+	if (typeof strings === 'string') {
+		return _htmlUnescape(strings);
+	}
+
+	let output = strings[0];
+	for (const [index, value] of values.entries()) {
+		output = output + _htmlUnescape(String(value)) + strings[index + 1];
+	}
+
+	return output;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/ext-list/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/ext-list/index.js ***!
+  \****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var mimeDb = __webpack_require__(/*! mime-db */ "./node_modules/mime-db/index.js");
+
+module.exports = function () {
+	var ret = {};
+
+	Object.keys(mimeDb).forEach(function (x) {
+		var val = mimeDb[x];
+
+		if (val.extensions && val.extensions.length > 0) {
+			val.extensions.forEach(function (y) {
+				ret[y] = x;
+			});
+		}
+	});
+
+	return ret;
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/ext-name/index.js":
+/*!****************************************!*\
+  !*** ./node_modules/ext-name/index.js ***!
+  \****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+const extList = __webpack_require__(/*! ext-list */ "./node_modules/ext-list/index.js");
+const sortKeysLength = __webpack_require__(/*! sort-keys-length */ "./node_modules/sort-keys-length/index.js");
+
+module.exports = str => {
+	const obj = sortKeysLength.desc(extList());
+	const exts = Object.keys(obj).filter(x => str.endsWith(x));
+
+	if (exts.length === 0) {
+		return [];
+	}
+
+	return exts.map(x => ({
+		ext: x,
+		mime: obj[x]
+	}));
+};
+
+module.exports.mime = str => {
+	const obj = sortKeysLength.desc(extList());
+	const exts = Object.keys(obj).filter(x => obj[x] === str);
+
+	if (exts.length === 0) {
+		return [];
+	}
+
+	return exts.map(x => ({
+		ext: x,
+		mime: obj[x]
+	}));
 };
 
 
@@ -16661,6 +17771,476 @@ module.exports = Function.prototype.bind || implementation;
 
 /***/ }),
 
+/***/ "./node_modules/get-east-asian-width/index.js":
+/*!****************************************************!*\
+  !*** ./node_modules/get-east-asian-width/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   _isNarrowWidth: () => (/* binding */ _isNarrowWidth),
+/* harmony export */   eastAsianWidth: () => (/* binding */ eastAsianWidth),
+/* harmony export */   eastAsianWidthType: () => (/* binding */ eastAsianWidthType)
+/* harmony export */ });
+/* harmony import */ var _lookup_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lookup.js */ "./node_modules/get-east-asian-width/lookup.js");
+
+
+function validate(codePoint) {
+	if (!Number.isSafeInteger(codePoint)) {
+		throw new TypeError(`Expected a code point, got \`${typeof codePoint}\`.`);
+	}
+}
+
+function eastAsianWidthType(codePoint) {
+	validate(codePoint);
+
+	return (0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.getCategory)(codePoint);
+}
+
+function eastAsianWidth(codePoint, {ambiguousAsWide = false} = {}) {
+	validate(codePoint);
+
+	if (
+		(0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.isFullWidth)(codePoint)
+		|| (0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.isWide)(codePoint)
+		|| (ambiguousAsWide && (0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.isAmbiguous)(codePoint))
+	) {
+		return 2;
+	}
+
+	return 1;
+}
+
+// For Prettier. This doesn't count "ambiguous" characters or check for valid input.
+// https://github.com/sindresorhus/get-east-asian-width/pull/6
+const _isNarrowWidth = codePoint => !((0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.isFullWidth)(codePoint) || (0,_lookup_js__WEBPACK_IMPORTED_MODULE_0__.isWide)(codePoint));
+
+
+/***/ }),
+
+/***/ "./node_modules/get-east-asian-width/lookup.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/get-east-asian-width/lookup.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   getCategory: () => (/* binding */ getCategory),
+/* harmony export */   isAmbiguous: () => (/* binding */ isAmbiguous),
+/* harmony export */   isFullWidth: () => (/* binding */ isFullWidth),
+/* harmony export */   isWide: () => (/* binding */ isWide)
+/* harmony export */ });
+// Generated code.
+
+function isAmbiguous(x) {
+	return x === 0xA1
+		|| x === 0xA4
+		|| x === 0xA7
+		|| x === 0xA8
+		|| x === 0xAA
+		|| x === 0xAD
+		|| x === 0xAE
+		|| x >= 0xB0 && x <= 0xB4
+		|| x >= 0xB6 && x <= 0xBA
+		|| x >= 0xBC && x <= 0xBF
+		|| x === 0xC6
+		|| x === 0xD0
+		|| x === 0xD7
+		|| x === 0xD8
+		|| x >= 0xDE && x <= 0xE1
+		|| x === 0xE6
+		|| x >= 0xE8 && x <= 0xEA
+		|| x === 0xEC
+		|| x === 0xED
+		|| x === 0xF0
+		|| x === 0xF2
+		|| x === 0xF3
+		|| x >= 0xF7 && x <= 0xFA
+		|| x === 0xFC
+		|| x === 0xFE
+		|| x === 0x101
+		|| x === 0x111
+		|| x === 0x113
+		|| x === 0x11B
+		|| x === 0x126
+		|| x === 0x127
+		|| x === 0x12B
+		|| x >= 0x131 && x <= 0x133
+		|| x === 0x138
+		|| x >= 0x13F && x <= 0x142
+		|| x === 0x144
+		|| x >= 0x148 && x <= 0x14B
+		|| x === 0x14D
+		|| x === 0x152
+		|| x === 0x153
+		|| x === 0x166
+		|| x === 0x167
+		|| x === 0x16B
+		|| x === 0x1CE
+		|| x === 0x1D0
+		|| x === 0x1D2
+		|| x === 0x1D4
+		|| x === 0x1D6
+		|| x === 0x1D8
+		|| x === 0x1DA
+		|| x === 0x1DC
+		|| x === 0x251
+		|| x === 0x261
+		|| x === 0x2C4
+		|| x === 0x2C7
+		|| x >= 0x2C9 && x <= 0x2CB
+		|| x === 0x2CD
+		|| x === 0x2D0
+		|| x >= 0x2D8 && x <= 0x2DB
+		|| x === 0x2DD
+		|| x === 0x2DF
+		|| x >= 0x300 && x <= 0x36F
+		|| x >= 0x391 && x <= 0x3A1
+		|| x >= 0x3A3 && x <= 0x3A9
+		|| x >= 0x3B1 && x <= 0x3C1
+		|| x >= 0x3C3 && x <= 0x3C9
+		|| x === 0x401
+		|| x >= 0x410 && x <= 0x44F
+		|| x === 0x451
+		|| x === 0x2010
+		|| x >= 0x2013 && x <= 0x2016
+		|| x === 0x2018
+		|| x === 0x2019
+		|| x === 0x201C
+		|| x === 0x201D
+		|| x >= 0x2020 && x <= 0x2022
+		|| x >= 0x2024 && x <= 0x2027
+		|| x === 0x2030
+		|| x === 0x2032
+		|| x === 0x2033
+		|| x === 0x2035
+		|| x === 0x203B
+		|| x === 0x203E
+		|| x === 0x2074
+		|| x === 0x207F
+		|| x >= 0x2081 && x <= 0x2084
+		|| x === 0x20AC
+		|| x === 0x2103
+		|| x === 0x2105
+		|| x === 0x2109
+		|| x === 0x2113
+		|| x === 0x2116
+		|| x === 0x2121
+		|| x === 0x2122
+		|| x === 0x2126
+		|| x === 0x212B
+		|| x === 0x2153
+		|| x === 0x2154
+		|| x >= 0x215B && x <= 0x215E
+		|| x >= 0x2160 && x <= 0x216B
+		|| x >= 0x2170 && x <= 0x2179
+		|| x === 0x2189
+		|| x >= 0x2190 && x <= 0x2199
+		|| x === 0x21B8
+		|| x === 0x21B9
+		|| x === 0x21D2
+		|| x === 0x21D4
+		|| x === 0x21E7
+		|| x === 0x2200
+		|| x === 0x2202
+		|| x === 0x2203
+		|| x === 0x2207
+		|| x === 0x2208
+		|| x === 0x220B
+		|| x === 0x220F
+		|| x === 0x2211
+		|| x === 0x2215
+		|| x === 0x221A
+		|| x >= 0x221D && x <= 0x2220
+		|| x === 0x2223
+		|| x === 0x2225
+		|| x >= 0x2227 && x <= 0x222C
+		|| x === 0x222E
+		|| x >= 0x2234 && x <= 0x2237
+		|| x === 0x223C
+		|| x === 0x223D
+		|| x === 0x2248
+		|| x === 0x224C
+		|| x === 0x2252
+		|| x === 0x2260
+		|| x === 0x2261
+		|| x >= 0x2264 && x <= 0x2267
+		|| x === 0x226A
+		|| x === 0x226B
+		|| x === 0x226E
+		|| x === 0x226F
+		|| x === 0x2282
+		|| x === 0x2283
+		|| x === 0x2286
+		|| x === 0x2287
+		|| x === 0x2295
+		|| x === 0x2299
+		|| x === 0x22A5
+		|| x === 0x22BF
+		|| x === 0x2312
+		|| x >= 0x2460 && x <= 0x24E9
+		|| x >= 0x24EB && x <= 0x254B
+		|| x >= 0x2550 && x <= 0x2573
+		|| x >= 0x2580 && x <= 0x258F
+		|| x >= 0x2592 && x <= 0x2595
+		|| x === 0x25A0
+		|| x === 0x25A1
+		|| x >= 0x25A3 && x <= 0x25A9
+		|| x === 0x25B2
+		|| x === 0x25B3
+		|| x === 0x25B6
+		|| x === 0x25B7
+		|| x === 0x25BC
+		|| x === 0x25BD
+		|| x === 0x25C0
+		|| x === 0x25C1
+		|| x >= 0x25C6 && x <= 0x25C8
+		|| x === 0x25CB
+		|| x >= 0x25CE && x <= 0x25D1
+		|| x >= 0x25E2 && x <= 0x25E5
+		|| x === 0x25EF
+		|| x === 0x2605
+		|| x === 0x2606
+		|| x === 0x2609
+		|| x === 0x260E
+		|| x === 0x260F
+		|| x === 0x261C
+		|| x === 0x261E
+		|| x === 0x2640
+		|| x === 0x2642
+		|| x === 0x2660
+		|| x === 0x2661
+		|| x >= 0x2663 && x <= 0x2665
+		|| x >= 0x2667 && x <= 0x266A
+		|| x === 0x266C
+		|| x === 0x266D
+		|| x === 0x266F
+		|| x === 0x269E
+		|| x === 0x269F
+		|| x === 0x26BF
+		|| x >= 0x26C6 && x <= 0x26CD
+		|| x >= 0x26CF && x <= 0x26D3
+		|| x >= 0x26D5 && x <= 0x26E1
+		|| x === 0x26E3
+		|| x === 0x26E8
+		|| x === 0x26E9
+		|| x >= 0x26EB && x <= 0x26F1
+		|| x === 0x26F4
+		|| x >= 0x26F6 && x <= 0x26F9
+		|| x === 0x26FB
+		|| x === 0x26FC
+		|| x === 0x26FE
+		|| x === 0x26FF
+		|| x === 0x273D
+		|| x >= 0x2776 && x <= 0x277F
+		|| x >= 0x2B56 && x <= 0x2B59
+		|| x >= 0x3248 && x <= 0x324F
+		|| x >= 0xE000 && x <= 0xF8FF
+		|| x >= 0xFE00 && x <= 0xFE0F
+		|| x === 0xFFFD
+		|| x >= 0x1F100 && x <= 0x1F10A
+		|| x >= 0x1F110 && x <= 0x1F12D
+		|| x >= 0x1F130 && x <= 0x1F169
+		|| x >= 0x1F170 && x <= 0x1F18D
+		|| x === 0x1F18F
+		|| x === 0x1F190
+		|| x >= 0x1F19B && x <= 0x1F1AC
+		|| x >= 0xE0100 && x <= 0xE01EF
+		|| x >= 0xF0000 && x <= 0xFFFFD
+		|| x >= 0x100000 && x <= 0x10FFFD;
+}
+
+function isFullWidth(x) {
+	return x === 0x3000
+		|| x >= 0xFF01 && x <= 0xFF60
+		|| x >= 0xFFE0 && x <= 0xFFE6;
+}
+
+function isWide(x) {
+	return x >= 0x1100 && x <= 0x115F
+		|| x === 0x231A
+		|| x === 0x231B
+		|| x === 0x2329
+		|| x === 0x232A
+		|| x >= 0x23E9 && x <= 0x23EC
+		|| x === 0x23F0
+		|| x === 0x23F3
+		|| x === 0x25FD
+		|| x === 0x25FE
+		|| x === 0x2614
+		|| x === 0x2615
+		|| x >= 0x2630 && x <= 0x2637
+		|| x >= 0x2648 && x <= 0x2653
+		|| x === 0x267F
+		|| x >= 0x268A && x <= 0x268F
+		|| x === 0x2693
+		|| x === 0x26A1
+		|| x === 0x26AA
+		|| x === 0x26AB
+		|| x === 0x26BD
+		|| x === 0x26BE
+		|| x === 0x26C4
+		|| x === 0x26C5
+		|| x === 0x26CE
+		|| x === 0x26D4
+		|| x === 0x26EA
+		|| x === 0x26F2
+		|| x === 0x26F3
+		|| x === 0x26F5
+		|| x === 0x26FA
+		|| x === 0x26FD
+		|| x === 0x2705
+		|| x === 0x270A
+		|| x === 0x270B
+		|| x === 0x2728
+		|| x === 0x274C
+		|| x === 0x274E
+		|| x >= 0x2753 && x <= 0x2755
+		|| x === 0x2757
+		|| x >= 0x2795 && x <= 0x2797
+		|| x === 0x27B0
+		|| x === 0x27BF
+		|| x === 0x2B1B
+		|| x === 0x2B1C
+		|| x === 0x2B50
+		|| x === 0x2B55
+		|| x >= 0x2E80 && x <= 0x2E99
+		|| x >= 0x2E9B && x <= 0x2EF3
+		|| x >= 0x2F00 && x <= 0x2FD5
+		|| x >= 0x2FF0 && x <= 0x2FFF
+		|| x >= 0x3001 && x <= 0x303E
+		|| x >= 0x3041 && x <= 0x3096
+		|| x >= 0x3099 && x <= 0x30FF
+		|| x >= 0x3105 && x <= 0x312F
+		|| x >= 0x3131 && x <= 0x318E
+		|| x >= 0x3190 && x <= 0x31E5
+		|| x >= 0x31EF && x <= 0x321E
+		|| x >= 0x3220 && x <= 0x3247
+		|| x >= 0x3250 && x <= 0xA48C
+		|| x >= 0xA490 && x <= 0xA4C6
+		|| x >= 0xA960 && x <= 0xA97C
+		|| x >= 0xAC00 && x <= 0xD7A3
+		|| x >= 0xF900 && x <= 0xFAFF
+		|| x >= 0xFE10 && x <= 0xFE19
+		|| x >= 0xFE30 && x <= 0xFE52
+		|| x >= 0xFE54 && x <= 0xFE66
+		|| x >= 0xFE68 && x <= 0xFE6B
+		|| x >= 0x16FE0 && x <= 0x16FE4
+		|| x === 0x16FF0
+		|| x === 0x16FF1
+		|| x >= 0x17000 && x <= 0x187F7
+		|| x >= 0x18800 && x <= 0x18CD5
+		|| x >= 0x18CFF && x <= 0x18D08
+		|| x >= 0x1AFF0 && x <= 0x1AFF3
+		|| x >= 0x1AFF5 && x <= 0x1AFFB
+		|| x === 0x1AFFD
+		|| x === 0x1AFFE
+		|| x >= 0x1B000 && x <= 0x1B122
+		|| x === 0x1B132
+		|| x >= 0x1B150 && x <= 0x1B152
+		|| x === 0x1B155
+		|| x >= 0x1B164 && x <= 0x1B167
+		|| x >= 0x1B170 && x <= 0x1B2FB
+		|| x >= 0x1D300 && x <= 0x1D356
+		|| x >= 0x1D360 && x <= 0x1D376
+		|| x === 0x1F004
+		|| x === 0x1F0CF
+		|| x === 0x1F18E
+		|| x >= 0x1F191 && x <= 0x1F19A
+		|| x >= 0x1F200 && x <= 0x1F202
+		|| x >= 0x1F210 && x <= 0x1F23B
+		|| x >= 0x1F240 && x <= 0x1F248
+		|| x === 0x1F250
+		|| x === 0x1F251
+		|| x >= 0x1F260 && x <= 0x1F265
+		|| x >= 0x1F300 && x <= 0x1F320
+		|| x >= 0x1F32D && x <= 0x1F335
+		|| x >= 0x1F337 && x <= 0x1F37C
+		|| x >= 0x1F37E && x <= 0x1F393
+		|| x >= 0x1F3A0 && x <= 0x1F3CA
+		|| x >= 0x1F3CF && x <= 0x1F3D3
+		|| x >= 0x1F3E0 && x <= 0x1F3F0
+		|| x === 0x1F3F4
+		|| x >= 0x1F3F8 && x <= 0x1F43E
+		|| x === 0x1F440
+		|| x >= 0x1F442 && x <= 0x1F4FC
+		|| x >= 0x1F4FF && x <= 0x1F53D
+		|| x >= 0x1F54B && x <= 0x1F54E
+		|| x >= 0x1F550 && x <= 0x1F567
+		|| x === 0x1F57A
+		|| x === 0x1F595
+		|| x === 0x1F596
+		|| x === 0x1F5A4
+		|| x >= 0x1F5FB && x <= 0x1F64F
+		|| x >= 0x1F680 && x <= 0x1F6C5
+		|| x === 0x1F6CC
+		|| x >= 0x1F6D0 && x <= 0x1F6D2
+		|| x >= 0x1F6D5 && x <= 0x1F6D7
+		|| x >= 0x1F6DC && x <= 0x1F6DF
+		|| x === 0x1F6EB
+		|| x === 0x1F6EC
+		|| x >= 0x1F6F4 && x <= 0x1F6FC
+		|| x >= 0x1F7E0 && x <= 0x1F7EB
+		|| x === 0x1F7F0
+		|| x >= 0x1F90C && x <= 0x1F93A
+		|| x >= 0x1F93C && x <= 0x1F945
+		|| x >= 0x1F947 && x <= 0x1F9FF
+		|| x >= 0x1FA70 && x <= 0x1FA7C
+		|| x >= 0x1FA80 && x <= 0x1FA89
+		|| x >= 0x1FA8F && x <= 0x1FAC6
+		|| x >= 0x1FACE && x <= 0x1FADC
+		|| x >= 0x1FADF && x <= 0x1FAE9
+		|| x >= 0x1FAF0 && x <= 0x1FAF8
+		|| x >= 0x20000 && x <= 0x2FFFD
+		|| x >= 0x30000 && x <= 0x3FFFD;
+}
+
+function getCategory(x) {
+	if (isAmbiguous(x)) return 'ambiguous';
+
+	if (isFullWidth(x)) return 'fullwidth';
+
+	if (
+		x === 0x20A9
+		|| x >= 0xFF61 && x <= 0xFFBE
+		|| x >= 0xFFC2 && x <= 0xFFC7
+		|| x >= 0xFFCA && x <= 0xFFCF
+		|| x >= 0xFFD2 && x <= 0xFFD7
+		|| x >= 0xFFDA && x <= 0xFFDC
+		|| x >= 0xFFE8 && x <= 0xFFEE
+	) {
+		return 'halfwidth';
+	}
+
+	if (
+		x >= 0x20 && x <= 0x7E
+		|| x === 0xA2
+		|| x === 0xA3
+		|| x === 0xA5
+		|| x === 0xA6
+		|| x === 0xAC
+		|| x === 0xAF
+		|| x >= 0x27E6 && x <= 0x27ED
+		|| x === 0x2985
+		|| x === 0x2986
+	) {
+		return 'narrow';
+	}
+
+	if (isWide(x)) return 'wide';
+
+	return 'neutral';
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/get-intrinsic/index.js":
 /*!*********************************************!*\
   !*** ./node_modules/get-intrinsic/index.js ***!
@@ -17350,6 +18930,61 @@ if (typeof Object.create === 'function') {
       ctor.prototype.constructor = ctor
     }
   }
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/is-fullwidth-code-point/index.js":
+/*!*******************************************************!*\
+  !*** ./node_modules/is-fullwidth-code-point/index.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ isFullwidthCodePoint)
+/* harmony export */ });
+/* eslint-disable yoda */
+
+function isFullwidthCodePoint(codePoint) {
+	if (!Number.isInteger(codePoint)) {
+		return false;
+	}
+
+	// Code points are derived from:
+	// https://unicode.org/Public/UNIDATA/EastAsianWidth.txt
+	return codePoint >= 0x1100 && (
+		codePoint <= 0x115F || // Hangul Jamo
+		codePoint === 0x2329 || // LEFT-POINTING ANGLE BRACKET
+		codePoint === 0x232A || // RIGHT-POINTING ANGLE BRACKET
+		// CJK Radicals Supplement .. Enclosed CJK Letters and Months
+		(0x2E80 <= codePoint && codePoint <= 0x3247 && codePoint !== 0x303F) ||
+		// Enclosed CJK Letters and Months .. CJK Unified Ideographs Extension A
+		(0x3250 <= codePoint && codePoint <= 0x4DBF) ||
+		// CJK Unified Ideographs .. Yi Radicals
+		(0x4E00 <= codePoint && codePoint <= 0xA4C6) ||
+		// Hangul Jamo Extended-A
+		(0xA960 <= codePoint && codePoint <= 0xA97C) ||
+		// Hangul Syllables
+		(0xAC00 <= codePoint && codePoint <= 0xD7A3) ||
+		// CJK Compatibility Ideographs
+		(0xF900 <= codePoint && codePoint <= 0xFAFF) ||
+		// Vertical Forms
+		(0xFE10 <= codePoint && codePoint <= 0xFE19) ||
+		// CJK Compatibility Forms .. Small Form Variants
+		(0xFE30 <= codePoint && codePoint <= 0xFE6B) ||
+		// Halfwidth and Fullwidth Forms
+		(0xFF01 <= codePoint && codePoint <= 0xFF60) ||
+		(0xFFE0 <= codePoint && codePoint <= 0xFFE6) ||
+		// Kana Supplement
+		(0x1B000 <= codePoint && codePoint <= 0x1B001) ||
+		// Enclosed Ideographic Supplement
+		(0x1F200 <= codePoint && codePoint <= 0x1F251) ||
+		// CJK Unified Ideographs Extension B .. Tertiary Ideographic Plane
+		(0x20000 <= codePoint && codePoint <= 0x3FFFD)
+	);
 }
 
 
@@ -25899,6 +27534,73 @@ exports.getProxyForUrl = getProxyForUrl;
 
 /***/ }),
 
+/***/ "./node_modules/pupa/index.js":
+/*!************************************!*\
+  !*** ./node_modules/pupa/index.js ***!
+  \************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MissingValueError: () => (/* binding */ MissingValueError),
+/* harmony export */   "default": () => (/* binding */ pupa)
+/* harmony export */ });
+/* harmony import */ var escape_goat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! escape-goat */ "./node_modules/escape-goat/index.js");
+
+
+class MissingValueError extends Error {
+	constructor(key) {
+		super(`Missing a value for ${key ? `the placeholder: ${key}` : 'a placeholder'}`, key);
+		this.name = 'MissingValueError';
+		this.key = key;
+	}
+}
+
+function pupa(template, data, {ignoreMissing = false, transform = ({value}) => value} = {}) {
+	if (typeof template !== 'string') {
+		throw new TypeError(`Expected a \`string\` in the first argument, got \`${typeof template}\``);
+	}
+
+	if (typeof data !== 'object') {
+		throw new TypeError(`Expected an \`object\` or \`Array\` in the second argument, got \`${typeof data}\``);
+	}
+
+	const replace = (placeholder, key) => {
+		let value = data;
+		for (const property of key.split('.')) {
+			value = value ? value[property] : undefined;
+		}
+
+		const transformedValue = transform({value, key});
+		if (transformedValue === undefined) {
+			if (ignoreMissing) {
+				return placeholder;
+			}
+
+			throw new MissingValueError(key);
+		}
+
+		return String(transformedValue);
+	};
+
+	const composeHtmlEscape = replacer => (...args) => (0,escape_goat__WEBPACK_IMPORTED_MODULE_0__.htmlEscape)(replacer(...args));
+
+	// The regex tries to match either a number inside `{{ }}` or a valid JS identifier or key path.
+	const doubleBraceRegex = /{{(\d+|[a-z$_][\w\-$]*?(?:\.[\w\-$]*?)*?)}}/gi;
+
+	if (doubleBraceRegex.test(template)) {
+		template = template.replace(doubleBraceRegex, composeHtmlEscape(replace));
+	}
+
+	const braceRegex = /{(\d+|[a-z$_][\w\-$]*?(?:\.[\w\-$]*?)*?)}/gi;
+
+	return template.replace(braceRegex, replace);
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/readable-stream/errors.js":
 /*!************************************************!*\
   !*** ./node_modules/readable-stream/errors.js ***!
@@ -29680,6 +31382,476 @@ module.exports = function isArrayish(obj) {
 
 /***/ }),
 
+/***/ "./node_modules/slice-ansi/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/slice-ansi/index.js ***!
+  \******************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ sliceAnsi)
+/* harmony export */ });
+/* harmony import */ var is_fullwidth_code_point__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! is-fullwidth-code-point */ "./node_modules/is-fullwidth-code-point/index.js");
+/* harmony import */ var ansi_styles__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ansi-styles */ "./node_modules/slice-ansi/node_modules/ansi-styles/index.js");
+
+
+
+const astralRegex = /^[\uD800-\uDBFF][\uDC00-\uDFFF]$/;
+
+const ESCAPES = [
+	'\u001B',
+	'\u009B'
+];
+
+const wrapAnsi = code => `${ESCAPES[0]}[${code}m`;
+
+const checkAnsi = (ansiCodes, isEscapes, endAnsiCode) => {
+	let output = [];
+	ansiCodes = [...ansiCodes];
+
+	for (let ansiCode of ansiCodes) {
+		const ansiCodeOrigin = ansiCode;
+		if (ansiCode.includes(';')) {
+			ansiCode = ansiCode.split(';')[0][0] + '0';
+		}
+
+		const item = ansi_styles__WEBPACK_IMPORTED_MODULE_1__["default"].codes.get(Number.parseInt(ansiCode, 10));
+		if (item) {
+			const indexEscape = ansiCodes.indexOf(item.toString());
+			if (indexEscape === -1) {
+				output.push(wrapAnsi(isEscapes ? item : ansiCodeOrigin));
+			} else {
+				ansiCodes.splice(indexEscape, 1);
+			}
+		} else if (isEscapes) {
+			output.push(wrapAnsi(0));
+			break;
+		} else {
+			output.push(wrapAnsi(ansiCodeOrigin));
+		}
+	}
+
+	if (isEscapes) {
+		output = output.filter((element, index) => output.indexOf(element) === index);
+
+		if (endAnsiCode !== undefined) {
+			const fistEscapeCode = wrapAnsi(ansi_styles__WEBPACK_IMPORTED_MODULE_1__["default"].codes.get(Number.parseInt(endAnsiCode, 10)));
+			// TODO: Remove the use of `.reduce` here.
+			// eslint-disable-next-line unicorn/no-array-reduce
+			output = output.reduce((current, next) => next === fistEscapeCode ? [next, ...current] : [...current, next], []);
+		}
+	}
+
+	return output.join('');
+};
+
+function sliceAnsi(string, begin, end) {
+	const characters = [...string];
+	const ansiCodes = [];
+
+	let stringEnd = typeof end === 'number' ? end : characters.length;
+	let isInsideEscape = false;
+	let ansiCode;
+	let visible = 0;
+	let output = '';
+
+	for (const [index, character] of characters.entries()) {
+		let leftEscape = false;
+
+		if (ESCAPES.includes(character)) {
+			const code = /\d[^m]*/.exec(string.slice(index, index + 18));
+			ansiCode = code && code.length > 0 ? code[0] : undefined;
+
+			if (visible < stringEnd) {
+				isInsideEscape = true;
+
+				if (ansiCode !== undefined) {
+					ansiCodes.push(ansiCode);
+				}
+			}
+		} else if (isInsideEscape && character === 'm') {
+			isInsideEscape = false;
+			leftEscape = true;
+		}
+
+		if (!isInsideEscape && !leftEscape) {
+			visible++;
+		}
+
+		if (!astralRegex.test(character) && (0,is_fullwidth_code_point__WEBPACK_IMPORTED_MODULE_0__["default"])(character.codePointAt())) {
+			visible++;
+
+			if (typeof end !== 'number') {
+				stringEnd++;
+			}
+		}
+
+		if (visible > begin && visible <= stringEnd) {
+			output += character;
+		} else if (visible === begin && !isInsideEscape && ansiCode !== undefined) {
+			output = checkAnsi(ansiCodes);
+		} else if (visible >= stringEnd) {
+			output += checkAnsi(ansiCodes, true, ansiCode);
+			break;
+		}
+	}
+
+	return output;
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/slice-ansi/node_modules/ansi-styles/index.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/slice-ansi/node_modules/ansi-styles/index.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   backgroundColorNames: () => (/* binding */ backgroundColorNames),
+/* harmony export */   colorNames: () => (/* binding */ colorNames),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   foregroundColorNames: () => (/* binding */ foregroundColorNames),
+/* harmony export */   modifierNames: () => (/* binding */ modifierNames)
+/* harmony export */ });
+const ANSI_BACKGROUND_OFFSET = 10;
+
+const wrapAnsi16 = (offset = 0) => code => `\u001B[${code + offset}m`;
+
+const wrapAnsi256 = (offset = 0) => code => `\u001B[${38 + offset};5;${code}m`;
+
+const wrapAnsi16m = (offset = 0) => (red, green, blue) => `\u001B[${38 + offset};2;${red};${green};${blue}m`;
+
+const styles = {
+	modifier: {
+		reset: [0, 0],
+		// 21 isn't widely supported and 22 does the same thing
+		bold: [1, 22],
+		dim: [2, 22],
+		italic: [3, 23],
+		underline: [4, 24],
+		overline: [53, 55],
+		inverse: [7, 27],
+		hidden: [8, 28],
+		strikethrough: [9, 29],
+	},
+	color: {
+		black: [30, 39],
+		red: [31, 39],
+		green: [32, 39],
+		yellow: [33, 39],
+		blue: [34, 39],
+		magenta: [35, 39],
+		cyan: [36, 39],
+		white: [37, 39],
+
+		// Bright color
+		blackBright: [90, 39],
+		gray: [90, 39], // Alias of `blackBright`
+		grey: [90, 39], // Alias of `blackBright`
+		redBright: [91, 39],
+		greenBright: [92, 39],
+		yellowBright: [93, 39],
+		blueBright: [94, 39],
+		magentaBright: [95, 39],
+		cyanBright: [96, 39],
+		whiteBright: [97, 39],
+	},
+	bgColor: {
+		bgBlack: [40, 49],
+		bgRed: [41, 49],
+		bgGreen: [42, 49],
+		bgYellow: [43, 49],
+		bgBlue: [44, 49],
+		bgMagenta: [45, 49],
+		bgCyan: [46, 49],
+		bgWhite: [47, 49],
+
+		// Bright color
+		bgBlackBright: [100, 49],
+		bgGray: [100, 49], // Alias of `bgBlackBright`
+		bgGrey: [100, 49], // Alias of `bgBlackBright`
+		bgRedBright: [101, 49],
+		bgGreenBright: [102, 49],
+		bgYellowBright: [103, 49],
+		bgBlueBright: [104, 49],
+		bgMagentaBright: [105, 49],
+		bgCyanBright: [106, 49],
+		bgWhiteBright: [107, 49],
+	},
+};
+
+const modifierNames = Object.keys(styles.modifier);
+const foregroundColorNames = Object.keys(styles.color);
+const backgroundColorNames = Object.keys(styles.bgColor);
+const colorNames = [...foregroundColorNames, ...backgroundColorNames];
+
+function assembleStyles() {
+	const codes = new Map();
+
+	for (const [groupName, group] of Object.entries(styles)) {
+		for (const [styleName, style] of Object.entries(group)) {
+			styles[styleName] = {
+				open: `\u001B[${style[0]}m`,
+				close: `\u001B[${style[1]}m`,
+			};
+
+			group[styleName] = styles[styleName];
+
+			codes.set(style[0], style[1]);
+		}
+
+		Object.defineProperty(styles, groupName, {
+			value: group,
+			enumerable: false,
+		});
+	}
+
+	Object.defineProperty(styles, 'codes', {
+		value: codes,
+		enumerable: false,
+	});
+
+	styles.color.close = '\u001B[39m';
+	styles.bgColor.close = '\u001B[49m';
+
+	styles.color.ansi = wrapAnsi16();
+	styles.color.ansi256 = wrapAnsi256();
+	styles.color.ansi16m = wrapAnsi16m();
+	styles.bgColor.ansi = wrapAnsi16(ANSI_BACKGROUND_OFFSET);
+	styles.bgColor.ansi256 = wrapAnsi256(ANSI_BACKGROUND_OFFSET);
+	styles.bgColor.ansi16m = wrapAnsi16m(ANSI_BACKGROUND_OFFSET);
+
+	// From https://github.com/Qix-/color-convert/blob/3f0e0d4e92e235796ccb17f6e85c72094a651f49/conversions.js
+	Object.defineProperties(styles, {
+		rgbToAnsi256: {
+			value: (red, green, blue) => {
+				// We use the extended greyscale palette here, with the exception of
+				// black and white. normal palette only has 4 greyscale shades.
+				if (red === green && green === blue) {
+					if (red < 8) {
+						return 16;
+					}
+
+					if (red > 248) {
+						return 231;
+					}
+
+					return Math.round(((red - 8) / 247) * 24) + 232;
+				}
+
+				return 16
+					+ (36 * Math.round(red / 255 * 5))
+					+ (6 * Math.round(green / 255 * 5))
+					+ Math.round(blue / 255 * 5);
+			},
+			enumerable: false,
+		},
+		hexToRgb: {
+			value: hex => {
+				const matches = /[a-f\d]{6}|[a-f\d]{3}/i.exec(hex.toString(16));
+				if (!matches) {
+					return [0, 0, 0];
+				}
+
+				let [colorString] = matches;
+
+				if (colorString.length === 3) {
+					colorString = [...colorString].map(character => character + character).join('');
+				}
+
+				const integer = Number.parseInt(colorString, 16);
+
+				return [
+					/* eslint-disable no-bitwise */
+					(integer >> 16) & 0xFF,
+					(integer >> 8) & 0xFF,
+					integer & 0xFF,
+					/* eslint-enable no-bitwise */
+				];
+			},
+			enumerable: false,
+		},
+		hexToAnsi256: {
+			value: hex => styles.rgbToAnsi256(...styles.hexToRgb(hex)),
+			enumerable: false,
+		},
+		ansi256ToAnsi: {
+			value: code => {
+				if (code < 8) {
+					return 30 + code;
+				}
+
+				if (code < 16) {
+					return 90 + (code - 8);
+				}
+
+				let red;
+				let green;
+				let blue;
+
+				if (code >= 232) {
+					red = (((code - 232) * 10) + 8) / 255;
+					green = red;
+					blue = red;
+				} else {
+					code -= 16;
+
+					const remainder = code % 36;
+
+					red = Math.floor(code / 36) / 5;
+					green = Math.floor(remainder / 6) / 5;
+					blue = (remainder % 6) / 5;
+				}
+
+				const value = Math.max(red, green, blue) * 2;
+
+				if (value === 0) {
+					return 30;
+				}
+
+				// eslint-disable-next-line no-bitwise
+				let result = 30 + ((Math.round(blue) << 2) | (Math.round(green) << 1) | Math.round(red));
+
+				if (value === 2) {
+					result += 60;
+				}
+
+				return result;
+			},
+			enumerable: false,
+		},
+		rgbToAnsi: {
+			value: (red, green, blue) => styles.ansi256ToAnsi(styles.rgbToAnsi256(red, green, blue)),
+			enumerable: false,
+		},
+		hexToAnsi: {
+			value: hex => styles.ansi256ToAnsi(styles.hexToAnsi256(hex)),
+			enumerable: false,
+		},
+	});
+
+	return styles;
+}
+
+const ansiStyles = assembleStyles();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ansiStyles);
+
+
+/***/ }),
+
+/***/ "./node_modules/sort-keys-length/index.js":
+/*!************************************************!*\
+  !*** ./node_modules/sort-keys-length/index.js ***!
+  \************************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+
+var sortKeys = __webpack_require__(/*! sort-keys */ "./node_modules/sort-keys/index.js");
+
+/**
+ * Sort object keys by length
+ *
+ * @param obj
+ * @api public
+ */
+
+module.exports.desc = function (obj) {
+	return sortKeys(obj, function (a, b) {
+		return b.length - a.length;
+	});
+}
+
+module.exports.asc = function (obj) {
+	return sortKeys(obj, function (a, b) {
+		return a.length - b.length;
+	});
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/sort-keys/index.js":
+/*!*****************************************!*\
+  !*** ./node_modules/sort-keys/index.js ***!
+  \*****************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+
+var isPlainObj = __webpack_require__(/*! is-plain-obj */ "./node_modules/sort-keys/node_modules/is-plain-obj/index.js");
+
+module.exports = function (obj, opts) {
+	if (!isPlainObj(obj)) {
+		throw new TypeError('Expected a plain object');
+	}
+
+	opts = opts || {};
+
+	// DEPRECATED
+	if (typeof opts === 'function') {
+		opts = {compare: opts};
+	}
+
+	var deep = opts.deep;
+	var seenInput = [];
+	var seenOutput = [];
+
+	var sortKeys = function (x) {
+		var seenIndex = seenInput.indexOf(x);
+
+		if (seenIndex !== -1) {
+			return seenOutput[seenIndex];
+		}
+
+		var ret = {};
+		var keys = Object.keys(x).sort(opts.compare);
+
+		seenInput.push(x);
+		seenOutput.push(ret);
+
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+			var val = x[key];
+
+			ret[key] = deep && isPlainObj(val) ? sortKeys(val) : val;
+		}
+
+		return ret;
+	};
+
+	return sortKeys(obj);
+};
+
+
+/***/ }),
+
+/***/ "./node_modules/sort-keys/node_modules/is-plain-obj/index.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/sort-keys/node_modules/is-plain-obj/index.js ***!
+  \*******************************************************************/
+/***/ ((module) => {
+
+"use strict";
+
+var toString = Object.prototype.toString;
+
+module.exports = function (x) {
+	var prototype;
+	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/stack-trace/lib/stack-trace.js":
 /*!*****************************************************!*\
   !*** ./node_modules/stack-trace/lib/stack-trace.js ***!
@@ -30662,6 +32834,164 @@ Object.defineProperty(exports, "SPLAT", ({
 Object.defineProperty(exports, "configs", ({
   value: __webpack_require__(/*! ./config */ "./node_modules/triple-beam/config/index.js")
 }));
+
+
+/***/ }),
+
+/***/ "./node_modules/unused-filename/index.js":
+/*!***********************************************!*\
+  !*** ./node_modules/unused-filename/index.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MaxTryError: () => (/* binding */ MaxTryError),
+/* harmony export */   separatorIncrementer: () => (/* binding */ separatorIncrementer),
+/* harmony export */   unusedFilename: () => (/* binding */ unusedFilename),
+/* harmony export */   unusedFilenameSync: () => (/* binding */ unusedFilenameSync)
+/* harmony export */ });
+/* harmony import */ var node_path__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node:path */ "node:path");
+/* harmony import */ var path_exists__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! path-exists */ "./node_modules/unused-filename/node_modules/path-exists/index.js");
+/* harmony import */ var escape_string_regexp__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! escape-string-regexp */ "./node_modules/unused-filename/node_modules/escape-string-regexp/index.js");
+
+
+
+
+class MaxTryError extends Error {
+	constructor(originalPath, lastTriedPath) {
+		super('Max tries reached.');
+		this.originalPath = originalPath;
+		this.lastTriedPath = lastTriedPath;
+	}
+}
+
+const parenthesesIncrementer = (inputFilename, extension) => {
+	const match = inputFilename.match(/^(?<filename>.*)\((?<index>\d+)\)$/);
+	let {filename, index} = match ? match.groups : {filename: inputFilename, index: 0};
+	filename = filename.trim();
+	return [`${filename}${extension}`, `${filename} (${++index})${extension}`];
+};
+
+const incrementPath = (filePath, incrementer) => {
+	const ext = node_path__WEBPACK_IMPORTED_MODULE_0__.extname(filePath);
+	const dirname = node_path__WEBPACK_IMPORTED_MODULE_0__.dirname(filePath);
+	const [originalFilename, incrementedFilename] = incrementer(node_path__WEBPACK_IMPORTED_MODULE_0__.basename(filePath, ext), ext);
+	return [node_path__WEBPACK_IMPORTED_MODULE_0__.join(dirname, originalFilename), node_path__WEBPACK_IMPORTED_MODULE_0__.join(dirname, incrementedFilename)];
+};
+
+const separatorIncrementer = separator => {
+	const escapedSeparator = (0,escape_string_regexp__WEBPACK_IMPORTED_MODULE_2__["default"])(separator);
+
+	return (inputFilename, extension) => {
+		const match = new RegExp(`^(?<filename>.*)${escapedSeparator}(?<index>\\d+)$`).exec(inputFilename);
+		let {filename, index} = match ? match.groups : {filename: inputFilename, index: 0};
+		return [`${filename}${extension}`, `${filename.trim()}${separator}${++index}${extension}`];
+	};
+};
+
+async function unusedFilename(filePath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
+	let tries = 0;
+	let [originalPath] = incrementPath(filePath, incrementer);
+	let unusedPath = filePath;
+
+	/* eslint-disable no-await-in-loop, no-constant-condition */
+	while (true) {
+		if (!(await (0,path_exists__WEBPACK_IMPORTED_MODULE_1__.pathExists)(unusedPath))) {
+			return unusedPath;
+		}
+
+		if (++tries > maxTries) {
+			throw new MaxTryError(originalPath, unusedPath);
+		}
+
+		[originalPath, unusedPath] = incrementPath(unusedPath, incrementer);
+	}
+	/* eslint-enable no-await-in-loop, no-constant-condition */
+}
+
+function unusedFilenameSync(filePath, {incrementer = parenthesesIncrementer, maxTries = Number.POSITIVE_INFINITY} = {}) {
+	let tries = 0;
+	let [originalPath] = incrementPath(filePath, incrementer);
+	let unusedPath = filePath;
+
+	/* eslint-disable no-constant-condition */
+	while (true) {
+		if (!(0,path_exists__WEBPACK_IMPORTED_MODULE_1__.pathExistsSync)(unusedPath)) {
+			return unusedPath;
+		}
+
+		if (++tries > maxTries) {
+			throw new MaxTryError(originalPath, unusedPath);
+		}
+
+		[originalPath, unusedPath] = incrementPath(unusedPath, incrementer);
+	}
+	/* eslint-enable no-constant-condition */
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/unused-filename/node_modules/escape-string-regexp/index.js":
+/*!*********************************************************************************!*\
+  !*** ./node_modules/unused-filename/node_modules/escape-string-regexp/index.js ***!
+  \*********************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ escapeStringRegexp)
+/* harmony export */ });
+function escapeStringRegexp(string) {
+	if (typeof string !== 'string') {
+		throw new TypeError('Expected a string');
+	}
+
+	// Escape characters with special meaning either inside or outside character sets.
+	// Use a simple backslash escape when it’s always valid, and a `\xnn` escape when the simpler form would be disallowed by Unicode patterns’ stricter grammar.
+	return string
+		.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&')
+		.replace(/-/g, '\\x2d');
+}
+
+
+/***/ }),
+
+/***/ "./node_modules/unused-filename/node_modules/path-exists/index.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/unused-filename/node_modules/path-exists/index.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   pathExists: () => (/* binding */ pathExists),
+/* harmony export */   pathExistsSync: () => (/* binding */ pathExistsSync)
+/* harmony export */ });
+/* harmony import */ var node_fs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! node:fs */ "node:fs");
+
+
+async function pathExists(path) {
+	try {
+		await node_fs__WEBPACK_IMPORTED_MODULE_0__.promises.access(path);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+function pathExistsSync(path) {
+	try {
+		node_fs__WEBPACK_IMPORTED_MODULE_0__.accessSync(path);
+		return true;
+	} catch {
+		return false;
+	}
+}
 
 
 /***/ }),
@@ -39921,7 +42251,8 @@ class CameraDriver {
         return __awaiter(this, void 0, void 0, function* () {
             system_driver_1.default
                 .execute("bash", ["-c", this.COMMANDS.capture_movie], (stdout, stderr) => {
-                callback(stdout);
+                const buffer = Buffer.from(stdout);
+                callback(buffer);
             })
                 .catch((error) => {
                 throw error;
@@ -40288,6 +42619,30 @@ electron_1.ipcMain.handle("media/canvas", (event, data) => __awaiter(void 0, voi
 
 /***/ }),
 
+/***/ "./src/handlers/payment-handler.ts":
+/*!*****************************************!*\
+  !*** ./src/handlers/payment-handler.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PaymentHandler = void 0;
+const PaymentHandler = (event, url, callback) => {
+    let parsedUrl = new URL(url);
+    const isFinish = parsedUrl.searchParams.has("transaction_status");
+    if (isFinish) {
+        event.preventDefault();
+        const queryParams = Object.fromEntries(parsedUrl.searchParams.entries());
+        callback(queryParams);
+    }
+};
+exports.PaymentHandler = PaymentHandler;
+
+
+/***/ }),
+
 /***/ "./src/handlers/session-handler.ts":
 /*!*****************************************!*\
   !*** ./src/handlers/session-handler.ts ***!
@@ -40387,6 +42742,25 @@ electron_1.ipcMain.handle("session/throw", (event) => {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -40406,6 +42780,7 @@ const logger_utility_1 = __webpack_require__(/*! ./utilities/logger-utility */ "
 const ws_1 = __webpack_require__(/*! ws */ "./node_modules/ws/index.js");
 const camera_driver_1 = __webpack_require__(/*! ./drivers/camera-driver */ "./src/drivers/camera-driver.ts");
 const file_service_1 = __importDefault(__webpack_require__(/*! ./services/file-service */ "./src/services/file-service.ts"));
+const payment_handler_1 = __webpack_require__(/*! ./handlers/payment-handler */ "./src/handlers/payment-handler.ts");
 if (__webpack_require__(/*! electron-squirrel-startup */ "./node_modules/electron-squirrel-startup/index.js")) {
     electron_1.app.quit();
 }
@@ -40428,23 +42803,39 @@ __webpack_require__(/*! ./handlers/session-handler.ts */ "./src/handlers/session
 __webpack_require__(/*! ./handlers/camera-handler.ts */ "./src/handlers/camera-handler.ts");
 electron_1.app.whenReady().then(() => __awaiter(void 0, void 0, void 0, function* () {
     yield createWindow();
+    mainWindow.webContents.on("will-navigate", (event, url) => {
+        (0, payment_handler_1.PaymentHandler)(event, url, (queryParams) => {
+            mainWindow.webContents.send("payment", queryParams);
+        });
+    });
+    const { port1, port2 } = new electron_1.MessageChannelMain();
+    mainWindow.webContents.once("did-finish-load", () => {
+        mainWindow.webContents.postMessage("video", null, [port2]);
+        (() => __awaiter(void 0, void 0, void 0, function* () {
+            const contextMenu = yield Promise.resolve().then(() => __importStar(__webpack_require__(/*! electron-context-menu */ "./node_modules/electron-context-menu/index.js")));
+            contextMenu.default({
+                showCopyLink: true,
+                showCopyImageAddress: true,
+            });
+        }))();
+    });
+    // websocket
     const wss = new ws_1.WebSocketServer({ port: 8080 });
     const camera = new camera_driver_1.CameraDriver(file_service_1.default.captureDir);
     console.log("start liveview service");
-    let i = 1;
-    wss.on("connection", (ws) => {
+    wss.on("connection", (ws) => __awaiter(void 0, void 0, void 0, function* () {
         console.log("Connection establsihed");
         let buffer = Buffer.alloc(0);
-        try {
-            camera.start_liveview((chunk) => {
-                let chunkes = Buffer.from(chunk);
-                buffer = Buffer.concat([buffer, chunkes]);
-                mainWindow.webContents.send("liveview", chunk);
-            });
-        }
-        catch (error) {
-            throw error;
-        }
+        let last = Date.now();
+        camera.start_liveview((chunk) => {
+            const now = Date.now();
+            if (now - last < 200)
+                return;
+            last = now;
+            buffer = Buffer.concat([buffer, chunk]);
+            mainWindow.webContents.send("liveview", buffer);
+            buffer = Buffer.alloc(0);
+        });
         wss.on("error", (err) => {
             console.error(err);
             throw err;
@@ -40452,7 +42843,7 @@ electron_1.app.whenReady().then(() => __awaiter(void 0, void 0, void 0, function
         ws.on("close", () => __awaiter(void 0, void 0, void 0, function* () {
             yield camera.stop_liveview();
         }));
-    });
+    }));
 }));
 electron_1.ipcMain.on("main/reload", () => {
     logger_utility_1.Logger.info("reloading app");
@@ -40926,7 +43317,7 @@ var _a, _SessionService_api;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const axios_1 = __importDefault(__webpack_require__(/*! axios */ "./node_modules/axios/dist/node/axios.cjs"));
 const electron_1 = __webpack_require__(/*! electron */ "electron");
-const store_utility_1 = __webpack_require__(/*! ../utilities/store-utility */ "./src/utilities/store-utility.ts");
+const store_utility_1 = __webpack_require__(/*! ../utilities/store-utility */ "./src/utilities/store-utility.js");
 class SessionService {
     /**
      * initiate begin procedure on current session
@@ -41169,9 +43560,9 @@ exports.Logger = {
 
 /***/ }),
 
-/***/ "./src/utilities/store-utility.ts":
+/***/ "./src/utilities/store-utility.js":
 /*!****************************************!*\
-  !*** ./src/utilities/store-utility.ts ***!
+  !*** ./src/utilities/store-utility.js ***!
   \****************************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -41186,114 +43577,217 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.store = void 0;
-const lowdb_1 = __webpack_require__(/*! lowdb */ "./node_modules/lowdb/lib/index.js");
-const node_1 = __webpack_require__(/*! lowdb/node */ "./node_modules/lowdb/lib/node.js");
-const path_1 = __webpack_require__(/*! path */ "path");
-const electron_1 = __webpack_require__(/*! electron */ "electron");
-const defaultState = {
-    phase: 1,
+var lowdb_1 = __webpack_require__(/*! lowdb */ "./node_modules/lowdb/lib/index.js");
+var node_1 = __webpack_require__(/*! lowdb/node */ "./node_modules/lowdb/lib/node.js");
+var path_1 = __webpack_require__(/*! path */ "path");
+var electron_1 = __webpack_require__(/*! electron */ "electron");
+var defaultState = {
+    phase: 0,
     payment: null,
     frame: null,
     canvas: null,
     reload: 0,
     quantity: 1,
 };
-const file = (0, path_1.join)(electron_1.app.getPath("userData"), "appState.json");
-const adapter = new node_1.JSONFile(file);
-const db = new lowdb_1.Low(adapter, defaultState);
-let init = false;
+var file = (0, path_1.join)(electron_1.app.getPath("userData"), "appState.json");
+var adapter = new node_1.JSONFile(file);
+var db = new lowdb_1.Low(adapter, defaultState);
+var init = false;
 function lazyInit() {
-    return __awaiter(this, void 0, void 0, function* () {
-        if (!init) {
-            yield db.read();
-            db.data || (db.data = defaultState);
-            yield db.write();
-            init = true;
-        }
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!!init) return [3 /*break*/, 3];
+                    return [4 /*yield*/, db.read()];
+                case 1:
+                    _a.sent();
+                    db.data || (db.data = defaultState);
+                    return [4 /*yield*/, db.write()];
+                case 2:
+                    _a.sent();
+                    init = true;
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
     });
 }
 /**
  * store object of state database repository, everything is async process
  */
-const store = {
-    lazyInit,
-    log() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield lazyInit();
-            console.log(db.data);
+var store = {
+    lazyInit: lazyInit,
+    log: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        console.log(db.data);
+                        return [2 /*return*/];
+                }
+            });
         });
     },
-    getState() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield lazyInit();
-            return db.data;
+    getState: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, db.data];
+                }
+            });
         });
     },
-    get(key) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield lazyInit();
-            return db.data[key];
+    get: function (key) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, db.data[key]];
+                }
+            });
         });
     },
     /**
      * Set current state's data with specified object of key value pair
      * Use {ISession} interface to populate the object
      */
-    set(key, value) {
-        return __awaiter(this, void 0, void 0, function* () {
-            db.data[key] = value;
-            yield db.write();
+    set: function (key, value) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        db.data[key] = value;
+                        return [4 /*yield*/, db.write()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
         });
     },
     /**
      * Increment state's phase number by one
      */
-    phaseIncrement() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield lazyInit();
-                db.data["phase"]++;
-                yield db.write();
-            }
-            catch (error) {
-                throw error;
-            }
+    phaseIncrement: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        db.data["phase"]++;
+                        return [4 /*yield*/, db.write()];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_1 = _a.sent();
+                        throw error_1;
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
     },
     /**
      * Reset store data to default state
      */
-    reset() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield lazyInit();
-                db.data = defaultState;
-                yield db.write();
-            }
-            catch (error) {
-                throw error;
-            }
+    reset: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        db.data = defaultState;
+                        return [4 /*yield*/, db.write()];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_2 = _a.sent();
+                        throw error_2;
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
     },
     // add 'reload' state by one
-    reloadIncrement() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                yield lazyInit();
-                db.data["reload"]++;
-                yield db.write();
-            }
-            catch (error) {
-                throw error;
-            }
+    reloadIncrement: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        db.data["reload"]++;
+                        return [4 /*yield*/, db.write()];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        error_3 = _a.sent();
+                        throw error_3;
+                    case 4: return [2 /*return*/];
+                }
+            });
         });
     },
-    getReloadCount() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield lazyInit();
-            return db.data["reload"];
+    getReloadCount: function () {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, lazyInit()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, db.data["reload"]];
+                }
+            });
         });
     },
 };
@@ -41453,6 +43947,17 @@ module.exports = require("node:fs/promises");
 
 "use strict";
 module.exports = require("node:path");
+
+/***/ }),
+
+/***/ "node:process":
+/*!*******************************!*\
+  !*** external "node:process" ***!
+  \*******************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:process");
 
 /***/ }),
 
