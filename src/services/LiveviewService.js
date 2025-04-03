@@ -12,28 +12,23 @@ exports.start = (window) => {
     });
     let buffer = Buffer.alloc(0);
 
-    try {
-      CameraBackend._start_stream((chunk) => {
-        buffer = Buffer.concat([buffer, chunk]);
+    CameraBackend._start_stream((chunk) => {
+      buffer = Buffer.concat([buffer, chunk]);
 
+      if (buffer.length > 10000)
         if (buffer.includes(Buffer.from([0xff, 0xd9]))) {
           window.webContents.send("stream", buffer);
           buffer = Buffer.alloc(0);
         }
-      });
-    } catch (error) {
-      console.error(error);
-      logger.error(error);
-    }
-
-    wss.on("error", (err) => {
-      console.error(err);
-      logger.error(err);
     });
 
     ws.on("close", async () => {
       console.log("A connection is closed");
       await CameraBackend._stop_stream();
     });
+  });
+  wss.on("error", (err) => {
+    console.error(err);
+    logger.error(err);
   });
 };
