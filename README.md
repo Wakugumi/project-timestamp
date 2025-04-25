@@ -1,46 +1,55 @@
-# Developer > [!NOTE]
+# IPC Channel list
 
-## Node Process backend notes
+`liveview` stream chunks of video buffer, used in `LiveviewService` emitted by web socket
 
-`gphoto2 --stdout --capture-movie | ffmpeg  -i - -vcodec rawvideo -pix_fmt yuv420p -threads 0 -f v4l2 -s:v 1920x1080 -r 25 /dev/video2`
-The `-r` flag sets the frame rate of the stream. Assuming `/dev/video2` is not occupied, otherwise just change the name.
-This method allows GPhoto2 to pipe its output stream to ffmpeg which then pipe it as virtual webcam.
+## Session
 
-## Response Body Format
+`session` channels handles main use case in a single session. A session is defined as the beginning of user enters the app until printing the result as well a link generated as QR. This object is used as state control.
 
-Generally all endpoint will return the same JSON format in their payload, with status being considered as important info too.
-`{
-  "message" : <string>
-}`
-The string value for `message` will have a generic convention to process, each endpoint will have their own conventions.
+`phase` is a number of stage the user is running through. A session has eight phases. This term is mostly useful in the renderer codebase, since the components naming convention are based by the phase number. Node runtime objective is to ensure the single source of truth for phase number, maintaining consistency in the renderer just in case error is thrown at the renderer and needs a reboot, continuing at the stage at which this runtime stores the `phase` object.
 
-However, if the response status returned was `500` as number, the response payload will look like this:
-`{
-  "error" : <string>
-}`
+### session channels
 
-### `/status`
+`session/begin` initiation of a session, invoked at user enters the app.
 
-`ready` : Camera device are ready to be use
+`session/proceed` move forward to next phase.
 
-### `/checkup`
+`session/end` ends the current session, resetting `phase` and cleansing program state.
 
-This checks the camera functionality by testing captures and reading the downloaded file
+`session/finalize` invoke the last operation for processing user's content, from uploading to printing, returns the download url. Takes an array of url's of pictures that user selects to process
 
-`ok` : Required functions are good to go
+`session/load` invoke from renderer to get current state in Node runtime, mostly use for reloading app.
 
-### `/capture`
+`session/state/payment` invoke to save payment object to Node state runtime.
 
-`succcess` : Capture action has successfully run and any further processing are resolved.
+`session/state/frame` invoke to save frame object to Node state runtime.
 
-### `/stream/start`
+`session/state/canvas` invoke to save canvas object to Node state runtime.
 
-`ready` : Stream has started
+`session/throw` invoke when the renderer throw error.
 
-### `/stream/stop`
+## Media
 
-`ok` : Stream has stopped
+`media` channels handles functions associated with media file, including saving media files, printing, and rendering video.
 
-### `/session/reset`
+### media channels
 
-`success` : Session has been reset.
+`media/print` initiate printing procedure. Receive URL representation of image binary data, write to disk and spawn process to print from the written file.
+
+`media/render` initiate stop motion video rendering procedure. Spawn independent process to render video from a path configured source folder.
+
+`media/motion` receive URL representation of image binary data to be written as `motion` (read the Motion section for definition).
+
+`media/canvas` receive URL representation of image binary data to be written as `canvas` (read the Canvas section for definition).
+
+`media/captures` invoke to return list of captured images as array of absolute paths
+
+### main channels
+
+This channels handler are placed in the main script. Objective of these channels is to control the main process window like reloading or loading a fallback page
+
+`main/reload` reload the window
+
+`main/fallback` load new window with fallback page
+
+`main/fallback/refund` load new window with fallback page but refunded

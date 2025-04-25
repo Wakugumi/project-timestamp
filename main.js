@@ -39,7 +39,7 @@ app
     });
 
     window.maximize();
-	  window.setFullScreen(true);
+    window.setFullScreen(true);
 
     if (!isDev) window.loadURL("http://localhost:5173");
     else window.loadFile("dist/index.html");
@@ -67,6 +67,18 @@ app
      * This opens streaming process from camera and process while sending with Electron IPC.
      */
     require("./src/services/LiveviewService.js").start(window);
+
+    ipcMain.handle("main/reload", () => {
+      logger.info("calling reload on window with ignoring cache");
+      window.webContents.reload();
+    });
+
+    ipcMain.handle("main/fallback", () => {
+      window.loadFile(path.join(__dirname, "src/renderers/fallback.html"));
+      logger.error(
+        "main process fallback called, app is currently on danger state",
+      );
+    });
 
     // Handles close call from window system
     window.on("closed", () => {

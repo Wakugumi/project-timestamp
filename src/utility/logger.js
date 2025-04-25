@@ -1,3 +1,4 @@
+const { default: axios } = require("axios");
 const winston = require("winston");
 
 /** Define custom levels
@@ -57,3 +58,41 @@ exports.logger = winston.createLogger({
     }),
   ],
 });
+
+const logBackend = async (level, message) => {
+  try {
+    const payload = {
+      level: level,
+      message,
+      message,
+      timestamp: new Date().toISOString(),
+    };
+    await axios.post(
+      "https://timestamp.fun/api/boothLogs",
+
+      payload,
+      {
+        token: process.env.BOOTH_ID,
+      },
+    );
+  } catch (error) {
+    console.error("[LOGGER] error logging to backend: ", error);
+  }
+};
+
+const logWrapper = (level, message, ...args) => {
+  const msg = [
+    message,
+    ...args.map((arg) =>
+      typeof arg === "object" ? JSON.stringify(arg) : String(arg),
+    ),
+  ].join(" ");
+  this.logger.log(level, msg);
+  logBackend(level, msg);
+};
+
+exports.debug = (msg, ...args) => logWrapper("debug", msg, args);
+exports.info = (msg, ...args) => logWrapper("info", msg, args);
+exports.warn = (msg, ...args) => logWrapper("warn", msg, args);
+exports.trace = (msg, ...args) => logWrapper("trace", msg, args);
+exports.error = (msg, ...args) => logWrapper("error", msg, args);

@@ -20,3 +20,56 @@
 2025-03-21 14:44:50 [ERROR]: ipcMain is not defined 
 2025-03-23 15:31:24 [ERROR]: window.setFullscreen is not a function 
 2025-04-04 00:44:31 [ERROR]: FILESYSTEM 
+2025-04-08 18:07:54 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-08 18:08:00 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-17 01:42:49 [ERROR]: ipcMain is not defined 
+2025-04-17 01:43:18 [ERROR]: FILESYSTEM 
+2025-04-17 01:46:54 [ERROR]: ipcMain is not defined 
+2025-04-17 01:47:12 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:132:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:47:25 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:132:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:47:57 [ERROR]: FILESYSTEM 
+2025-04-17 01:49:13 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:130:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:49:40 [ERROR]: FILESYSTEM 
+2025-04-17 01:51:53 [ERROR]: ipcMain is not defined 
+2025-04-17 01:52:01 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:133:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:52:06 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:133:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:52:42 [ERROR]: FILESYSTEM 
+2025-04-17 01:52:55 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:130:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:53:33 [ERROR]: ipcMain is not defined 
+2025-04-17 01:54:49 [ERROR]: ipcMain is not defined 
+2025-04-17 01:56:12 [ERROR]: FILESYSTEM 
+2025-04-17 01:56:20 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:134:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 01:57:46 [ERROR]: ipcMain is not defined 
+2025-04-17 01:57:51 [ERROR]: ipcMain is not defined 
+2025-04-17 01:58:42 [ERROR]: FILESYSTEM 
+2025-04-17 01:59:51 [ERROR]: Error handling session throw Cannot read properties of undefined (reading 'invoke') {"stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:134:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-04-17 02:00:16 [ERROR]: FILESYSTEM 
+2025-04-17 02:01:46 [ERROR]: ipcMain is not defined 
+2025-04-17 02:02:33 [ERROR]: FILESYSTEM 
+2025-04-25 09:44:46 [ERROR]: ipcMain is not defined 
+2025-04-25 09:48:34 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:48:45 [ERROR]: ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/motions/01.jpg' {"errno":-2,"code":"ENOENT","syscall":"open","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg"}
+2025-04-25 09:51:13 [ERROR]: ipcMain is not defined 
+2025-04-25 10:04:09 [ERROR]: ipcMain is not defined 
+2025-04-25 10:06:44 [ERROR]: ipcMain is not defined 
+2025-04-25 10:11:40 [ERROR]: ipcMain is not defined 
+2025-04-25 10:57:46 [ERROR]: ipcMain is not defined 
+2025-04-25 10:58:04 [ERROR]: ipcMain is not defined 
+2025-04-25 11:04:29 [ERROR]: FILESYSTEM 
+2025-04-25 11:07:20 [ERROR]: ipcMain is not defined 
+2025-04-25 11:10:53 [ERROR]: ipcMain is not defined 
+2025-04-25 11:40:36 [ERROR]: ipcMain is not defined 
+2025-04-25 11:48:23 [ERROR]: ipcMain is not defined 
+2025-04-25 12:56:50 [ERROR]: ipcMain is not defined 
+2025-04-25 12:58:03 [ERROR]: ipcMain is not defined 
+2025-04-25 12:58:34 [ERROR]: ipcMain is not defined 
+2025-04-25 13:36:41 [ERROR]: ipcMain is not defined 
+2025-04-25 13:41:18 [ERROR]: ipcMain is not defined 

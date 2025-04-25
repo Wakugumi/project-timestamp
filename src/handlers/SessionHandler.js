@@ -1,4 +1,5 @@
 const { ipcMain } = require("electron");
+
 const { IPCResponse } = require("../interfaces/ipcResponseInterface");
 const File = require("../services/FileService");
 const Media = require("../services/MediaService.js");
@@ -11,21 +12,25 @@ const {
   setPayment,
   setFrame,
   setCanvas,
+  incrementReload,
+  setPictures,
 } = require("../helpers/SessionManager");
 const api = require("../services/APIService.js");
 const { logger } = require("../utility/logger.js");
+const Payment = require("../services/PaymentService.js");
+const { ipcRenderer } = require("electron");
 
-ipcMain.handle("session/start", async (event, data) => {
-  if (store.getState().session.phase > 1) {
-    const savedPhase = store.getState().session.phase;
+ipcMain.handle("session/begin", async (event, data) => {
+  const state = store.getState().session;
+  if (state.phase > 1) {
+    const savedPhase = state.phase;
     logger.warn(`Rebooting app, current interrupted phase: ${savedPhase}`);
-    return IPCResponse.ok("reboot", { phase: savedPhase });
+    return IPCResponse.ok("reload", state);
   }
-  store.dispatch(setPhase(1));
-  return IPCResponse.ok("normal", { phase: 1 });
+  return IPCResponse.ok("normal", state);
 });
 
-ipcMain.handle("session/reset", async (event, data) => {
+ipcMain.handle("session/end", async (event, data) => {
   try {
     await File.resetSession();
     store.dispatch(resetSession());
@@ -46,27 +51,21 @@ ipcMain.handle("session/get", async (event, data) => {
   }
 });
 
-ipcMain.handle("session/process", async (event, data) => {
-  console.log("session/prcess", data);
+ipcMain.handle("session/finalize", async (event, data) => {
   try {
     await Media.renderMotion();
 
     /** @type {import('./APIService.js').UploadResponse} */
     let url = await api.upload(data.count);
-    console.log("session/process url", url);
     let imageUrl = url.images;
-    console.log("session/process imageurl", imageUrl);
     let videoUrl = url.video.url;
 
-    console.log("session/process videourl", videoUrl);
     let videoSrc = File.getExportDir() + "video.mp4";
     let imageSrc = data.urls;
     imageSrc.push(File.getExportDir() + "canvas.jpg");
-    console.log("session/process imageSrc", imageSrc);
 
     startUpload(data.urls, videoSrc, imageUrl, videoUrl);
     const respond = `https://timestamp.fun/views/${url.id}`;
-    console.log(respond);
     return IPCResponse.ok("fetches result url", respond);
   } catch (error) {
     console.error(error);
@@ -74,24 +73,28 @@ ipcMain.handle("session/process", async (event, data) => {
   }
 });
 
-ipcMain.handle("session/next", async (event, data) => {
+ipcMain.handle("session/proceed", async (event, data) => {
   store.dispatch(nextPhase());
   return IPCResponse.ok();
 });
 
-ipcMain.handle("session/payment", async (event, data) => {
+ipcMain.handle("session/state/payment", async (event, data) => {
   store.dispatch(setPayment(data));
   return IPCResponse.ok();
 });
 
-ipcMain.handle("session/frame", async (event, data) => {
+ipcMain.handle("session/state/frame", async (event, data) => {
   store.dispatch(setFrame(data));
   return IPCResponse.ok();
 });
 
-ipcMain.handle("session/canvas", async (event, data) => {
+ipcMain.handle("session/state/canvas", async (event, data) => {
   store.dispatch(setCanvas(data));
   return IPCResponse.ok();
+});
+
+ipcMain.handle("session/state/pictures", async (event, data) => {
+  store.dispatch(setPictures(data));
 });
 
 ipcMain.handle("session/load", async () => {
@@ -99,6 +102,39 @@ ipcMain.handle("session/load", async () => {
     const object = store.getState().session;
     return IPCResponse.ok("load", object);
   } catch (error) {
+    return IPCResponse.error(error);
+  }
+});
+
+ipcMain.handle("session/throw", async () => {
+  logger.warn("Throw from renderer");
+  try {
+    store.dispatch(incrementReload());
+    if (store.getState().session.reload >= 3) {
+      const payment = store.getState().session.payment;
+      if (payment) {
+        if (!payment.transaction_id) {
+          const error = new Error(
+            "Error handling session throw, exceed three times, payment occured but no transaction_id",
+          );
+
+          ipcRenderer.invoke("main/fallback");
+          console.error(error);
+          throw error;
+        }
+        await Payment.refund(payment.transaction_id);
+        ipcRenderer.invoke("main/fallback/refund");
+      }
+
+      ipcRenderer.invoke("main/fallback");
+      return IPCResponse.ok();
+    } else {
+      ipcRenderer.invoke("main/reload");
+      console.log(store.getState().session);
+    }
+  } catch (error) {
+    logger.error("Error handling session throw", error);
+    ipcRenderer.invoke("main/fallback");
     return IPCResponse.error(error);
   }
 });

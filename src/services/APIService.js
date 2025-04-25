@@ -45,3 +45,12 @@ exports.upload = async (ImageCount) => {
       throw error;
     });
 };
+
+exports.refund = async (transaction_id) => {
+  try {
+    return await api.post("/transactions/refund/" + transaction_id, null);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

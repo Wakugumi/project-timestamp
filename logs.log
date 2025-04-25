@@ -2551,3 +2551,640 @@
 {"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-04 00:47:19"}
 {"level":"warn","message":"Capturing failed, attempting to retry: attempt 2","timestamp":"2025-04-04 00:47:20"}
 {"level":"warn","message":"Capturing failed, attempting to retry: attempt 3","timestamp":"2025-04-04 00:47:21"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-08 18:05:56"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:05:58"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:06:53"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:07:06"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:07:08"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:07:52"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-08 18:07:53"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-08 18:07:54"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-08 18:08:00"}
+{"level":"error","timestamp":"2025-04-17 01:42:49"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:42:55"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:42:56","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:43:04"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:43:18"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:43:23"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:43:40"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:44:22"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:44:22","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-17 01:46:54"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:46:54"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:46:54","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:46:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:47:02"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:132:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:47:12"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:132:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:47:25"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:47:57"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:49:06"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:49:09"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:130:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:49:13"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:49:40"}
+{"level":"error","timestamp":"2025-04-17 01:51:53"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:51:54"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:51:54","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:51:56"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:51:58"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:133:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:52:01"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:133:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:52:06"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:52:42"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:130:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:52:55"}
+{"level":"error","timestamp":"2025-04-17 01:53:33"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:53:34"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:53:34","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:53:37"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:53:39"}
+{"level":"error","timestamp":"2025-04-17 01:54:49"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:54:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:54:50","type":"session/setPayment"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:56:12"}
+{"level":"warn","message":"Throw from renderer","timestamp":"2025-04-17 01:56:20"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:134:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:56:20"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:57:34"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:57:34","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-17 01:57:46"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:57:46"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:57:46","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-17 01:57:51"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 01:57:52"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 01:57:52","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:57:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:58:02"}
+{"level":"warn","message":"Rebooting app, current interrupted phase: 3","timestamp":"2025-04-17 01:58:41"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 01:58:42"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:58:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 01:58:53"}
+{"level":"warn","message":"Rebooting app, current interrupted phase: 5","timestamp":"2025-04-17 01:58:54"}
+{"level":"warn","message":"Rebooting app, current interrupted phase: 5","timestamp":"2025-04-17 01:58:57"}
+{"level":"warn","message":"Throw from renderer","timestamp":"2025-04-17 01:59:51"}
+{"level":"error","message":"Error handling session throw Cannot read properties of undefined (reading 'invoke')","stack":"TypeError: Cannot read properties of undefined (reading 'invoke')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:134:19\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)","timestamp":"2025-04-17 01:59:51"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 02:00:16"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 02:01:12"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 02:01:15"}
+{"level":"error","timestamp":"2025-04-17 02:01:46"}
+{"level":"info","message":{"payload":1,"type":"session/setPhase"},"timestamp":"2025-04-17 02:01:48"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-17 02:01:48","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 02:01:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-17 02:01:53"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-17 02:02:33"}
+{"level":"error","timestamp":"2025-04-25 09:44:46"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 09:44:51","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:47:23"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:47:33"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:47:45"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 09:47:45","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=680af7d1c7660b35726e58d0&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"20000.00","order_id":"680af7d1c7660b35726e58d0","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"c4ae7c6e-93da-4807-89b9-f31c7d6f9045","transaction_status":"settlement","transaction_time":"2025-04-25 09:47:46"},"timestamp":"2025-04-25 09:48:27","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:48:30"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:48:34"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:34"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"code":"ENOENT","errno":-2,"level":"error","path":"/home/wakugumi/Project/project-timestamp/motions/01.jpg","syscall":"open","timestamp":"2025-04-25 09:48:45"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 2","timestamp":"2025-04-25 09:49:45"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 3","timestamp":"2025-04-25 09:49:50"}
+{"level":"error","timestamp":"2025-04-25 09:51:13"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 09:51:15","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:51:26"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:51:30"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:53:00"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 09:53:00","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":{"finish_redirect_url":"?order_id=680af90cc7660b35726e58d3&status_code=200&transaction_status=settlement","fraud_status":"accept","gross_amount":"20000.00","order_id":"680af90cc7660b35726e58d3","payment_type":"qris","status_code":"200","status_message":"Success, transaction is found","transaction_id":"e96d8fc8-726f-4513-886d-ad4b0c1fb5b9","transaction_status":"settlement","transaction_time":"2025-04-25 09:53:01"},"timestamp":"2025-04-25 09:53:26","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:53:29"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 09:53:30"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-25 09:53:35"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-25 09:53:43"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-25 09:53:55"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 2","timestamp":"2025-04-25 09:53:56"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 1","timestamp":"2025-04-25 09:54:20"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 2","timestamp":"2025-04-25 09:54:21"}
+{"level":"warn","message":"Capturing failed, attempting to retry: attempt 3","timestamp":"2025-04-25 09:54:22"}
+{"level":"error","timestamp":"2025-04-25 10:04:09"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:04:10","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:04:12"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:04:14"}
+{"level":"error","timestamp":"2025-04-25 10:06:44"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:08:35","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:08:49","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 10:11:40"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:49:50","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:50:33","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:21","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:25","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:29","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:29","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:51:35"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 10:51:47"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:52","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:51:53","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:52:00","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:52:01","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:53:32","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:53:33","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:53:33","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:55:42","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:55:42","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:37","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:37","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:38","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:38","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:39","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:39","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:40","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:40","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 10:57:46"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:47","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:47","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:57:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:53","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:57:54","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 10:58:04"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:58:05","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 10:58:05","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:58:06"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:58:08"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 10:59:02"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:59:34"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 10:59:36"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:00:13"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:00:19"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:00:20"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:00:32","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:00:38","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:00:40"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:00:44"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:00:49"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:00:49","type":"session/setPayment"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:01:30"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:01:30"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:02:55","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:02:55","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:02:56","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:22","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:22","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:22","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:03:24"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:03:26"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:35","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:37","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:03:39"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:03:41"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:03:44"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:03:44","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/canvas.jpg'","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:03:47"}
+{"level":"info","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:03:47"}
+{"level":"info","timestamp":"2025-04-25 11:03:49"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:03:49"}
+{"level":"info","timestamp":"2025-04-25 11:03:49"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:03:49"}
+{"level":"error","message":"FILESYSTEM","timestamp":"2025-04-25 11:04:29"}
+{"level":"error","timestamp":"2025-04-25 11:07:20"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:07:21","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:07:21","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:08:23"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:08:25"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:08:33","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:08:34","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:08:35"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:08:36"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:08:39"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:08:39","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/canvas.jpg'","timestamp":"2025-04-25 11:08:40"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:08:40"}
+{"level":"info","timestamp":"2025-04-25 11:08:42"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:08:42"}
+{"level":"info","timestamp":"2025-04-25 11:08:42"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:08:42"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:10:04"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:10:04"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:10:13","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:10:13","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:10:13","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 11:10:53"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:10:53","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:10:54","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:10:55"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:10:56"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:11:03","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:11:05","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:11:06"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:11:07"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:11:30"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:11:31"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:11:31"}
+{"level":"info","timestamp":"2025-04-25 11:11:32"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:11:32"}
+{"level":"info","timestamp":"2025-04-25 11:11:33"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:11:33"}
+{"level":"info","timestamp":"2025-04-25 11:11:33"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:11:33"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:12:44"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:12:44"}
+{"level":"error","timestamp":"2025-04-25 11:40:36"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:40:37","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:40:38","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:40:47"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:40:49"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:40:57","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:40:59","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:40:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:41:00"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:41:03"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:41:04"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:41:04"}
+{"level":"info","timestamp":"2025-04-25 11:41:06"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:41:06"}
+{"level":"info","timestamp":"2025-04-25 11:41:06"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:41:06"}
+{"level":"info","timestamp":"2025-04-25 11:41:06"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:41:06"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:42:51"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:42:51"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:45:48"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:45:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:45:57","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:45:59","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:46:00"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:46:02"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:46:05"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:46:06"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:46:06"}
+{"level":"info","timestamp":"2025-04-25 11:46:07"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:46:07"}
+{"level":"info","timestamp":"2025-04-25 11:46:08"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:46:08"}
+{"level":"info","timestamp":"2025-04-25 11:46:08"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:46:08"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:47:48"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:47:48"}
+{"level":"error","timestamp":"2025-04-25 11:48:23"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:48:24","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:48:24","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:48:26"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:48:27"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:48:38","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:48:39","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:48:40"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:48:42"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:48:45"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:48:46"}
+{"level":"info","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:48:46"}
+{"level":"info","timestamp":"2025-04-25 11:48:47"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:48:47"}
+{"level":"info","timestamp":"2025-04-25 11:48:48"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:48:48"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:50:08"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 11:50:08"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:58:45"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:58:47"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:58:57","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 11:58:59","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:58:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:59:00"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 11:59:02"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":null,"timestamp":"2025-04-25 11:59:03"}
+{"level":"info","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:59:03"}
+{"level":"info","timestamp":"2025-04-25 11:59:05"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:59:05"}
+{"level":"info","timestamp":"2025-04-25 11:59:05"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 11:59:05"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:00:46"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:00:46"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:07:15"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:07:17"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:07:27","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:07:31","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:07:32"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:07:33"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:07:35"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:07:36"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:07:36"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:07:36"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:07:36"}
+{"level":"info","timestamp":"2025-04-25 12:07:38"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:07:38"}
+{"level":"info","timestamp":"2025-04-25 12:07:38"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:07:38"}
+{"level":"info","timestamp":"2025-04-25 12:07:38"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:07:38"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:08:36"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:08:36"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:12:29"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:12:31"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:12:43","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:12:44","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:12:45"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:12:46"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:12:48"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 12:12:49"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:12:49"}
+{"level":"info","timestamp":"2025-04-25 12:12:50"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:12:50"}
+{"level":"info","timestamp":"2025-04-25 12:12:51"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:12:51"}
+{"level":"info","timestamp":"2025-04-25 12:12:51"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:12:51"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:13:50"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:13:50"}
+{"level":"error","timestamp":"2025-04-25 12:56:50"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:56:51","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:56:52","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:57:01"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:57:04"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:57:11","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:57:14","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:57:15"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:57:16"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:57:20"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:57:20","type":"session/setPayment"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:57:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:57:21"}
+{"level":"info","timestamp":"2025-04-25 12:57:23"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:57:23"}
+{"level":"info","timestamp":"2025-04-25 12:57:23"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:57:23"}
+{"level":"info","timestamp":"2025-04-25 12:57:23"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:57:23"}
+{"level":"error","timestamp":"2025-04-25 12:58:03"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:04","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:09","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:18"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:19"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:22","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 12:58:34"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:34","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:34","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:36"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:37"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:45","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 12:58:47","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:48"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:49"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:58:51"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 12:58:52"}
+{"level":"info","message":null,"timestamp":"2025-04-25 12:58:52"}
+{"level":"info","timestamp":"2025-04-25 12:58:53"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:58:53"}
+{"level":"info","timestamp":"2025-04-25 12:58:54"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:58:54"}
+{"level":"info","timestamp":"2025-04-25 12:58:54"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 12:58:54"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:59:52"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 12:59:52"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:59:59"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 12:59:59"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:00:06","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:00:09","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:00:10"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:00:11"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:00:13"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:00:14"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:00:14"}
+{"level":"info","timestamp":"2025-04-25 13:00:15"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:00:15"}
+{"level":"info","timestamp":"2025-04-25 13:00:16"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:00:16"}
+{"level":"info","timestamp":"2025-04-25 13:00:17"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:00:17"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:01:15"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:01:15"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:22:27"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:22:28"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:22:38","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:22:41","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:22:41"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:22:42"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:22:44"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/canvas.jpg'","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 13:22:45"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:22:45"}
+{"level":"info","timestamp":"2025-04-25 13:22:46"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:22:46"}
+{"level":"info","timestamp":"2025-04-25 13:22:47"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:22:47"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:23:46"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:23:46"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:34:05"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:34:07"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:34:15","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:34:16","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:34:17"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:34:18"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:34:20"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/canvas.jpg'","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 13:34:21"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:34:21"}
+{"level":"info","timestamp":"2025-04-25 13:34:23"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:34:23"}
+{"level":"info","timestamp":"2025-04-25 13:34:23"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:34:23"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:35:19"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:35:19"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:35:23"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:35:25"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:35:34","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:35:36","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:35:37"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:35:37"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:35:40"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:35:41"}
+{"level":"info","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:35:41"}
+{"level":"info","timestamp":"2025-04-25 13:35:43"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:35:43"}
+{"level":"info","timestamp":"2025-04-25 13:35:43"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:35:43"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:35:58"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:35:58"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:36:23"}
+{"level":"error","timestamp":"2025-04-25 13:36:41"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:36:41","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:36:42","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:36:42"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:36:52"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:36:54"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:37:04"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:39:11"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:39:13"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:39:21","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:39:25","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:39:26"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:39:27"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:39:30"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:39:30","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-04-25 13:41:18"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:41:19","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:41:19","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:41:24"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:41:27"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:42:07"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:42:10"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:42:12"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:42:26","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:42:28","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:42:29"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:42:30"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:42:32"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":"ENOENT: no such file or directory, open '/home/wakugumi/Project/project-timestamp/exports/video.mp4'","timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":"Upload Worker starts","timestamp":"2025-04-25 13:42:33"}
+{"level":"info","message":null,"timestamp":"2025-04-25 13:42:33"}
+{"level":"info","timestamp":"2025-04-25 13:42:34"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:42:34"}
+{"level":"info","timestamp":"2025-04-25 13:42:35"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:42:35"}
+{"level":"info","timestamp":"2025-04-25 13:42:35"}
+{"level":"info","message":"200 - ","timestamp":"2025-04-25 13:42:35"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:43:32"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:43:32"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:49:44"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:49:46"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:49:57","type":"session/setPayment"}
+{"level":"info","message":"payment","payload":null,"timestamp":"2025-04-25 13:50:01","type":"session/setPayment"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:50:02"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:50:04"}
+{"level":"info","message":"nextPhase","timestamp":"2025-04-25 13:50:06"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:51:07"}
+{"level":"warn","message":"FILESYSTEM","timestamp":"2025-04-25 13:51:07"}
