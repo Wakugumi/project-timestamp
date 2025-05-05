@@ -6053,3 +6053,4 @@
 {"level":"info","message":"payment","payload":null,"timestamp":"2025-05-06 02:02:47","type":"session/setPayment"}
 {"level":"info","message":"payment","payload":null,"timestamp":"2025-05-06 02:02:48","type":"session/setPayment"}
 {"level":"info","message":"nextPhase","timestamp":"2025-05-06 02:02:52"}
+{"level":"error","timestamp":"2025-05-06 02:21:53"}

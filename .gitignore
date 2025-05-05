@@ -7,3 +7,4 @@ captures/*
 exports/*
 key.json
 dist/
+build/

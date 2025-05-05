@@ -48,9 +48,15 @@
   },
   "build": {
     "appId": "com.timestamp.photobooth",
+    "directories": {
+      "output": "dist"
+    },
     "files": [
-      "dist/**/*",
-      "./**/*"
+      "build/**/*",
+      "main.js",
+      "package.json",
+      "src/**/*",
+      "preload.js"
     ],
     "extraResources": [],
     "asar": true,
