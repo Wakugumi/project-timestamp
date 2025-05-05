@@ -58,28 +58,6 @@ exports.logger = winston.createLogger({
     }),
   ],
 });
-
-const logBackend = async (level, message) => {
-  try {
-    const payload = {
-      level: level,
-      message,
-      message,
-      timestamp: new Date().toISOString(),
-    };
-    await axios.post(
-      "https://timestamp.fun/api/boothLogs",
-
-      payload,
-      {
-        token: process.env.BOOTH_ID,
-      },
-    );
-  } catch (error) {
-    console.error("[LOGGER] error logging to backend: ", error);
-  }
-};
-
 const logWrapper = (level, message, ...args) => {
   const msg = [
     message,
@@ -88,7 +66,6 @@ const logWrapper = (level, message, ...args) => {
     ),
   ].join(" ");
   this.logger.log(level, msg);
-  logBackend(level, msg);
 };
 
 exports.debug = (msg, ...args) => logWrapper("debug", msg, args);

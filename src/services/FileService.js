@@ -2,13 +2,14 @@ const fs = require("fs/promises");
 const { logger } = require("../utility/logger");
 const path = require("path");
 const CameraBackend = require("./backends/camera");
-const { readdirSync } = require("fs");
+const { readdirSync, existsSync, mkdirSync } = require("fs");
+const { app } = require("electron");
 
 const FOLDERPATH = {
-  captures: process.cwd() + "/captures/",
-  frames: process.cwd() + "/frames/",
-  exports: process.cwd() + "/exports/",
-  motions: process.cwd() + "/motions/",
+  captures: app.getPath("userData") + "/captures/",
+  frames: app.getPath("userData") + "/frames/",
+  exports: app.getPath("userData") + "/exports/",
+  motions: app.getPath("userData") + "/motions/",
 };
 
 /**
@@ -29,6 +30,13 @@ exports.getMotionsDir = () => {
 
 exports.getExportDir = () => {
   return FOLDERPATH.exports;
+};
+
+exports.scanFolders = async () => {
+  if (!existsSync(FOLDERPATH.captures)) mkdirSync(FOLDERPATH.captures);
+  if (!existsSync(FOLDERPATH.frames)) mkdirSync(FOLDERPATH.frames);
+  if (!existsSync(FOLDERPATH.motions)) mkdirSync(FOLDERPATH.motions);
+  if (!existsSync(FOLDERPATH.exports)) mkdirSync(FOLDERPATH.exports);
 };
 
 exports.getExports = async () => {

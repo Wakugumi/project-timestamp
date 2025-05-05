@@ -1,4 +1,4 @@
-const { app, BrowserWindow, MessageChannelMain } = require("electron");
+const { app, BrowserWindow, MessageChannelMain, session } = require("electron");
 const path = require("path");
 const dotenv = require("dotenv");
 
@@ -61,6 +61,10 @@ app
           showCopyImageAddress: true,
         });
       })();
+    });
+
+    session.defaultSession.on("will-download", (event) => {
+      event.preventDefault();
     });
 
     /** Handles incoming connection

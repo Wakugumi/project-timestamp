@@ -6,7 +6,6 @@ const Media = require("../services/MediaService.js");
 const { startUpload } = require("../services/UploadService");
 const {
   store,
-  setPhase,
   nextPhase,
   resetSession,
   setPayment,
@@ -21,6 +20,7 @@ const Payment = require("../services/PaymentService.js");
 const { ipcRenderer } = require("electron");
 
 ipcMain.handle("session/begin", async (event, data) => {
+  await File.scanFolders();
   const state = store.getState().session;
   if (state.phase > 1) {
     const savedPhase = state.phase;

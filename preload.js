@@ -25,3 +25,7 @@ contextBridge.exposeInMainWorld("electron", {
   testError: () => ipcRenderer.send("session/throw", {}),
   testFallback: () => ipcRenderer.invoke("main/fallback"),
 });
+
+contextBridge.exposeInMainWorld("config", {
+  BOOTH_TOKEN: process.env.BOOTH_TOKEN,
+});

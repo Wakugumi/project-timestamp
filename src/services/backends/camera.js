@@ -1,12 +1,6 @@
 const { spawn } = require("node:child_process");
 const { once } = require("events");
-const {
-  existsSync,
-  unlinkSync,
-  readFile,
-  statSync,
-  readdirSync,
-} = require("node:fs");
+const { existsSync, unlinkSync, statSync } = require("node:fs");
 const { setTimeout } = require("node:timers");
 const { logger } = require("../../utility/logger");
 const { Semaphore } = require("../../helpers/Semaphore");
