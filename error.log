@@ -108,3 +108,7 @@
 2025-05-06 01:00:45 [ERROR]: ipcMain is not defined 
 2025-05-06 01:00:58 [ERROR]: ipcMain is not defined 
 2025-05-06 01:06:52 [ERROR]: ipcMain is not defined 
+2025-05-06 01:55:41 [ERROR]: Unsupported provider: undefined {"code":"ERR_UPDATER_UNSUPPORTED_PROVIDER"}
+2025-05-06 01:58:28 [ERROR]: ipcMain is not defined 
+2025-05-06 02:02:01 [ERROR]: ipcMain is not defined 
+2025-05-06 02:02:47 [ERROR]: ipcMain is not defined 

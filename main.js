@@ -41,13 +41,12 @@ app
       },
     });
 
-    const serverUpdater = "https://update.electron.build";
-    const feedUpdater = `${serverUpdater}/owner/repo/${process.platform}-${process.arch}/${app.getVersion()}`;
+    //const serverUpdater = "https://update.electron.build";
+    //const feedUpdater = `${serverUpdater}/owner/repo/${process.platform}-${process.arch}/${app.getVersion()}`;
     let isUpdateDownloaded = false;
 
     autoUpdater.autoRunAppAfterInstall = true;
     autoUpdater.autoDownload = true;
-    autoUpdater.setFeedURL({ url: feedUpdater });
     autoUpdater.checkForUpdates();
     autoUpdater.on("update-downloaded", () => {
       isUpdateDownloaded = true;
