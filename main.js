@@ -4,6 +4,9 @@ const dotenv = require("dotenv");
 
 const { logger } = require("./src/utility/logger.js");
 const PaymentCallback = require("./src/handlers/PaymentCallback.js");
+const { autoUpdater } = require("electron-updater");
+const { crashReporter } = require("electron/common");
+const { crashReport } = require("./src/services/CrashReporter.js");
 dotenv.config();
 
 const isDev = process.env.NODE_ENV === "development";
@@ -38,11 +41,23 @@ app
       },
     });
 
+    const serverUpdater = "https://update.electron.build";
+    const feedUpdater = `${serverUpdater}/owner/repo/${process.platform}-${process.arch}/${app.getVersion()}`;
+    let isUpdateDownloaded = false;
+
+    autoUpdater.autoRunAppAfterInstall = true;
+    autoUpdater.autoDownload = true;
+    autoUpdater.setFeedURL({ url: feedUpdater });
+    autoUpdater.checkForUpdates();
+    autoUpdater.on("update-downloaded", () => {
+      isUpdateDownloaded = true;
+    });
+
     window.maximize();
     window.setFullScreen(true);
 
     if (isDev) window.loadURL("http://localhost:5173");
-    else window.loadFile(path.join(__dirname, "./dist/index.html"));
+    else window.loadFile(path.join(__dirname, "dist/index.html"));
 
     window.webContents.on("will-navigate", (event, url) => {
       PaymentCallback(event, url, (queryParams) => {
@@ -65,6 +80,33 @@ app
 
     session.defaultSession.on("will-download", (event) => {
       event.preventDefault();
+    });
+
+    // Called from renderer after session ends
+    ipcMain.handle("main/update", async () => {
+      try {
+        autoUpdater.autoRunAppAfterInstall = true;
+        autoUpdater.autoDownload = true;
+
+        const checkResult = await autoUpdater.checkForUpdates();
+        if (
+          checkResult?.updateInfo?.version !==
+          autoUpdater.currentVersion.version
+        ) {
+          await autoUpdater.downloadUpdate();
+          autoUpdater.quitAndInstall(true, true);
+          return { updated: true };
+        } else {
+          return { updated: false };
+        }
+      } catch (error) {
+        logger.error("Cannot update app", error);
+        crashReport("update failed", error);
+        window.loadFile(
+          path.join(__dirname, "./renderer/fallbacks/update-failed.html"),
+        );
+        return { updated: false, error: err };
+      }
     });
 
     /** Handles incoming connection

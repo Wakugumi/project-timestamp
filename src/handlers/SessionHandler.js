@@ -34,6 +34,7 @@ ipcMain.handle("session/end", async (event, data) => {
   try {
     await File.resetSession();
     store.dispatch(resetSession());
+    ipcRenderer.invoke("main/update");
     return IPCResponse.ok("Session has been reset");
   } catch (error) {
     return IPCResponse.error(error);
