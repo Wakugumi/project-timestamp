@@ -1,4 +1,0 @@
-[submodule "src/renderers"]
-	path = src/renderers
-	url = https://github.com/Wakugumi/Timestamp.git
-	branch = build
