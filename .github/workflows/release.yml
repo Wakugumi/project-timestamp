@@ -21,7 +21,7 @@ jobs:
       - name: Build Electron app
         run: npm run build
       - name: Publish release
-        uses: electron-userland/electron-builder-action@v2
+        uses: samuelmeuli/action-electron-builder@v1.6.0
         with:
           publish: always
         env:
