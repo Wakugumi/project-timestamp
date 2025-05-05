@@ -8,7 +8,7 @@
   "main": "main.js",
   "scripts": {
     "server": "nodemon src/index.js",
-    "build": "npm run build --prefix renderer && electron-builder",
+    "build": "electron-builder",
     "start": "electron main.js",
     "test": "jest"
   },
@@ -56,7 +56,8 @@
       "main.js",
       "package.json",
       "src/**/*",
-      "preload.js"
+      "preload.js",
+      "renderer/**/*"
     ],
     "extraResources": [],
     "asar": true,
