@@ -41,8 +41,8 @@ app
     window.maximize();
     window.setFullScreen(true);
 
-    if (!isDev) window.loadURL("http://localhost:5173");
-    else window.loadFile("dist/index.html");
+    if (isDev) window.loadURL("http://localhost:5173");
+    else window.loadFile(path.join(__dirname, "./dist/index.html"));
 
     window.webContents.on("will-navigate", (event, url) => {
       PaymentCallback(event, url, (queryParams) => {

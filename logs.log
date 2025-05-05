@@ -6017,3 +6017,5 @@
 {"level":"info","message":"payment","payload":null,"timestamp":"2025-05-05 17:06:45","type":"session/setPayment"}
 {"level":"info","message":"payment","payload":null,"timestamp":"2025-05-05 17:06:45","type":"session/setPayment"}
 {"level":"info","message":"payment","payload":null,"timestamp":"2025-05-05 17:06:46","type":"session/setPayment"}
+{"level":"error","timestamp":"2025-05-05 20:29:00"}
+{"level":"error","timestamp":"2025-05-05 20:29:44"}

@@ -1,0 +1,4 @@
+[submodule "renderer"]
+	path = renderer
+	url = git@github.com:Wakugumi/Timestamp.git
+	branch = main
