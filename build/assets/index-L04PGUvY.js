@@ -23828,9 +23828,9 @@ ${g.value === s.value ? "!bg-primary-container !text-on-primary-container !shado
             lineNumber: 106,
             columnNumber: 7
         }, this);
-        if (h === 0) return R.jsxDEV(R.Fragment, {
+        if (h === 0 || h === 1) return R.jsxDEV(R.Fragment, {
             children: R.jsxDEV("div", {
-                className: `min-h-lvh max-h-lvh min-w-full overflow-hidden bg-inverse-surface text-inverse-on-surface
+                className: `min-h-lvh max-h-lvh min-w-full overflow-hidden ${h === 1 ? "bg-white" : "bg-inverse-surface"} text-inverse-on-surface
             flex flex-col justify-evenly items-center p-4 gap-2`,
                 children: [
                     R.jsxDEV("div", {
