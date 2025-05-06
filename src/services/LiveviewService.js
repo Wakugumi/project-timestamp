@@ -5,8 +5,9 @@ const { logger } = require("../utility/logger");
 exports.start = (window) => {
   const wss = new WebSocketServer({ port: 8080 });
 
+  logger.debug("starating web socket");
   wss.on("connection", async (ws) => {
-    console.log("New connection established");
+    logger.debug("a ws connection");
     wss.on("listening", () => {
       logger.trace("Web socket is listening");
     });

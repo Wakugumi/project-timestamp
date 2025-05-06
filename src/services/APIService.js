@@ -4,7 +4,7 @@ const state = require("../helpers/StateManager.js");
 const api = axios.create({
   baseURL: "https://timestamp.fun/api",
   headers: {
-    Token: process.env.BOOTH_ID,
+    Token: process.env.BOOTH_TOKEN,
   },
 });
 

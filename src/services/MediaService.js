@@ -82,7 +82,8 @@ exports.print = (filePath, count, split) => {
 
 exports.renderMotion = async () => {
   const path = File.getExportDir();
-  const COMMAND = `ffmpeg -framerate 10 -i ./motions/%02d.jpg -vf "fps=10" -pix_fmt yuv420p ${path}video.mp4`;
+  const source = File.getMotionsDir();
+  const COMMAND = `ffmpeg -framerate 10 -i ${source}%02d.jpg -vf "fps=10" -pix_fmt yuv420p ${path}video.mp4`;
 
   let process = spawn("bash", ["-c", COMMAND]);
 

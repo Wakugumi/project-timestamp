@@ -5,7 +5,6 @@ const dotenv = require("dotenv");
 const { logger } = require("./src/utility/logger.js");
 const PaymentCallback = require("./src/handlers/PaymentCallback.js");
 const { autoUpdater } = require("electron-updater");
-const { crashReporter } = require("electron/common");
 const { crashReport } = require("./src/services/CrashReporter.js");
 dotenv.config();
 
@@ -20,11 +19,6 @@ let window = null;
  * @type {BrowserWindow}
  */
 let debugWindow = null;
-
-require("./src/handlers/CameraHandler.js");
-require("./src/handlers/SessionHandler.js");
-require("./src/handlers/MediaHandler.js");
-
 app
   .whenReady()
   .then(() => {
@@ -41,22 +35,21 @@ app
       },
     });
 
-    //const serverUpdater = "https://update.electron.build";
-    //const feedUpdater = `${serverUpdater}/owner/repo/${process.platform}-${process.arch}/${app.getVersion()}`;
-    let isUpdateDownloaded = false;
+    require("./src/handlers/MainHandler.js").registerMainHandlers(window);
+    require("./src/handlers/CameraHandler.js").registerCameraHandlers();
+    require("./src/handlers/SessionHandler.js").registerSessionHandlers();
+    require("./src/handlers/MediaHandler.js").registerMediaHandlers();
 
-    autoUpdater.autoRunAppAfterInstall = true;
-    autoUpdater.autoDownload = true;
-    autoUpdater.checkForUpdates();
-    autoUpdater.on("update-downloaded", () => {
-      isUpdateDownloaded = true;
-    });
-
-    window.maximize();
-    window.setFullScreen(true);
+    /** Handles incoming connection
+     * This opens streaming process from camera and process while sending with Electron IPC.
+     */
+    require("./src/services/LiveviewService.js").start(window);
 
     if (isDev) window.loadURL("http://localhost:5173");
     else window.loadFile("build/index.html");
+
+    window.maximize();
+    window.setFullScreen(true);
 
     window.webContents.on("will-navigate", (event, url) => {
       PaymentCallback(event, url, (queryParams) => {
@@ -80,51 +73,6 @@ app
     session.defaultSession.on("will-download", (event) => {
       event.preventDefault();
     });
-
-    // Called from renderer after session ends
-    ipcMain.handle("main/update", async () => {
-      try {
-        autoUpdater.autoRunAppAfterInstall = true;
-        autoUpdater.autoDownload = true;
-
-        const checkResult = await autoUpdater.checkForUpdates();
-        if (
-          checkResult?.updateInfo?.version !==
-          autoUpdater.currentVersion.version
-        ) {
-          await autoUpdater.downloadUpdate();
-          autoUpdater.quitAndInstall(true, true);
-          return { updated: true };
-        } else {
-          return { updated: false };
-        }
-      } catch (error) {
-        logger.error("Cannot update app", error);
-        crashReport("update failed", error);
-        window.loadFile(
-          path.join(__dirname, "./renderer/fallbacks/update-failed.html"),
-        );
-        return { updated: false, error: err };
-      }
-    });
-
-    /** Handles incoming connection
-     * This opens streaming process from camera and process while sending with Electron IPC.
-     */
-    require("./src/services/LiveviewService.js").start(window);
-
-    ipcMain.handle("main/reload", () => {
-      logger.info("calling reload on window with ignoring cache");
-      window.webContents.reload();
-    });
-
-    ipcMain.handle("main/fallback", () => {
-      window.loadFile(path.join(__dirname, "src/renderers/fallback.html"));
-      logger.error(
-        "main process fallback called, app is currently on danger state",
-      );
-    });
-
     // Handles close call from window system
     window.on("closed", () => {
       window = null;

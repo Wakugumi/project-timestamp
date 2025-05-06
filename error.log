@@ -113,3 +113,69 @@
 2025-05-06 02:02:01 [ERROR]: ipcMain is not defined 
 2025-05-06 02:02:47 [ERROR]: ipcMain is not defined 
 2025-05-06 02:21:53 [ERROR]: ipcMain is not defined 
+2025-05-06 04:46:17 [ERROR]: ipcMain is not defined 
+2025-05-06 04:50:14 [ERROR]: ipcMain is not defined 
+2025-05-06 04:53:54 [ERROR]: ipcMain is not defined 
+2025-05-06 04:54:09 [ERROR]: ipcMain is not defined 
+2025-05-06 04:59:08 [ERROR]: ipcMain is not defined 
+2025-05-06 05:04:25 [ERROR]: ipcMain is not defined 
+2025-05-06 05:11:51 [ERROR]: ipcMain is not defined 
+2025-05-06 05:18:32 [ERROR]: ipcMain is not defined 
+2025-05-06 05:19:11 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:149:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 05:21:01 [ERROR]: ipcMain is not defined 
+2025-05-06 05:24:31 [ERROR]: ipcMain is not defined 
+2025-05-06 05:26:10 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:149:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 05:27:10 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:149:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 05:28:42 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:149:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 05:32:13 [ERROR]: ipcMain is not defined 
+2025-05-06 05:38:43 [ERROR]: ipcMain is not defined 
+2025-05-06 05:40:24 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:150:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 05:41:47 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/SessionHandler.js:150:71\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 06:17:06 [ERROR]: ipcMain is not defined 
+2025-05-06 06:21:07 [ERROR]: ipcMain is not defined 
+2025-05-06 06:23:08 [ERROR]: ipcMain is not defined 
+2025-05-06 06:23:56 [ERROR]: ipcMain is not defined 
+2025-05-06 06:24:39 [ERROR]: ipcMain is not defined 
+2025-05-06 06:24:53 [ERROR]: ipcMain is not defined 
+2025-05-06 06:25:20 [ERROR]: ipcMain is not defined 
+2025-05-06 06:25:54 [ERROR]: ipcMain is not defined 
+2025-05-06 06:26:52 [ERROR]: ipcMain is not defined 
+2025-05-06 06:28:46 [ERROR]: ipcMain is not defined 
+2025-05-06 06:31:05 [ERROR]: ipcMain is not defined 
+2025-05-06 06:32:02 [ERROR]: ipcMain is not defined 
+2025-05-06 06:32:27 [ERROR]: ipcMain is not defined 
+2025-05-06 06:32:53 [ERROR]: ipcMain is not defined 
+2025-05-06 06:34:44 [ERROR]: ipcMain is not defined 
+2025-05-06 06:35:51 [ERROR]: ipcMain is not defined 
+2025-05-06 06:45:31 [ERROR]: ipcMain is not defined 
+2025-05-06 06:48:38 [ERROR]: ipcMain is not defined 
+2025-05-06 06:54:03 [ERROR]: ipcMain is not defined 
+2025-05-06 06:55:16 [ERROR]: ipcMain is not defined 
+2025-05-06 06:56:09 [ERROR]: ipcMain is not defined 
+2025-05-06 06:56:29 [ERROR]: ipcMain is not defined 
+2025-05-06 06:56:55 [ERROR]: ipcMain is not defined 
+2025-05-06 06:57:12 [ERROR]: ipcMain is not defined 
+2025-05-06 06:57:39 [ERROR]: ipcMain is not defined 
+2025-05-06 06:57:54 [ERROR]: ipcMain is not defined 
+2025-05-06 06:57:59 [ERROR]: ipcMain is not defined 
+2025-05-06 06:58:10 [ERROR]: ipcMain is not defined 
+2025-05-06 07:00:34 [ERROR]: Cannot update app autoUpdater is not defined {"stack":"ReferenceError: autoUpdater is not defined\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:11:7\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-05-06 07:02:03 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:03:36 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:05:18 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:10:40 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:11:56 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:12:56 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:14:21 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:17:07 [ERROR]: main process fallback called, app is currently on danger state 
+2025-05-06 07:25:58 [ERROR]: Cannot update app autoUpdater is not defined {"stack":"ReferenceError: autoUpdater is not defined\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:9:7\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-05-06 07:27:15 [ERROR]: Cannot update app autoUpdater is not defined {"stack":"ReferenceError: autoUpdater is not defined\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:9:7\n    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)\n    at WebContents.emit (node:events:518:28)"}
+2025-05-06 07:27:35 [ERROR]: Cannot update app Cannot read properties of undefined (reading 'version') {"stack":"TypeError: Cannot read properties of undefined (reading 'version')\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:15:73\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:33:12 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:17:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:35:39 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:18:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:35:57 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:18:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:36:24 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:18:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:36:50 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:17:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:38:14 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:15:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:38:41 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:15:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
+2025-05-06 07:39:24 [ERROR]: Cannot update app Please check update first {"stack":"Error: Please check update first\n    at AppImageUpdater.downloadUpdate (/home/wakugumi/Project/project-timestamp/node_modules/electron-updater/out/AppUpdater.js:414:27)\n    at /home/wakugumi/Project/project-timestamp/src/handlers/MainHandler.js:19:27\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async WebContents.<anonymous> (node:electron/js2c/browser_init:2:87023)"}
